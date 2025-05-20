@@ -2,24 +2,21 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #f5f7fa;
 }
+.sidebarContent{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+}
 .sidebar {
     background: linear-gradient(180deg, #00205b 0%, #003087 100%);
-    flex-direction: column;
+    
     transition: all 0.3s ease;
 }
 .card {
     transition: all 0.3s ease;
-}
-
-.mainPage{
-    top: 0;
-    margin-left:220px;
-
-}
-@media (max-width: 768px) {
-    .mainPage {
-        margin-left: 0;
-    }
 }
 .card:hover {
     transform: translateY(-5px);
@@ -36,6 +33,12 @@ body {
 }
 .transaction-item:not(:last-child) {
     border-bottom: 1px solid #e2e8f0;
+}
+
+@media (max-width: 768px) {
+    .sidebarContent {
+        position: relative;
+    }
 }
 /* Custom scrollbar */
 ::-webkit-scrollbar {

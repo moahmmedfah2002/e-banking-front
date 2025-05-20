@@ -8,15 +8,16 @@ import { AcountSummaryCardComponent } from './home/acount-summary-card/acount-su
 import { TransactionHistoryComponent } from './home/transaction-history/transaction-history.component';
 import { AccountInfoComponent } from './home/account-info/account-info.component';
 import {CarteComponent} from './Account/component/carte/carte.component';
-//import { ButtonComponent } from './Account/component/button-add-transfer/button.component';
-//import { NavbarComponent } from './component/navbar/navbar.component';
+import { ButtonComponent } from './Account/component/button-add-transfer/button.component';
+import { NavbarComponent } from './component/navbar/navbar.component';
 import {AccountComponent} from './Account/account.component';
 import {ButtonStatement} from './Account/component/button-statement/button-statement';
 import {AccountDetails} from './Account/component/details/detail.component';
 import {LoginComponent} from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
-//import {AuthService} from './services/auth.service';
+import {AuthService} from './services/auth.service';
 import {provideHttpClient} from '@angular/common/http';
+import {SideBarComponent} from './home/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,11 @@ import {provideHttpClient} from '@angular/common/http';
     AcountSummaryCardComponent,
     TransactionHistoryComponent,
     AccountInfoComponent,
-    //LoginComponent
+    LoginComponent,
+    ButtonComponent,
+    NavbarComponent,
+    SideBarComponent
+
   ],
   imports: [
     BrowserModule,

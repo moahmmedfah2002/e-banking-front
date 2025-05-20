@@ -9,9 +9,14 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 import {AccountComponent} from './Account/account.component';
 import {ButtonStatement} from './Account/component/button-statement/button-statement';
 import {AccountDetails} from './Account/component/details/detail.component';
+import {LoginComponent} from './login/login.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {AuthService} from './services/auth.service';
+import {provideHttpClient} from '@angular/common/http';
 
 @NgModule({
   declarations: [
+    LoginComponent,
     AccountDetails,
     ButtonStatement,
     AccountComponent,
@@ -22,9 +27,10 @@ import {AccountDetails} from './Account/component/details/detail.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

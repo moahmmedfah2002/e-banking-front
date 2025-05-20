@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as THREE from 'three';
-import { AuthService } from '../services/auth.service';
+//import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    //private authService: AuthService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -188,7 +188,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     const { email, password, rememberMe } = this.loginForm.value;
 
-    this.authService.login(email, password, rememberMe).subscribe({
+    /*this.authService.login(email, password, rememberMe).subscribe({
       next: () => {
         this.router.navigate(['/login']);
       },
@@ -196,6 +196,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.isLoading = false;
         this.errorMessage = err.message || 'Une erreur est survenue lors de la connexion';
       }
-    });
+    });*/
   }
 }

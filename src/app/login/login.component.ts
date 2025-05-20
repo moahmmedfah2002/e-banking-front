@@ -58,12 +58,30 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+
+
   private initThreeJS(): void {
     // Setup scene
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    this.renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true
+    });
 
+    // Set renderer to full window size
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+    this.renderer.domElement.style.position = 'fixed';
+    this.renderer.domElement.style.top = '0';
+    this.renderer.domElement.style.left = '0';
+
+    this.renderer.domElement.style.zIndex = '-1';
+
+    this.canvasContainer.nativeElement.appendChild(this.renderer.domElement);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.canvasContainer.nativeElement.appendChild(this.renderer.domElement);

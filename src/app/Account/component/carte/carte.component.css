@@ -1,0 +1,5 @@
+.account-card {
+  /*background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);*/
+  background: var(--color);
+  transition: transform 0.3s ease;
+}

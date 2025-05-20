@@ -1,0 +1,16 @@
+
+
+
+
+.account-card:hover {
+  transform: translateY(-5px);
+}
+
+.transaction-item {
+  transition: background-color 0.2s ease;
+}
+
+.transaction-item:hover {
+  background-color: #f9fafb;
+}
+

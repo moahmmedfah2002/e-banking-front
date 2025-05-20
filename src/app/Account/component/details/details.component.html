@@ -1,0 +1,540 @@
+<div class="bg-white rounded-lg shadow-md overflow-hidden mb-8" >
+  <div class="px-6 py-4 border-b border-gray-200">
+    <div class="flex space-x-8">
+      <button class="tab tab-active px-1 py-2 text-sm font-medium" data-tab="personal-info">Personal Information</button>
+      <button class="tab text-gray-500 px-1 py-2 text-sm font-medium" data-tab="contact-info">Contact Details</button>
+      <button class="tab text-gray-500 px-1 py-2 text-sm font-medium" data-tab="security">Security Settings</button>
+      <button class="tab text-gray-500 px-1 py-2 text-sm font-medium" data-tab="preferences">Preferences</button>
+    </div>
+  </div>
+
+  <!-- Personal Information Tab -->
+  <div id="personal-info" class="tab-content active p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-900">Personal Information</h3>
+      <button id="edit-personal-info" class="edit-button flex items-center text-sm text-blue-600 px-3 py-1 rounded-md hover:bg-gray-100">
+        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+        </svg>
+        Edit
+      </button>
+    </div>
+
+    <!-- View Mode -->
+    <div id="view-personal-info" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Full Name</p>
+          <p class="text-base font-medium text-gray-900">John Michael Smith</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Date of Birth</p>
+          <p class="text-base font-medium text-gray-900">April 15, 1985</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Social Security Number</p>
+          <p class="text-base font-medium text-gray-900">XXX-XX-1234</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Nationality</p>
+          <p class="text-base font-medium text-gray-900">United States</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Occupation</p>
+          <p class="text-base font-medium text-gray-900">Software Engineer</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Employer</p>
+          <p class="text-base font-medium text-gray-900">Tech Solutions Inc.</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Annual Income</p>
+          <p class="text-base font-medium text-gray-900">$85,000 - $100,000</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Marital Status</p>
+          <p class="text-base font-medium text-gray-900">Married</p>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-gray-200">
+        <p class="text-sm text-gray-500 mb-3">Identification Document</p>
+        <div class="flex items-center">
+          <div class="bg-blue-100 rounded-full p-2 mr-3">
+            <svg class="h-5 w-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-900">Driver's License</p>
+            <p class="text-xs text-gray-500">Expires: 04/15/2025</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Mode (Hidden by default) -->
+    <div id="edit-personal-info-form" class="hidden space-y-6">
+      <form id="personal-info-form">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input type="text" id="full-name" name="full-name" value="John Michael Smith" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div>
+            <label for="date-of-birth" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+            <input type="date" id="date-of-birth" name="date-of-birth" value="1985-04-15" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div>
+            <label for="ssn" class="block text-sm font-medium text-gray-700 mb-1">Social Security Number</label>
+            <input type="text" id="ssn" name="ssn" value="XXX-XX-1234" disabled="" class="form-input w-full rounded-md border-gray-300 bg-gray-100 shadow-sm">
+            <p class="text-xs text-gray-500 mt-1">Contact customer service to update this information</p>
+          </div>
+          <div>
+            <label for="nationality" class="block text-sm font-medium text-gray-700 mb-1">Nationality</label>
+            <select id="nationality" name="nationality" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              <option value="UK">United Kingdom</option>
+              <option value="AU">Australia</option>
+              <option value="FR">France</option>
+              <option value="DE">Germany</option>
+            </select>
+          </div>
+          <div>
+            <label for="occupation" class="block text-sm font-medium text-gray-700 mb-1">Occupation</label>
+            <input type="text" id="occupation" name="occupation" value="Software Engineer" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div>
+            <label for="employer" class="block text-sm font-medium text-gray-700 mb-1">Employer</label>
+            <input type="text" id="employer" name="employer" value="Tech Solutions Inc." class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div>
+            <label for="income" class="block text-sm font-medium text-gray-700 mb-1">Annual Income</label>
+            <select id="income" name="income" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+              <option value="25-50">$25,000 - $50,000</option>
+              <option value="50-75">$50,000 - $75,000</option>
+              <option value="75-100" selected="">$75,000 - $100,000</option>
+              <option value="100-150">$100,000 - $150,000</option>
+              <option value="150+">$150,000+</option>
+            </select>
+          </div>
+          <div>
+            <label for="marital-status" class="block text-sm font-medium text-gray-700 mb-1">Marital Status</label>
+            <select id="marital-status" name="marital-status" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+              <option value="single">Single</option>
+              <option value="married" selected="">Married</option>
+              <option value="divorced">Divorced</option>
+              <option value="widowed">Widowed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-gray-200 mt-6">
+          <p class="text-sm font-medium text-gray-700 mb-3">Identification Document</p>
+          <div class="flex items-center mb-4">
+            <div class="bg-blue-100 rounded-full p-2 mr-3">
+              <svg class="h-5 w-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Driver's License</p>
+              <p class="text-xs text-gray-500">Expires: 04/15/2025</p>
+            </div>
+          </div>
+          <div>
+            <label for="id-expiry" class="block text-sm font-medium text-gray-700 mb-1">Update Expiration Date</label>
+            <input type="date" id="id-expiry" name="id-expiry" value="2025-04-15" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end space-x-3">
+          <button type="button" id="cancel-personal-info" class="cancel-button px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Cancel
+          </button>
+          <button type="button" id="save-personal-info" class="save-button px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Contact Details Tab -->
+  <div id="contact-info" class="tab-content p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-900">Contact Details</h3>
+      <button id="edit-contact-info" class="edit-button flex items-center text-sm text-blue-600 px-3 py-1 rounded-md hover:bg-gray-100">
+        <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+        </svg>
+        Edit
+      </button>
+    </div>
+
+    <!-- View Mode -->
+    <div id="view-contact-info" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Email Address</p>
+          <p class="text-base font-medium text-gray-900">john.smith.com</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Phone Number</p>
+          <p class="text-base font-medium text-gray-900">(555) 123-4567</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Home Address</p>
+          <p class="text-base font-medium text-gray-900">123 Main Street</p>
+          <p class="text-base font-medium text-gray-900">Apt 4B</p>
+          <p class="text-base font-medium text-gray-900">New York, NY 10001</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Mailing Address</p>
+          <p class="text-base font-medium text-gray-900">Same as Home Address</p>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-gray-200">
+        <p class="text-sm text-gray-500 mb-3">Contact Preferences</p>
+        <div class="space-y-3">
+          <div class="flex items-center">
+            <svg class="h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-sm text-gray-700">Email notifications enabled</p>
+          </div>
+          <div class="flex items-center">
+            <svg class="h-5 w-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-sm text-gray-700">SMS alerts enabled</p>
+          </div>
+          <div class="flex items-center">
+            <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-sm text-gray-700">Marketing communications disabled</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Mode (Hidden by default) -->
+    <div id="edit-contact-info-form" class="hidden space-y-6">
+      <form id="contact-info-form">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="email" name="email" value="john.smith@example.com" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+            <input type="tel" id="phone" name="phone" value="(555) 123-4567" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Home Address</label>
+            <div class="space-y-3">
+              <input type="text" id="street" name="street" placeholder="Street Address" value="123 Main Street" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+              <input type="text" id="apt" name="apt" placeholder="Apt, Suite, Unit" value="Apt 4B" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="city" name="city" placeholder="City" value="New York" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <select id="state" name="state" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <!-- Other states -->
+                    <option value="NY" selected="">New York</option>
+                    <!-- More states -->
+                    <option value="WY">Wyoming</option>
+                  </select>
+                  <input type="text" id="zip" name="zip" placeholder="ZIP Code" value="10001" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <div class="flex items-center mb-3">
+              <input type="checkbox" id="same-address" name="same-address" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked="">
+              <label for="same-address" class="ml-2 block text-sm text-gray-700">Mailing address same as home address</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-gray-200 mt-6">
+          <p class="text-sm font-medium text-gray-700 mb-3">Contact Preferences</p>
+          <div class="space-y-3">
+            <div class="flex items-center">
+              <input type="checkbox" id="email-notifications" name="email-notifications" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked="">
+              <label for="email-notifications" class="ml-2 block text-sm text-gray-700">Email notifications</label>
+            </div>
+            <div class="flex items-center">
+              <input type="checkbox" id="sms-alerts" name="sms-alerts" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked="">
+              <label for="sms-alerts" class="ml-2 block text-sm text-gray-700">SMS alerts</label>
+            </div>
+            <div class="flex items-center">
+              <input type="checkbox" id="marketing" name="marketing" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+              <label for="marketing" class="ml-2 block text-sm text-gray-700">Marketing communications</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end space-x-3">
+          <button type="button" id="cancel-contact-info" class="cancel-button px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Cancel
+          </button>
+          <button type="button" id="save-contact-info" class="save-button px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Security Settings Tab -->
+  <div id="security" class="tab-content p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-900">Security Settings</h3>
+    </div>
+
+    <div class="space-y-8">
+      <!-- Password Section -->
+      <div>
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-base font-medium text-gray-900">Password</h4>
+          <button id="change-password-btn" class="edit-button flex items-center text-sm text-blue-600 px-3 py-1 rounded-md hover:bg-gray-100">
+            <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+            </svg>
+            Change
+          </button>
+        </div>
+
+        <div id="password-info" class="flex items-center">
+          <div class="bg-gray-100 rounded-full p-2 mr-3">
+            <svg class="h-5 w-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-900">Password last changed: May 12, 2023</p>
+            <p class="text-xs text-gray-500">We recommend changing your password every 90 days</p>
+          </div>
+        </div>
+
+        <!-- Change Password Form (Hidden by default) -->
+        <div id="change-password-form" class="hidden mt-4 space-y-4">
+          <div>
+            <label for="current-password" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+            <input type="password" id="current-password" name="current-password" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div>
+            <label for="new-password" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+            <input type="password" id="new-password" name="new-password" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+            <p class="text-xs text-gray-500 mt-1">Password must be at least 8 characters with a mix of letters, numbers, and symbols</p>
+          </div>
+          <div>
+            <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button type="button" id="cancel-password" class="cancel-button px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Cancel
+            </button>
+            <button type="button" id="save-password" class="save-button px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Update Password
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-Factor Authentication -->
+      <div class="pt-6 border-t border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-base font-medium text-gray-900">Two-Factor Authentication</h4>
+          <div class="relative inline-block w-10 mr-2 align-middle select-none">
+            <input type="checkbox" name="toggle" id="two-factor" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked="">
+            <label for="two-factor" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+          </div>
+        </div>
+
+        <div class="flex items-center">
+          <div class="bg-green-100 rounded-full p-2 mr-3">
+            <svg class="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-900">Two-factor authentication is enabled</p>
+            <p class="text-xs text-gray-500">We'll send a verification code to your phone when you sign in</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Login History -->
+      <div class="pt-6 border-t border-gray-200">
+        <h4 class="text-base font-medium text-gray-900 mb-4">Recent Login Activity</h4>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="bg-blue-100 rounded-full p-2 mr-3">
+              <svg class="h-5 w-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Current Session</p>
+              <p class="text-xs text-gray-500">New York, NY • Chrome on Windows • June 2, 2023 at 10:23 AM</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="bg-gray-100 rounded-full p-2 mr-3">
+              <svg class="h-5 w-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Previous Login</p>
+              <p class="text-xs text-gray-500">New York, NY • Safari on iPhone • June 1, 2023 at 3:45 PM</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="bg-gray-100 rounded-full p-2 mr-3">
+              <svg class="h-5 w-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Previous Login</p>
+              <p class="text-xs text-gray-500">New York, NY • Chrome on Windows • May 31, 2023 at 9:12 AM</p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <button class="text-sm text-blue-600 hover:text-blue-800">View all login activity</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preferences Tab -->
+  <div id="preferences" class="tab-content p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-900">Account Preferences</h3>
+    </div>
+
+    <div class="space-y-8">
+      <!-- Notification Settings -->
+      <div>
+        <h4 class="text-base font-medium text-gray-900 mb-4">Notification Settings</h4>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Account Alerts</p>
+              <p class="text-xs text-gray-500">Receive alerts about important account activities</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="account-alerts" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked="">
+              <label for="account-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Transaction Notifications</p>
+              <p class="text-xs text-gray-500">Get notified about deposits, withdrawals, and transfers</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="transaction-notifications" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked="">
+              <label for="transaction-notifications" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Security Alerts</p>
+              <p class="text-xs text-gray-500">Be alerted about suspicious activities and login attempts</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="security-alerts" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked="">
+              <label for="security-alerts" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Promotional Offers</p>
+              <p class="text-xs text-gray-500">Receive updates about new products and special offers</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="promotional-offers" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer">
+              <label for="promotional-offers" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statement Preferences -->
+      <div class="pt-6 border-t border-gray-200">
+        <h4 class="text-base font-medium text-gray-900 mb-4">Statement Preferences</h4>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Paperless Statements</p>
+              <p class="text-xs text-gray-500">Receive statements electronically instead of by mail</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="paperless" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked="">
+              <label for="paperless" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Monthly Statement Summary</p>
+              <p class="text-xs text-gray-500">Receive a monthly summary of your account activity</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="monthly-summary" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked="">
+              <label for="monthly-summary" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Language and Accessibility -->
+      <div class="pt-6 border-t border-gray-200">
+        <h4 class="text-base font-medium text-gray-900 mb-4">Language and Accessibility</h4>
+        <div class="space-y-4">
+          <div>
+            <label for="language" class="block text-sm font-medium text-gray-700 mb-1">Preferred Language</label>
+            <select id="language" name="language" class="form-input w-full rounded-md border-gray-300 shadow-sm focus:outline-none">
+              <option value="en" selected="">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="zh">中文</option>
+            </select>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">High Contrast Mode</p>
+              <p class="text-xs text-gray-500">Increase contrast for better visibility</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="high-contrast" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer">
+              <label for="high-contrast" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Larger Text</p>
+              <p class="text-xs text-gray-500">Increase text size for better readability</p>
+            </div>
+            <div class="relative inline-block w-10 mr-2 align-middle select-none">
+              <input type="checkbox" name="toggle" id="larger-text" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer">
+              <label for="larger-text" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'api/auth'; // Replace with your actual API endpoint
+  private apiUrl = '127.0.0.1:8081/auth'; // Replace with your actual API endpoint
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
   constructor() {
@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
+    return this.http.post("http://127.0.0.1:8081/auth/login", { username:email,password: password }).pipe(
       tap((response: any) => {
         if (response.token) {
           if (rememberMe) {

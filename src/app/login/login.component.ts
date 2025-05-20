@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as THREE from 'three';
 //import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'login',
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    //private authService: AuthService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -45,7 +46,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('AfterViewInit called');
     this.initThreeJS();
   }
 
@@ -53,8 +53,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   private setupMouseMoveListener(): void {
     document.addEventListener('mousemove', (event) => {
-      this.mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
-      this.mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
+      this.mouseX = (event.clientX / window.innerWidth - 0.5) * 4;
+      this.mouseY = (event.clientY / window.innerHeight - 0.5) * 4;
     });
   }
 
@@ -65,7 +65,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     // Setup scene
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true
@@ -82,9 +81,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.renderer.domElement.style.zIndex = '-1';
 
     this.canvasContainer.nativeElement.appendChild(this.renderer.domElement);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.canvasContainer.nativeElement.appendChild(this.renderer.domElement);
 
     // Create particles
     const particlesGeometry = new THREE.BufferGeometry();
@@ -188,14 +185,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     const { email, password, rememberMe } = this.loginForm.value;
 
-    /*this.authService.login(email, password, rememberMe).subscribe({
+    this.authService.login(email, password, rememberMe).subscribe({
       next: () => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = err.message || 'Une erreur est survenue lors de la connexion';
       }
-    });*/
+    });
   }
 }

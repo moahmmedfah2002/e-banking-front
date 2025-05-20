@@ -6,7 +6,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     top: 0;
     z-index: 0;
 }

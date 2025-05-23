@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import {Auth} from '../modele/Auth';
 
 @Injectable(
   {
@@ -22,8 +23,8 @@ export class AuthService {
   }
 
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
-    return this.http.post("http://127.0.0.1:8081/auth/login", { username:email,password: password }).pipe(
-      tap((response: any) => {
+    return this.http.post<Auth>("http://127.0.0.1:8081/auth/login", {username: email, password: password}).pipe(
+      tap((response: Auth) => {
         if (response.token) {
           if (rememberMe) {
             localStorage.setItem('authToken', response.token);
@@ -38,7 +39,6 @@ export class AuthService {
       })
     );
   }
-
   logout(): void {
     localStorage.removeItem('authToken');
     sessionStorage.removeItem('authToken');
@@ -53,4 +53,15 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
   }
+
+  auth2(otp: string) {
+    return this.http.get<boolean>("http://127.0.0.1:8081/auth/validateOtp", {
+      params: {
+        otp: otp,
+        token: String(sessionStorage.getItem("authToken"))
+      }
+    });
+  }
+
+
 }

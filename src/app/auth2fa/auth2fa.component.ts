@@ -2,16 +2,17 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angula
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as THREE from 'three';
 //import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../services/auth.service';
+import {Auth} from '../modele/Auth';
 
 @Component({
-  selector: 'login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'auth-2fa',
+  templateUrl: './auth2fa.component.html',
+  styleUrls: ['./auth2fa.component.css'],
   standalone: false
 })
-export class LoginComponent implements OnInit, AfterViewInit {
+export class Auth2faComponent implements OnInit, AfterViewInit {
   @ViewChild('canvasContainer') canvasContainer!: ElementRef;
 
   loginForm: FormGroup;
@@ -32,10 +33,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
+
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      otp: ['', [Validators.required, Validators.minLength(4)]],
+
       rememberMe: [false]
     });
   }
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     console.log('Auth2faComponent initialized');
     this.setupMouseMoveListener();
+
   }
 
   ngAfterViewInit() {
@@ -183,16 +186,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const { email, password, rememberMe } = this.loginForm.value;
+    const { otp } = this.loginForm.value;
 
-    this.authService.login(email, password, rememberMe).subscribe({
-      next: () => {
-        this.router.navigate(['/2FA']);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.message || 'Une erreur est survenue lors de la connexion';
+    this.authService.auth2(otp).subscribe(e=>{
+
+          if(e){
+            this.router.navigate(['/home']);
+
+
+        }else {
+            sessionStorage.removeItem("authToken");
+            localStorage.removeItem("accessToken");
+            this.router.navigate(['/login'])
+
+          }
       }
-    });
+
+    );
   }
 }

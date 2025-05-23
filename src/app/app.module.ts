@@ -18,6 +18,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from './services/auth.service';
 import {provideHttpClient} from '@angular/common/http';
 import {SideBarComponent} from './home/side-bar/side-bar.component';
+import { Auth2faComponent } from './auth2fa/auth2fa.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {SideBarComponent} from './home/side-bar/side-bar.component';
     LoginComponent,
     ButtonComponent,
     NavbarComponent,
-    SideBarComponent
+    SideBarComponent,
+    Auth2faComponent
 
   ],
   imports: [

@@ -18,6 +18,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from './services/auth.service';
 import {provideHttpClient} from '@angular/common/http';
 import {SideBarComponent} from './home/side-bar/side-bar.component';
+import { TransactionPageComponent } from './transaction/transaction-page/transaction-page.component';
+import { TransactionMainComponent } from './transaction/transaction-main/transaction-main.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +36,9 @@ import {SideBarComponent} from './home/side-bar/side-bar.component';
     LoginComponent,
     ButtonComponent,
     NavbarComponent,
-    SideBarComponent
-
+    SideBarComponent,
+    TransactionPageComponent,
+    TransactionMainComponent,
   ],
   imports: [
     BrowserModule,

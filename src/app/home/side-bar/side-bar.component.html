@@ -7,7 +7,7 @@
         </div>
         <h1 class="text-xl font-bold">Credit du Maroc</h1>
     </div>
-    
+
     <nav class="flex-grow">
         <ul class="space-y-2">
             <li>
@@ -19,7 +19,7 @@
                 </button>
             </li>
             <li>
-                <button class="nav-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 text-white" data-target="accounts">
+                <button (click)="this.router.navigate(['/account'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 text-white" data-target="accounts">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                     </svg>
@@ -53,8 +53,8 @@
             </li>
         </ul>
     </nav>
-    
-    
+
+
     <div class="mt-auto pt-4">
         <div class="bg-white bg-opacity-10 rounded-lg p-4">
             <div class="flex items-center">
@@ -74,7 +74,7 @@
                 <span class="text-blue-900 font-semibold">AM</span>
             </div>
             <div>
-                <p class="font-medium">Ahmed Mansouri</p>
+                <p class="font-medium">{{user.prenom}} {{user.nom}}</p>
                 <p class="text-xs opacity-75">Premium Client</p>
             </div>
         </div>

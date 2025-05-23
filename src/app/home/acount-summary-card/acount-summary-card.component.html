@@ -1,9 +1,10 @@
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-    <div class="card bg-white rounded-xl shadow-sm p-6">
-        <div class="flex justify-between items-start mb-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" *ngFor="let compte of accounts">
+    <div class="card bg-white rounded-xl shadow-sm p-6" >
+
+      <div class="flex justify-between items-start mb-4" >
             <div>
-                <p class="text-sm text-gray-500">Current Account</p>
-                <h3 class="text-2xl font-bold text-gray-800">25,430.50 MAD</h3>
+                <p class="text-sm text-gray-500">{{compte.typeCompte}}</p>
+                <h3 class="text-2xl font-bold text-gray-800">{{compte.solde}} MAD</h3>
             </div>
             <div class="bg-blue-100 rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,33 +22,12 @@
         </div>
     </div>
 
-    <div class="card bg-white rounded-xl shadow-sm p-6">
-        <div class="flex justify-between items-start mb-4">
-            <div>
-                <p class="text-sm text-gray-500">Savings Account</p>
-                <h3 class="text-2xl font-bold text-gray-800">78,250.00 MAD</h3>
-            </div>
-            <div class="bg-green-100 rounded-full p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-            </div>
-        </div>
-        <div class="flex items-center">
-            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">+3.8%</span>
-            <span class="text-xs text-gray-500 ml-2">from last month</span>
-        </div>
-        <div class="mt-4 flex justify-between">
-            <button class="text-sm text-blue-900 font-medium hover:underline">View details</button>
-            <button class="text-sm text-blue-900 font-medium hover:underline">Deposit</button>
-        </div>
-    </div>
 
-    <div class="card crypto-card rounded-xl shadow-sm p-6 text-white">
+    <div class="card crypto-card rounded-xl shadow-sm p-6 text-white" *ngIf="compte.typeCompte==='Crypto Portfolio'">
         <div class="flex justify-between items-start mb-4">
             <div>
-                <p class="text-sm text-gray-300">Crypto Portfolio</p>
-                <h3 class="text-2xl font-bold">5,280.75 USD</h3>
+                <p class="text-sm text-gray-300">{{compte.typeCompte}}</p>
+                <h3 class="text-2xl font-bold">{{compte.solde}} MAD</h3>
             </div>
             <div class="bg-gray-700 rounded-full p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

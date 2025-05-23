@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Compte} from '../../modele/Compte';
 
 @Component({
   selector: 'app-acount-summary-card',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './acount-summary-card.component.css'
 })
 export class AcountSummaryCardComponent {
+  @Input()
+  accounts:Array<Compte>|undefined=new Array<Compte>();
 
 }

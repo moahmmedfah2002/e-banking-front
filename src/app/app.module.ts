@@ -19,6 +19,8 @@ import {AuthService} from './services/auth.service';
 import {provideHttpClient} from '@angular/common/http';
 import {SideBarComponent} from './home/side-bar/side-bar.component';
 import { Auth2faComponent } from './auth2fa/auth2fa.component';
+import {DatePipe} from '@angular/common';
+import {dateTimestampProvider} from 'rxjs/internal/scheduler/dateTimestampProvider';
 
 @NgModule({
   declarations: [

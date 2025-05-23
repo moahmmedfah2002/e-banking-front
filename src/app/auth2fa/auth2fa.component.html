@@ -26,41 +26,18 @@
 
       <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-300 mb-1">
-            Adresse email
+          <label for="otp" class="block text-sm font-medium text-gray-300 mb-1">
+            Enter send  code :
           </label>
-          <input id="email" formControlName="email" type="email" autocomplete="email" required
+          <input id="otp" formControlName="otp" type="text" autocomplete="number" required
                  class="input-field w-full px-4 py-3 rounded-lg text-white placeholder-gray-500 focus:outline-none">
-          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          <div *ngIf="loginForm.get('otp')?.invalid && loginForm.get('otp')?.touched"
                class="text-red-400 text-xs mt-1">
-            Veuillez entrer une adresse email valide
+            Code pas correct
           </div>
         </div>
 
-        <div>
-          <div class="flex justify-between mb-1">
-            <label for="password" class="block text-sm font-medium text-gray-300">
-              Mot de passe
-            </label>
-            <a routerLink="/forgot-password" class="text-sm text-indigo-400 hover:text-indigo-300">
-              Mot de passe oublié?
-            </a>
-          </div>
-          <input id="password" formControlName="password" type="password" autocomplete="current-password" required
-                 class="input-field w-full px-4 py-3 rounded-lg text-white placeholder-gray-500 focus:outline-none">
-          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-               class="text-red-400 text-xs mt-1">
-            Le mot de passe est requis
-          </div>
-        </div>
 
-        <div class="flex items-center">
-          <input id="remember-me" formControlName="rememberMe" type="checkbox"
-                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 rounded bg-gray-800">
-          <label for="remember-me" class="ml-2 block text-sm text-gray-300">
-            Se souvenir de moi
-          </label>
-        </div>
 
         <div>
           <button type="submit" [disabled]="loginForm.invalid || isLoading"

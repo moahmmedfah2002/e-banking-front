@@ -8,6 +8,18 @@ body {
     background-color: #f0f4f8;
 }
 
+.mainPage{
+    top: 0;
+    margin-left:220px;
+
+}
+@media (max-width: 768px) {
+    .mainPage {
+        margin-left: 0;
+    }
+}
+
+
 .input-field {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }

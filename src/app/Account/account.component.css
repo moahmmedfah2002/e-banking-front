@@ -14,3 +14,13 @@
   background-color: #f9fafb;
 }
 
+.mainPage{
+  top: 0;
+  margin-left:220px;
+
+}
+@media (max-width: 768px) {
+  .mainPage {
+      margin-left: 0;
+  }
+}

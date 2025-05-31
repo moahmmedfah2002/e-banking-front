@@ -1,0 +1,527 @@
+<main class="flex-1 overflow-y-auto p-4 mainPage">
+    <!-- Page Header with Actions -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl font-bold text-gray-800">Registered Banks</h1>
+            <p class="text-gray-600">Manage all banks and their agents in the system</p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+            <button id="addBankBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center justify-center">
+                <i class="fas fa-plus mr-2"></i> Add New Bank
+            </button>
+            <button class="px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-md hover:bg-gray-50 flex items-center justify-center">
+                <i class="fas fa-file-export mr-2"></i> Export
+            </button>
+        </div>
+    </div>
+    
+    <!-- Filters and View Options -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+            <div class="flex flex-wrap gap-3">
+                <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <option value="all">All Bank Types</option>
+                    <option value="commercial">Commercial Banks</option>
+                    <option value="investment">Investment Banks</option>
+                    <option value="cooperative">Cooperative Banks</option>
+                    <option value="savings">Savings Banks</option>
+                    <option value="central">Central Banks</option>
+                </select>
+                
+                <select class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="gridViewBtn" class="p-2 bg-blue-100 text-blue-600 rounded-md">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <button id="listViewBtn" class="p-2 text-gray-500 hover:text-gray-700 rounded-md">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Grid View (Default) -->
+    <div id="gridView" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bank-grid"><div class="bg-white rounded-lg shadow overflow-hidden bank-card">
+    <div class="p-5">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h3 class="font-semibold text-gray-800 text-lg">First National Bank</h3>
+                <p class="text-gray-500 text-sm">FNB001</p>
+            </div>
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 flex items-center">
+                <i class="fas fa-check-circle mr-1"></i> Active
+            </span>
+        </div>
+        
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                <i class="fas fa-landmark text-blue-600"></i>
+            </div>
+            <span class="text-gray-700">Commercial Bank</span>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+            <div class="flex items-start">
+                <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">123 Main Street, New York, NY 10001</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">+1 (212) 555-1234</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">info&#64;fnb.com</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div class="flex items-center">
+                <i class="fas fa-users text-gray-400 mr-2"></i>
+                <span class="text-gray-600 text-sm">3 Agents</span>
+            </div>
+            <div class="flex space-x-2">
+                <button class="manage-agents-btn p-2 text-blue-600 hover:bg-blue-50 rounded-md" data-bank-id="1">
+                    <i class="fas fa-user-cog"></i>
+                </button>
+                <button class="edit-bank-btn p-2 text-green-600 hover:bg-green-50 rounded-md" data-bank-id="1">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-bank-btn p-2 text-red-600 hover:bg-red-50 rounded-md" data-bank-id="1">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div><div class="bg-white rounded-lg shadow overflow-hidden bank-card">
+    <div class="p-5">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h3 class="font-semibold text-gray-800 text-lg">Global Investment Bank</h3>
+                <p class="text-gray-500 text-sm">GIB002</p>
+            </div>
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 flex items-center">
+                <i class="fas fa-check-circle mr-1"></i> Active
+            </span>
+        </div>
+        
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                <i class="fas fa-chart-line text-blue-600"></i>
+            </div>
+            <span class="text-gray-700">Investment Bank</span>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+            <div class="flex items-start">
+                <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">456 Wall Street, New York, NY 10005</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">+1 (212) 555-5678</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">contact&#64;gib.com</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div class="flex items-center">
+                <i class="fas fa-users text-gray-400 mr-2"></i>
+                <span class="text-gray-600 text-sm">2 Agents</span>
+            </div>
+            <div class="flex space-x-2">
+                <button class="manage-agents-btn p-2 text-blue-600 hover:bg-blue-50 rounded-md" data-bank-id="2">
+                    <i class="fas fa-user-cog"></i>
+                </button>
+                <button class="edit-bank-btn p-2 text-green-600 hover:bg-green-50 rounded-md" data-bank-id="2">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-bank-btn p-2 text-red-600 hover:bg-red-50 rounded-md" data-bank-id="2">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div><div class="bg-white rounded-lg shadow overflow-hidden bank-card">
+    <div class="p-5">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h3 class="font-semibold text-gray-800 text-lg">Community Savings Bank</h3>
+                <p class="text-gray-500 text-sm">CSB003</p>
+            </div>
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 flex items-center">
+                <i class="fas fa-clock mr-1"></i> Pending
+            </span>
+        </div>
+        
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                <i class="fas fa-piggy-bank text-blue-600"></i>
+            </div>
+            <span class="text-gray-700">Savings Bank</span>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+            <div class="flex items-start">
+                <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">789 Oak Avenue, Chicago, IL 60601</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">+1 (312) 555-8901</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">support&#64;southernbank.com</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div class="flex items-center">
+                <i class="fas fa-users text-gray-400 mr-2"></i>
+                <span class="text-gray-600 text-sm">0 Agents</span>
+            </div>
+            <div class="flex space-x-2">
+                <button class="manage-agents-btn p-2 text-blue-600 hover:bg-blue-50 rounded-md" data-bank-id="3">
+                    <i class="fas fa-user-cog"></i>
+                </button>
+                <button class="edit-bank-btn p-2 text-green-600 hover:bg-green-50 rounded-md" data-bank-id="3">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-bank-btn p-2 text-red-600 hover:bg-red-50 rounded-md" data-bank-id="3">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div><div class="bg-white rounded-lg shadow overflow-hidden bank-card">
+    <div class="p-5">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h3 class="font-semibold text-gray-800 text-lg">Pacific Trust Credit Union</h3>
+                <p class="text-gray-500 text-sm">PTCU004</p>
+            </div>
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 flex items-center">
+                <i class="fas fa-check-circle mr-1"></i> Active
+            </span>
+        </div>
+        
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                <i class="fas fa-handshake text-blue-600"></i>
+            </div>
+            <span class="text-gray-700">Cooperative Bank</span>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+            <div class="flex items-start">
+                <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">321 Palm Drive, San Francisco, CA 94101</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">+1 (415) 555-2345</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">info&#64;pacifictrust.com</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div class="flex items-center">
+                <i class="fas fa-users text-gray-400 mr-2"></i>
+                <span class="text-gray-600 text-sm">2 Agents</span>
+            </div>
+            <div class="flex space-x-2">
+                <button class="manage-agents-btn p-2 text-blue-600 hover:bg-blue-50 rounded-md" data-bank-id="4">
+                    <i class="fas fa-user-cog"></i>
+                </button>
+                <button class="edit-bank-btn p-2 text-green-600 hover:bg-green-50 rounded-md" data-bank-id="4">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-bank-btn p-2 text-red-600 hover:bg-red-50 rounded-md" data-bank-id="4">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div><div class="bg-white rounded-lg shadow overflow-hidden bank-card">
+    <div class="p-5">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h3 class="font-semibold text-gray-800 text-lg">Midwest Regional Bank</h3>
+                <p class="text-gray-500 text-sm">MRB005</p>
+            </div>
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 flex items-center">
+                <i class="fas fa-times-circle mr-1"></i> Inactive
+            </span>
+        </div>
+        
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                <i class="fas fa-landmark text-blue-600"></i>
+            </div>
+            <span class="text-gray-700">Commercial Bank</span>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+            <div class="flex items-start">
+                <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">567 River Road, St. Louis, MO 63101</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">+1 (314) 555-5678</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">info&#64;pacifictrust.com</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div class="flex items-center">
+                <i class="fas fa-users text-gray-400 mr-2"></i>
+                <span class="text-gray-600 text-sm">1 Agents</span>
+            </div>
+            <div class="flex space-x-2">
+                <button class="manage-agents-btn p-2 text-blue-600 hover:bg-blue-50 rounded-md" data-bank-id="5">
+                    <i class="fas fa-user-cog"></i>
+                </button>
+                <button class="edit-bank-btn p-2 text-green-600 hover:bg-green-50 rounded-md" data-bank-id="5">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-bank-btn p-2 text-red-600 hover:bg-red-50 rounded-md" data-bank-id="5">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div><div class="bg-white rounded-lg shadow overflow-hidden bank-card">
+    <div class="p-5">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h3 class="font-semibold text-gray-800 text-lg">Southern States Bank</h3>
+                <p class="text-gray-500 text-sm">SSB006</p>
+            </div>
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 flex items-center">
+                <i class="fas fa-check-circle mr-1"></i> Active
+            </span>
+        </div>
+        
+        <div class="flex items-center mb-4">
+            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                <i class="fas fa-landmark text-blue-600"></i>
+            </div>
+            <span class="text-gray-700">Commercial Bank</span>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+            <div class="flex items-start">
+                <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">890 Peachtree Street, Atlanta, GA 30301</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">+1 (404) 555-7890</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-400 mr-2 w-4"></i>
+                <span class="text-gray-600 text-sm">contact&#64;midwestbank.com</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div class="flex items-center">
+                <i class="fas fa-users text-gray-400 mr-2"></i>
+                <span class="text-gray-600 text-sm">2 Agents</span>
+            </div>
+            <div class="flex space-x-2">
+                <button class="manage-agents-btn p-2 text-blue-600 hover:bg-blue-50 rounded-md" data-bank-id="6">
+                    <i class="fas fa-user-cog"></i>
+                </button>
+                <button class="edit-bank-btn p-2 text-green-600 hover:bg-green-50 rounded-md" data-bank-id="6">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-bank-btn p-2 text-red-600 hover:bg-red-50 rounded-md" data-bank-id="6">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div></div>
+    
+    <!-- List View (Hidden by default) -->
+    <div id="listView" class="bg-white rounded-lg shadow overflow-hidden hidden">
+        <div class="overflow-x-auto table-responsive">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bank Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agents</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bankListBody" class="bg-white divide-y divide-gray-200"><tr>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="text-sm font-medium text-gray-900">First National Bank</div>
+        </div>
+        <div class="text-sm text-gray-500">FNB001</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">Commercial</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <span class="status-badge status-active"></span>
+            <span class="text-sm text-gray-700">Active</span>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        3 Agents
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <button class="manage-agents-btn text-blue-600 hover:text-blue-900 mr-3" data-bank-id="1">Manage Agents</button>
+        <button class="edit-bank-btn text-green-600 hover:text-green-900 mr-3" data-bank-id="1">Edit</button>
+        <button class="delete-bank-btn text-red-600 hover:text-red-900" data-bank-id="1">Delete</button>
+    </td>
+</tr><tr>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="text-sm font-medium text-gray-900">Global Investment Bank</div>
+        </div>
+        <div class="text-sm text-gray-500">GIB002</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">Investment</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <span class="status-badge status-active"></span>
+            <span class="text-sm text-gray-700">Active</span>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        2 Agents
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <button class="manage-agents-btn text-blue-600 hover:text-blue-900 mr-3" data-bank-id="2">Manage Agents</button>
+        <button class="edit-bank-btn text-green-600 hover:text-green-900 mr-3" data-bank-id="2">Edit</button>
+        <button class="delete-bank-btn text-red-600 hover:text-red-900" data-bank-id="2">Delete</button>
+    </td>
+</tr><tr>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="text-sm font-medium text-gray-900">Community Savings Bank</div>
+        </div>
+        <div class="text-sm text-gray-500">CSB003</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">Savings</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <span class="status-badge status-pending"></span>
+            <span class="text-sm text-gray-700">Pending</span>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        0 Agents
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <button class="manage-agents-btn text-blue-600 hover:text-blue-900 mr-3" data-bank-id="3">Manage Agents</button>
+        <button class="edit-bank-btn text-green-600 hover:text-green-900 mr-3" data-bank-id="3">Edit</button>
+        <button class="delete-bank-btn text-red-600 hover:text-red-900" data-bank-id="3">Delete</button>
+    </td>
+</tr><tr>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="text-sm font-medium text-gray-900">Pacific Trust Credit Union</div>
+        </div>
+        <div class="text-sm text-gray-500">PTCU004</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">Cooperative</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <span class="status-badge status-active"></span>
+            <span class="text-sm text-gray-700">Active</span>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        2 Agents
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <button class="manage-agents-btn text-blue-600 hover:text-blue-900 mr-3" data-bank-id="4">Manage Agents</button>
+        <button class="edit-bank-btn text-green-600 hover:text-green-900 mr-3" data-bank-id="4">Edit</button>
+        <button class="delete-bank-btn text-red-600 hover:text-red-900" data-bank-id="4">Delete</button>
+    </td>
+</tr><tr>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="text-sm font-medium text-gray-900">Midwest Regional Bank</div>
+        </div>
+        <div class="text-sm text-gray-500">MRB005</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">Commercial</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <span class="status-badge status-inactive"></span>
+            <span class="text-sm text-gray-700">Inactive</span>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        1 Agents
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <button class="manage-agents-btn text-blue-600 hover:text-blue-900 mr-3" data-bank-id="5">Manage Agents</button>
+        <button class="edit-bank-btn text-green-600 hover:text-green-900 mr-3" data-bank-id="5">Edit</button>
+        <button class="delete-bank-btn text-red-600 hover:text-red-900" data-bank-id="5">Delete</button>
+    </td>
+</tr><tr>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="text-sm font-medium text-gray-900">Southern States Bank</div>
+        </div>
+        <div class="text-sm text-gray-500">SSB006</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">Commercial</div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <span class="status-badge status-active"></span>
+            <span class="text-sm text-gray-700">Active</span>
+        </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        2 Agents
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+        <button class="manage-agents-btn text-blue-600 hover:text-blue-900 mr-3" data-bank-id="6">Manage Agents</button>
+        <button class="edit-bank-btn text-green-600 hover:text-green-900 mr-3" data-bank-id="6">Edit</button>
+        <button class="delete-bank-btn text-red-600 hover:text-red-900" data-bank-id="6">Delete</button>
+    </td>
+</tr></tbody>
+            </table>
+        </div>
+    </div>
+</main>

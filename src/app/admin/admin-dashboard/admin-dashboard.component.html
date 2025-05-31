@@ -1,0 +1,487 @@
+<main class="flex-1 overflow-y-auto p-4 mainPage">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow p-4 sm:p-5 stats-card">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-gray-500 text-sm font-medium">Total Customers</h3>
+                <div class="bg-blue-100 p-1 sm:p-2 rounded-lg stats-card-icon">
+                    <i class="fas fa-users text-blue-600"></i>
+                </div>
+            </div>
+            <div class="flex items-baseline">
+                <p class="text-xl sm:text-2xl font-bold text-gray-900">24,781</p>
+                <p class="ml-2 text-green-600 text-xs sm:text-sm flex items-center">
+                    <i class="fas fa-arrow-up mr-1"></i>
+                    <span>4.3%</span>
+                </p>
+            </div>
+            <p class="text-gray-500 text-xs mt-1">Compared to last month</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-4 sm:p-5 stats-card">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-gray-500 text-sm font-medium">Total Transactions</h3>
+                <div class="bg-green-100 p-1 sm:p-2 rounded-lg stats-card-icon">
+                    <i class="fas fa-exchange-alt text-green-600"></i>
+                </div>
+            </div>
+            <div class="flex items-baseline">
+                <p class="text-xl sm:text-2xl font-bold text-gray-900">$1.45M</p>
+                <p class="ml-2 text-green-600 text-xs sm:text-sm flex items-center">
+                    <i class="fas fa-arrow-up mr-1"></i>
+                    <span>8.7%</span>
+                </p>
+            </div>
+            <p class="text-gray-500 text-xs mt-1">Compared to last month</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-4 sm:p-5 stats-card">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-gray-500 text-sm font-medium">New Accounts</h3>
+                <div class="bg-purple-100 p-1 sm:p-2 rounded-lg stats-card-icon">
+                    <i class="fas fa-user-plus text-purple-600"></i>
+                </div>
+            </div>
+            <div class="flex items-baseline">
+                <p class="text-xl sm:text-2xl font-bold text-gray-900">487</p>
+                <p class="ml-2 text-red-600 text-xs sm:text-sm flex items-center">
+                    <i class="fas fa-arrow-down mr-1"></i>
+                    <span>2.1%</span>
+                </p>
+            </div>
+            <p class="text-gray-500 text-xs mt-1">Compared to last month</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-4 sm:p-5 stats-card">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-gray-500 text-sm font-medium">Support Tickets</h3>
+                <div class="bg-yellow-100 p-1 sm:p-2 rounded-lg stats-card-icon">
+                    <i class="fas fa-ticket-alt text-yellow-600"></i>
+                </div>
+            </div>
+            <div class="flex items-baseline">
+                <p class="text-xl sm:text-2xl font-bold text-gray-900">32</p>
+                <p class="ml-2 text-yellow-600 text-xs sm:text-sm flex items-center">
+                    <i class="fas fa-minus mr-1"></i>
+                    <span>0%</span>
+                </p>
+            </div>
+            <p class="text-gray-500 text-xs mt-1">12 require attention</p>
+        </div>
+    </div>
+    
+    <!-- Charts and Tables -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <!-- Transaction Chart -->
+        <div class="bg-white rounded-lg shadow p-4 sm:p-5 col-span-1 lg:col-span-2">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <h3 class="font-semibold text-gray-800 mb-2 sm:mb-0">Transaction Volume</h3>
+                <div class="flex flex-wrap gap-2">
+                    <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md">Weekly</button>
+                    <button class="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-md">Monthly</button>
+                    <button class="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-md">Yearly</button>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="flex justify-between items-end h-full relative">
+                    <div class="chart-bar h-[60%]" style="left: 5%;"></div>
+                    <div class="chart-bar h-[75%]" style="left: 15%;"></div>
+                    <div class="chart-bar h-[45%]" style="left: 25%;"></div>
+                    <div class="chart-bar h-[80%]" style="left: 35%;"></div>
+                    <div class="chart-bar h-[65%]" style="left: 45%;"></div>
+                    <div class="chart-bar h-[90%]" style="left: 55%;"></div>
+                    <div class="chart-bar h-[70%]" style="left: 65%;"></div>
+                    <div class="chart-bar h-[85%]" style="left: 75%;"></div>
+                    <div class="chart-bar h-[55%]" style="left: 85%;"></div>
+                </div>
+            </div>
+            
+            <div class="flex justify-between mt-2 text-xs text-gray-500">
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+                <span>Sun</span>
+            </div>
+        </div>
+        
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-lg shadow p-4 sm:p-5">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-semibold text-gray-800">Recent Activities</h3>
+                <button class="text-blue-600 text-sm">View All</button>
+            </div>
+            
+            <div class="space-y-4 max-h-[400px] overflow-y-auto">
+                <div class="flex items-start">
+                    <div class="bg-blue-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                        <i class="fas fa-user-shield text-blue-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">Security Alert</p>
+                        <p class="text-xs text-gray-500">Multiple failed login attempts for user #8742</p>
+                        <p class="text-xs text-gray-400 mt-1">10 minutes ago</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="bg-green-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                        <i class="fas fa-check-circle text-green-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">KYC Verification</p>
+                        <p class="text-xs text-gray-500">Customer #24601 verified successfully</p>
+                        <p class="text-xs text-gray-400 mt-1">42 minutes ago</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="bg-yellow-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">System Notification</p>
+                        <p class="text-xs text-gray-500">Database backup completed with warnings</p>
+                        <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="bg-purple-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                        <i class="fas fa-cog text-purple-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">Settings Updated</p>
+                        <p class="text-xs text-gray-500">Transaction limits modified by admin</p>
+                        <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="bg-red-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                        <i class="fas fa-ban text-red-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium">Account Suspended</p>
+                        <p class="text-xs text-gray-500">Account #9173 suspended for suspicious activity</p>
+                        <p class="text-xs text-gray-400 mt-1">3 hours ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Transactions and Users -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Transactions -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-gray-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                    <h3 class="font-semibold text-gray-800 mb-2 sm:mb-0">Recent Transactions</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <select class="text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>All Types</option>
+                            <option>Deposits</option>
+                            <option>Withdrawals</option>
+                            <option>Transfers</option>
+                        </select>
+                        <button class="text-blue-600 text-sm">Export</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto table-responsive">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="bg-blue-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                                        <i class="fas fa-arrow-down text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Deposit</p>
+                                        <p class="text-xs text-gray-500">John Smith</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">+$2,500.00</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today, 13:45</td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="bg-red-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                                        <i class="fas fa-arrow-up text-red-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Withdrawal</p>
+                                        <p class="text-xs text-gray-500">Sarah Johnson</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">-$1,200.00</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Pending</span>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today, 11:20</td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="bg-purple-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                                        <i class="fas fa-exchange-alt text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Transfer</p>
+                                        <p class="text-xs text-gray-500">Michael Brown</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">-$850.00</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday, 16:30</td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="bg-blue-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                                        <i class="fas fa-arrow-down text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Deposit</p>
+                                        <p class="text-xs text-gray-500">Emily Wilson</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">+$3,750.00</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday, 14:15</td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="bg-red-100 p-2 rounded-lg mr-3 flex-shrink-0">
+                                        <i class="fas fa-arrow-up text-red-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Withdrawal</p>
+                                        <p class="text-xs text-gray-500">David Lee</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">-$500.00</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Failed</span>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday, 09:45</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="bg-gray-50 px-4 sm:px-5 py-3 border-t border-gray-200 text-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <div class="mb-2 sm:mb-0">
+                        <p class="text-gray-700 text-xs sm:text-sm">Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">42</span> transactions</p>
+                    </div>
+                    <div class="flex space-x-1">
+                        <button class="px-2 sm:px-3 py-1 border rounded-md bg-white text-gray-500 hover:bg-gray-50 text-xs sm:text-sm">Previous</button>
+                        <button class="px-2 sm:px-3 py-1 border rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Active Users -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-gray-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                    <h3 class="font-semibold text-gray-800 mb-2 sm:mb-0">Active Users</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <select class="text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Pending</option>
+                            <option>Blocked</option>
+                        </select>
+                        <button class="text-blue-600 text-sm">View All</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto table-responsive">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Type</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                        <span class="text-white text-sm font-medium">JS</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">John Smith</p>
+                                        <p class="text-xs text-gray-500">john.smith&#64;example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">Premium</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="status-badge status-active"></span>
+                                    <span class="text-sm text-gray-700">Active</span>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-600 hover:text-blue-800 mr-3">Edit</button>
+                                <button class="text-red-600 hover:text-red-800">Block</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                        <span class="text-white text-sm font-medium">SJ</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Sarah Johnson</p>
+                                        <p class="text-xs text-gray-500">sarah.j&#64;example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">Standard</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="status-badge status-pending"></span>
+                                    <span class="text-sm text-gray-700">Pending</span>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-600 hover:text-blue-800 mr-3">Edit</button>
+                                <button class="text-green-600 hover:text-green-800">Approve</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                        <span class="text-white text-sm font-medium">MB</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Michael Brown</p>
+                                        <p class="text-xs text-gray-500">m.brown&#64;example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">Business</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="status-badge status-active"></span>
+                                    <span class="text-sm text-gray-700">Active</span>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-600 hover:text-blue-800 mr-3">Edit</button>
+                                <button class="text-red-600 hover:text-red-800">Block</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                        <span class="text-white text-sm font-medium">EW</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Emily Wilson</p>
+                                        <p class="text-xs text-gray-500">e.wilson&#64;example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">Premium</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="status-badge status-active"></span>
+                                    <span class="text-sm text-gray-700">Active</span>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-600 hover:text-blue-800 mr-3">Edit</button>
+                                <button class="text-red-600 hover:text-red-800">Block</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="transaction-item">
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                        <span class="text-white text-sm font-medium">DL</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">David Lee</p>
+                                        <p class="text-xs text-gray-500">david.lee&#64;example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">Standard</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="status-badge status-blocked"></span>
+                                    <span class="text-sm text-gray-700">Blocked</span>
+                                </div>
+                            </td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                <button class="text-blue-600 hover:text-blue-800 mr-3">Edit</button>
+                                <button class="text-green-600 hover:text-green-800">Unblock</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="bg-gray-50 px-4 sm:px-5 py-3 border-t border-gray-200 text-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <div class="mb-2 sm:mb-0">
+                        <p class="text-gray-700 text-xs sm:text-sm">Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">28</span> users</p>
+                    </div>
+                    <div class="flex space-x-1">
+                        <button class="px-2 sm:px-3 py-1 border rounded-md bg-white text-gray-500 hover:bg-gray-50 text-xs sm:text-sm">Previous</button>
+                        <button class="px-2 sm:px-3 py-1 border rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -27,6 +27,16 @@ import { SavingCardComponent } from './transaction/saving-card/saving-card.compo
 import { CardContainerComponent } from './transaction/card-container/card-container.component';
 import { RecentTransactionComponent } from './transaction/recent-transaction/recent-transaction.component';
 import { TransactionFormComponent } from './transaction/transaction-form/transaction-form.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { CryptoPageComponent } from './crypto-page/crypto-page.component';
+import { AdminTransactionComponent } from './admin/admin-banks/transaction-admin/adminTransaction.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
+import { AdminBanksComponent } from './admin/admin-banks/admin-banks.component';
+import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
+import { AdminlayoutComponent } from './adminlayout/adminlayout.component';
+import { CardManagementComponent } from './card-management/card-management.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +62,17 @@ import { TransactionFormComponent } from './transaction/transaction-form/transac
     CardContainerComponent,
     RecentTransactionComponent,
     TransactionFormComponent,
-    SideBarComponent
+    SideBarComponent,
+    SidebarComponent,
+    MainLayoutComponent,
+    CryptoPageComponent,
+    AdminTransactionComponent,
+    AdminDashboardComponent,
+    AdminUsersComponent,
+    AdminBanksComponent,
+    SidebarAdminComponent,
+    AdminlayoutComponent,
+    CardManagementComponent
   ],
   imports: [
     // Add SideBarComponent to imports since it's standalone

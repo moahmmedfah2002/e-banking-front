@@ -1,0 +1,80 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0f4f8;
+}
+
+.input-field {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.payment-button {
+  transition: transform 0.1s ease, background-color 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.account-card {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+}
+
+.service-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tab-active {
+  color: #1e40af;
+  border-bottom: 2px solid #1e40af;
+}
+
+.tab {
+  transition: all 0.3s ease;
+}
+
+.provider-logo {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.bill-card {
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.bill-status-paid {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.bill-status-due {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.bill-status-upcoming {
+  background-color: #fef3c7;
+  color: #92400e;
+}

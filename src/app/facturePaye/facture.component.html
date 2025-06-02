@@ -1,0 +1,440 @@
+<div class="min-h-screen flex flex-col bg-gray-50">
+  <!-- Header -->
+ <app-navbar/>
+
+  <!-- Main Content -->
+  <main class="flex-grow py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Account Summary -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">Bill Payments</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Primary Account -->
+          <app-provider-card />
+          <!-- Upcoming Bills -->
+          <app-upcoming-bills />
+
+        </div>
+      </div>
+
+      <!-- Service Categories -->
+      <div class="mb-8">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">Pay Bills &amp; Subscriptions</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <!-- Utilities -->
+          <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('utilities')">
+            <div class="bg-blue-100 rounded-full p-3 mb-3">
+              <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"></path>
+              </svg>
+            </div>
+            <p class="font-medium text-gray-900">Utilities</p>
+            <p class="text-xs text-gray-500 text-center mt-1">Electricity, Water, Gas</p>
+          </div>
+
+          <!-- Mobile -->
+          <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('mobile')">
+            <div class="bg-green-100 rounded-full p-3 mb-3">
+              <svg class="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"></path>
+              </svg>
+            </div>
+            <p class="font-medium text-gray-900">Mobile</p>
+            <p class="text-xs text-gray-500 text-center mt-1">Phone, Internet, Data</p>
+          </div>
+
+          <!-- Streaming -->
+          <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('streaming')">
+            <div class="bg-purple-100 rounded-full p-3 mb-3">
+              <svg class="h-6 w-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path>
+              </svg>
+            </div>
+            <p class="font-medium text-gray-900">Streaming</p>
+            <p class="text-xs text-gray-500 text-center mt-1">TV, Music, Movies</p>
+          </div>
+
+          <!-- Other -->
+          <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('other')">
+            <div class="bg-yellow-100 rounded-full p-3 mb-3">
+              <svg class="h-6 w-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path>
+                <path d="M14 17H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"></path>
+              </svg>
+            </div>
+            <p class="font-medium text-gray-900">Other</p>
+            <p class="text-xs text-gray-500 text-center mt-1">Insurance, Rent, Loans</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Section -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <div class="flex space-x-8">
+            <button class="tab tab-active px-1 py-2 text-sm font-medium">Pay Bills</button>
+            <button class="tab text-gray-500 px-1 py-2 text-sm font-medium">Payment History</button>
+            <button class="tab text-gray-500 px-1 py-2 text-sm font-medium">Scheduled Payments</button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div id="utilities-section" class="payment-section hidden">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Utility Payments</h3>
+
+            <!-- Provider Selection -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Select Provider</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Electricity -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('CityPower Electric', 'electricity')">
+                  <div class="provider-logo bg-yellow-100 mr-3">
+                    <svg class="h-5 w-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">CityPower Electric</p>
+                    <p class="text-xs text-gray-500">Electricity</p>
+                  </div>
+                </div>
+
+                <!-- Water -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('Metro Water', 'water')">
+                  <div class="provider-logo bg-blue-100 mr-3">
+                    <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8zm0 18c-3.35 0-6-2.57-6-6.2 0-2.34 1.95-5.44 6-9.14 4.05 3.7 6 6.79 6 9.14 0 3.63-2.65 6.2-6 6.2zm-4-8c0 2.2 1.79 4 4 4 .5 0 .97-.09 1.4-.25-.4-.45-.7-.98-.9-1.55-.13.03-.27.05-.4.05-1.1 0-2-.89-2-2 0-.65.32-1.23.83-1.6-.35-.26-.63-.59-.83-.95-.62.44-1 1.15-1 1.95z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">Metro Water</p>
+                    <p class="text-xs text-gray-500">Water &amp; Sewage</p>
+                  </div>
+                </div>
+
+                <!-- Gas -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('NaturalGas Co.', 'gas')">
+                  <div class="provider-logo bg-red-100 mr-3">
+                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12.5 2C9.64 2 8.57 4.55 8.5 7.5h2c.05-1.97.52-3.5 2-3.5 1.5 0 2 1.5 2 2.5 0 1.36-.41 2.5-2 3.5-1.59 1-3 2.13-3 4.5V15h2v-.5c0-1.5.5-2 2-3 1.59-1.09 2.5-2.64 2.5-4.5 0-2.5-1.5-5-3.5-5zm-1 13h2v2h-2v-2z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">NaturalGas Co.</p>
+                    <p class="text-xs text-gray-500">Gas</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="payment-form" class="">
+              <form>
+                <div class="space-y-6">
+                  <!-- Account/Bill Number -->
+                  <div>
+                    <label for="account-number" class="block text-sm font-medium text-gray-700 mb-1">Account/Bill Number</label>
+                    <input type="text" id="account-number" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Enter your mobile number">
+                  </div>
+
+                  <!-- Bill Amount -->
+                  <div>
+                    <label for="bill-amount" class="block text-sm font-medium text-gray-700 mb-1">Bill Amount</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 sm:text-sm">$</span>
+                      </div>
+                      <input type="text" name="bill-amount" id="bill-amount" class="input-field block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="0.00">
+                      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 sm:text-sm">USD</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Payment Date -->
+                  <div>
+                    <label for="payment-date" class="block text-sm font-medium text-gray-700 mb-1">Payment Date</label>
+                    <input type="date" id="payment-date" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm">
+                  </div>
+
+                  <!-- Payment Method -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+                    <div class="relative">
+                      <select id="payment-method" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                        <option>Primary Checking (**** 4567) - $3,240.58</option>
+                        <option>Savings Account (**** 8901) - $12,750.25</option>
+                        <option>Credit Card (**** 1234)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Save as recurring payment -->
+                  <div class="flex items-center">
+                    <input id="recurring-payment" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="recurring-payment" class="ml-2 block text-sm text-gray-700">
+                      Set up automatic recurring payment
+                    </label>
+                  </div>
+
+                  <!-- Recurring options (hidden by default) -->
+                  <div id="recurring-options" class="hidden space-y-4 pl-6 border-l-2 border-gray-200">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+                      <div class="relative">
+                        <select class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                          <option>Monthly</option>
+                          <option>Quarterly</option>
+                          <option>Annually</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input id="auto-amount" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                      <label for="auto-amount" class="ml-2 block text-sm text-gray-700">
+                        Automatically pay the billed amount
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Submit -->
+                  <div class="pt-4">
+                    <button type="submit" id="pay-button" class="payment-button w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Pay MobileNet</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div id="mobile-section" class="payment-section">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Mobile &amp; Internet Payments</h3>
+
+            <!-- Provider Selection -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Select Provider</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Mobile Provider 1 -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('MobileNet', 'mobile')">
+                  <div class="provider-logo bg-green-100 mr-3">
+                    <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">MobileNet</p>
+                    <p class="text-xs text-gray-500">Mobile &amp; Data</p>
+                  </div>
+                </div>
+
+                <!-- Mobile Provider 2 -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('TeleCom Plus', 'mobile')">
+                  <div class="provider-logo bg-purple-100 mr-3">
+                    <svg class="h-5 w-5 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">TeleCom Plus</p>
+                    <p class="text-xs text-gray-500">Mobile &amp; Internet</p>
+                  </div>
+                </div>
+
+                <!-- Internet Provider -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('FastFiber Internet', 'internet')">
+                  <div class="provider-logo bg-blue-100 mr-3">
+                    <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">FastFiber Internet</p>
+                    <p class="text-xs text-gray-500">Broadband &amp; Fiber</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="streaming-section" class="payment-section hidden">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Streaming &amp; Entertainment</h3>
+
+            <!-- Provider Selection -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Select Provider</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Streaming Provider 1 -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('StreamFlix', 'streaming')">
+                  <div class="provider-logo bg-red-100 mr-3">
+                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">StreamFlix</p>
+                    <p class="text-xs text-gray-500">Movies &amp; TV</p>
+                  </div>
+                </div>
+
+                <!-- Streaming Provider 2 -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('MusicStream', 'streaming')">
+                  <div class="provider-logo bg-green-100 mr-3">
+                    <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">MusicStream</p>
+                    <p class="text-xs text-gray-500">Music</p>
+                  </div>
+                </div>
+
+                <!-- Cable Provider -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('CablePlus TV', 'cable')">
+                  <div class="provider-logo bg-purple-100 mr-3">
+                    <svg class="h-5 w-5 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">CablePlus TV</p>
+                    <p class="text-xs text-gray-500">Cable &amp; Satellite</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="other-section" class="payment-section hidden">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Other Payments</h3>
+
+            <!-- Provider Selection -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Select Provider</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Insurance -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('SafeGuard Insurance', 'insurance')">
+                  <div class="provider-logo bg-blue-100 mr-3">
+                    <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">SafeGuard Insurance</p>
+                    <p class="text-xs text-gray-500">Insurance</p>
+                  </div>
+                </div>
+
+                <!-- Rent -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('City Apartments', 'rent')">
+                  <div class="provider-logo bg-yellow-100 mr-3">
+                    <svg class="h-5 w-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">City Apartments</p>
+                    <p class="text-xs text-gray-500">Rent</p>
+                  </div>
+                </div>
+
+                <!-- Loan -->
+                <div class="provider-card border border-gray-200 rounded-lg p-4 flex items-center cursor-pointer hover:bg-blue-50 hover:border-blue-200" onclick="selectProvider('EasyLoan Financial', 'loan')">
+                  <div class="provider-logo bg-green-100 mr-3">
+                    <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">EasyLoan Financial</p>
+                    <p class="text-xs text-gray-500">Loans &amp; Credit</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Bills -->
+          <div class="mt-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Bills</h3>
+            <div class="space-y-4">
+              <!-- Bill 1 -->
+              <div class="bill-card bg-white rounded-lg border border-gray-200 p-4 flex justify-between items-center">
+                <div class="flex items-center">
+                  <div class="provider-logo bg-yellow-100 mr-3">
+                    <svg class="h-5 w-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">CityPower Electric</p>
+                    <p class="text-xs text-gray-500">Account: #EL-78945612</p>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <div class="mr-4 text-right">
+                    <p class="font-medium">$89.99</p>
+                    <p class="text-xs text-gray-500">Due: May 28, 2023</p>
+                  </div>
+                  <span class="bill-status-paid px-2 py-1 rounded-full text-xs font-medium">Paid</span>
+                </div>
+              </div>
+
+              <!-- Bill 2 -->
+              <div class="bill-card bg-white rounded-lg border border-gray-200 p-4 flex justify-between items-center">
+                <div class="flex items-center">
+                  <div class="provider-logo bg-blue-100 mr-3">
+                    <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8zm0 18c-3.35 0-6-2.57-6-6.2 0-2.34 1.95-5.44 6-9.14 4.05 3.7 6 6.79 6 9.14 0 3.63-2.65 6.2-6 6.2zm-4-8c0 2.2 1.79 4 4 4 .5 0 .97-.09 1.4-.25-.4-.45-.7-.98-.9-1.55-.13.03-.27.05-.4.05-1.1 0-2-.89-2-2 0-.65.32-1.23.83-1.6-.35-.26-.63-.59-.83-.95-.62.44-1 1.15-1 1.95z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">Metro Water</p>
+                    <p class="text-xs text-gray-500">Account: #WA-45632178</p>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <div class="mr-4 text-right">
+                    <p class="font-medium">$64.25</p>
+                    <p class="text-xs text-gray-500">Due: Jun 05, 2023</p>
+                  </div>
+                  <span class="bill-status-due px-2 py-1 rounded-full text-xs font-medium">Due</span>
+                </div>
+              </div>
+
+              <!-- Bill 3 -->
+              <div class="bill-card bg-white rounded-lg border border-gray-200 p-4 flex justify-between items-center">
+                <div class="flex items-center">
+                  <div class="provider-logo bg-green-100 mr-3">
+                    <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">MobileNet</p>
+                    <p class="text-xs text-gray-500">Account: #MN-32569874</p>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <div class="mr-4 text-right">
+                    <p class="font-medium">$59.99</p>
+                    <p class="text-xs text-gray-500">Due: Jun 15, 2023</p>
+                  </div>
+                  <span class="bill-status-upcoming px-2 py-1 rounded-full text-xs font-medium">Upcoming</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200 py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-sm text-gray-500">
+        © 2023 SecureBank. All rights reserved.
+      </p>
+    </div>
+  </footer>
+</div>

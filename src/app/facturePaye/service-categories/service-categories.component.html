@@ -1,0 +1,49 @@
+<div class="mb-8">
+  <h2 class="text-lg font-medium text-gray-900 mb-4">Pay Bills &amp; Subscriptions</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- Utilities -->
+    <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('utilities')">
+      <div class="bg-blue-100 rounded-full p-3 mb-3">
+        <svg class="h-6 w-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"></path>
+        </svg>
+      </div>
+      <p class="font-medium text-gray-900">Utilities</p>
+      <p class="text-xs text-gray-500 text-center mt-1">Electricity, Water, Gas</p>
+    </div>
+
+    <!-- Mobile -->
+    <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('mobile')">
+      <div class="bg-green-100 rounded-full p-3 mb-3">
+        <svg class="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"></path>
+        </svg>
+      </div>
+      <p class="font-medium text-gray-900">Mobile</p>
+      <p class="text-xs text-gray-500 text-center mt-1">Phone, Internet, Data</p>
+    </div>
+
+    <!-- Streaming -->
+    <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('streaming')">
+      <div class="bg-purple-100 rounded-full p-3 mb-3">
+        <svg class="h-6 w-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path>
+        </svg>
+      </div>
+      <p class="font-medium text-gray-900">Streaming</p>
+      <p class="text-xs text-gray-500 text-center mt-1">TV, Music, Movies</p>
+    </div>
+
+    <!-- Other -->
+    <div class="service-card bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col items-center cursor-pointer" onclick="selectCategory('other')">
+      <div class="bg-yellow-100 rounded-full p-3 mb-3">
+        <svg class="h-6 w-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path>
+          <path d="M14 17H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"></path>
+        </svg>
+      </div>
+      <p class="font-medium text-gray-900">Other</p>
+      <p class="text-xs text-gray-500 text-center mt-1">Insurance, Rent, Loans</p>
+    </div>
+  </div>
+</div>

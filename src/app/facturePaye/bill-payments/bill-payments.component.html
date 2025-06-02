@@ -1,0 +1,42 @@
+<div class="min-h-screen flex flex-col bg-gray-50">
+  <!-- Header (move to shared component if used elsewhere) -->
+  <header class="bg-white shadow-sm">
+    <!-- ... existing header content ... -->
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Account Summary -->
+      <app-account-summary></app-account-summary>
+
+      <!-- Service Categories -->
+      <app-service-categories (categorySelected)="onCategorySelected($event)"></app-service-categories>
+
+      <!-- Payment Section -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <div class="flex space-x-8">
+            <button class="tab" [class.tab-active]="activeTab === 'pay'" (click)="setActiveTab('pay')">Pay Bills</button>
+            <button class="tab" [class.tab-active]="activeTab === 'history'" (click)="setActiveTab('history')">Payment History</button>
+            <button class="tab" [class.tab-active]="activeTab === 'scheduled'" (click)="setActiveTab('scheduled')">Scheduled Payments</button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <app-payment-form *ngIf="activeTab === 'pay' && selectedProvider"
+                            [provider]="selectedProvider"
+                            (paymentSubmitted)="onPaymentSubmit($event)">
+          </app-payment-form>
+
+          <app-recent-bills *ngIf="activeTab === 'history'"></app-recent-bills>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer (move to shared component if used elsewhere) -->
+  <footer class="bg-white border-t border-gray-200 py-4 mt-8">
+    <!-- ... existing footer content ... -->
+  </footer>
+</div>

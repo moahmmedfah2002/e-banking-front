@@ -10,6 +10,14 @@ import { Router } from '@angular/router';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+logout() {
+    sessionStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
+}
+sendHelp() {
+  
+}
+
   @Input()
     public user:User=new User();
     constructor(public router: Router) {

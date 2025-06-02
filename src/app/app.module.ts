@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home/home-page/home-page.component';
@@ -17,7 +18,6 @@ import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import { SideBarComponent } from './home/side-bar/side-bar.component';
 import { Auth2faComponent } from './auth2fa/auth2fa.component';
 import { DatePipe } from '@angular/common';
 import { TransactionPageComponent } from './transaction/transaction-page/transaction-page.component';
@@ -37,6 +37,7 @@ import { AdminBanksComponent } from './admin/admin-banks/admin-banks.component';
 import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
 import { AdminlayoutComponent } from './adminlayout/adminlayout.component';
 import { CardManagementComponent } from './card-management/card-management.component';
+import { TransactionSummaryComponent } from './Account/component/transaction-summary/transaction-summary.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { CardManagementComponent } from './card-management/card-management.compo
     HomePageComponent,
     MainContentComponent,
     AcountSummaryCardComponent,
+    TransactionSummaryComponent,
     TransactionHistoryComponent,
     AccountInfoComponent,
     LoginComponent,
@@ -62,7 +64,6 @@ import { CardManagementComponent } from './card-management/card-management.compo
     CardContainerComponent,
     RecentTransactionComponent,
     TransactionFormComponent,
-    SideBarComponent,
     SidebarComponent,
     MainLayoutComponent,
     CryptoPageComponent,
@@ -77,11 +78,12 @@ import { CardManagementComponent } from './card-management/card-management.compo
   imports: [
     // Add SideBarComponent to imports since it's standalone
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

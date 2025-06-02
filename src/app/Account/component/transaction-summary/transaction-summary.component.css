@@ -1,0 +1,18 @@
+/* Add transitions for smooth hover effects */
+.bg-gray-50 {
+  transition: all 0.3s ease;
+}
+
+.bg-gray-50:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Add animation for the arrow icons */
+svg {
+  transition: transform 0.3s ease;
+}
+
+.bg-gray-50:hover svg {
+  transform: translateY(-2px);
+}

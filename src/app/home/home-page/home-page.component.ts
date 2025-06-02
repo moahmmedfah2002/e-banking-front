@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {User} from '../../modele/User';
 import {Router} from '@angular/router';
 import {HomeService} from '../../services/homeService';
+import { Compte } from '../../modele/Compte';
 
 @Component({
   selector: 'app-home-page',
@@ -13,6 +14,7 @@ export class HomePageComponent{
   public user:User=new User();
   public homeService:HomeService=inject(HomeService);
   public router:Router=inject(Router);
+  
   // ngOnInit(): void {
   //   let token=sessionStorage.getItem('authToken');
   //   if(token==null){

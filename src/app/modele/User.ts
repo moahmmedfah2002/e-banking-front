@@ -1,6 +1,6 @@
 import {Role} from './Role';
 import {Compte} from './Compte';
-import {Transaction} from './Transactions';
+import {Transaction} from './Transaction';
 
 export class User {
   public  id?:number;

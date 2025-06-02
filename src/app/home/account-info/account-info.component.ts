@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Compte } from '../../modele/Compte';
 
 @Component({
   selector: 'app-account-info',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './account-info.component.css'
 })
 export class AccountInfoComponent {
+ @Input()
+ public compte: Compte;
 
+ constructor() {
+    this.compte = new Compte();
+ }
 }

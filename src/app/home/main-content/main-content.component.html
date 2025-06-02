@@ -13,7 +13,7 @@
     </section>
     <app-acount-summary-card></app-acount-summary-card>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <app-account-info class="lg:col-span-2"></app-account-info>
+        <app-account-info class="lg:col-span-2" [compte]="this.selectedCompte"></app-account-info>
         <app-transaction-history></app-transaction-history>
     </div>
 </main>

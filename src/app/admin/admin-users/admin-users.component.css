@@ -31,6 +31,11 @@ body {
     margin-right: 6px;
 }
 
+.filter-dropdown {
+    z-index: 50;
+}
+
+
 .status-active {
     background-color: #10b981;
 }

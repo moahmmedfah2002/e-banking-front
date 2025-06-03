@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,7 +16,7 @@ import { AccountComponent } from './Account/account.component';
 import { ButtonStatement } from './Account/component/button-statement/button-statement';
 import { AccountDetails } from './Account/component/details/detail.component';
 import { LoginComponent } from './login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Auth2faComponent } from './auth2fa/auth2fa.component';
@@ -38,6 +39,8 @@ import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
 import { AdminlayoutComponent } from './adminlayout/adminlayout.component';
 import { CardManagementComponent } from './card-management/card-management.component';
 import { TransactionSummaryComponent } from './Account/component/transaction-summary/transaction-summary.component';
+import { AgentComponent } from './agent/agent.component';
+import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.component';
 
 @NgModule({
   declarations: [
@@ -73,15 +76,18 @@ import { TransactionSummaryComponent } from './Account/component/transaction-sum
     AdminBanksComponent,
     SidebarAdminComponent,
     AdminlayoutComponent,
-    CardManagementComponent
-  ],
-  imports: [
+    CardManagementComponent,
+    AgentComponent,
+    AgentLayoutComponent
+  ],  imports: [
     // Add SideBarComponent to imports since it's standalone
     BrowserModule,
-    CommonModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
+    CommonModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

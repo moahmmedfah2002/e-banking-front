@@ -14,4 +14,8 @@ export class SidebarAdminComponent {
   public user:User=new User();
   constructor(public router: Router) {
   }
+  logout() {
+    sessionStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
+}
 }

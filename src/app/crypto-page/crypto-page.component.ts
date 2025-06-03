@@ -2,9 +2,18 @@ import { Component, inject, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewCh
 import { BinanceCommunicationService } from '../services/binance-communication.service';
 import { Subscription, interval } from 'rxjs';
 import { Chart, registerables } from 'chart.js';
+import { FormsModule } from '@angular/forms';
 
 // Register all Chart.js components
 Chart.register(...registerables);
+
+// Define interface for portfolio items
+interface PortfolioItem {
+  symbol: string;
+  quantity: number;
+  averageBuyPrice: number;
+  profitLoss: number;
+}
 
 @Component({
   selector: 'app-crypto-page',
@@ -23,6 +32,33 @@ export class CryptoPageComponent implements OnInit, OnDestroy, AfterViewInit {
   
   // Property to store last update time
   lastUpdated: Date = new Date();
+  
+  // Tab navigation
+  activeTab: string = 'buy-sell';
+  
+  // Trade form properties
+  tradeType: string = 'buy';
+  selectedCrypto: string = 'BTC';
+  tradeAmount: number = 0;
+  estimatedQuantity: string = '0.00000000';
+  selectedPaymentMethod: string = 'cash';
+  
+  // Portfolio data
+  portfolio: PortfolioItem[] = [
+    // Example portfolio items - in a real app, these would come from an API/service
+    {
+      symbol: 'BTC',
+      quantity: 0.05,
+      averageBuyPrice: 38000,
+      profitLoss: 5.2
+    },
+    {
+      symbol: 'ETH',
+      quantity: 1.2,
+      averageBuyPrice: 2200,
+      profitLoss: -2.8
+    }
+  ];
   
   // To store our subscriptions so we can clean them up on destroy
   private subscriptions: Subscription[] = [];
@@ -145,6 +181,91 @@ export class CryptoPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.destroyCharts();
   }
 
+  // Method to switch between tabs
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
+  }
+  
+  // Method to set trade type (buy/sell)
+  setTradeType(type: string): void {
+    this.tradeType = type;
+    this.updateEstimatedQuantity();
+  }
+  
+  // Calculate estimated quantity based on current prices
+  updateEstimatedQuantity(): void {
+    if (!this.tradeAmount || this.tradeAmount <= 0) {
+      this.estimatedQuantity = '0.00000000';
+      return;
+    }
+    
+    let currentPrice = 0;
+    
+    switch (this.selectedCrypto) {
+      case 'BTC':
+        currentPrice = this.bitcoinPrice;
+        break;
+      case 'ETH':
+        currentPrice = this.ethereumPrice;
+        break;
+      case 'ADA':
+        currentPrice = this.cardanoPrice;
+        break;
+      case 'SOL':
+        currentPrice = this.solanaPrice;
+        break;
+      default:
+        currentPrice = 0;
+    }
+    
+    if (currentPrice > 0) {
+      const quantity = this.tradeAmount / currentPrice;
+      // Format with 8 decimal places for crypto
+      this.estimatedQuantity = quantity.toFixed(8);
+    } else {
+      this.estimatedQuantity = '0.00000000';
+    }
+  }
+  
+  // Submit trade form
+  submitTradeForm(): void {
+    // This would connect to a backend service in a real app
+    console.log(`${this.tradeType.toUpperCase()} order submitted`);
+    console.log(`Crypto: ${this.selectedCrypto}`);
+    console.log(`Amount: $${this.tradeAmount}`);
+    console.log(`Estimated Quantity: ${this.estimatedQuantity} ${this.selectedCrypto}`);
+    console.log(`Payment Method: ${this.selectedPaymentMethod}`);
+    
+    // Show a success message or update portfolio in a real implementation
+    alert(`${this.tradeType === 'buy' ? 'Buy' : 'Sell'} order for ${this.estimatedQuantity} ${this.selectedCrypto} placed successfully!`);
+    
+    // Reset form
+    this.tradeAmount = 0;
+    this.updateEstimatedQuantity();
+  }
+  
+  // Get full name of cryptocurrency from symbol
+  getCryptoName(symbol: string): string {
+    switch (symbol) {
+      case 'BTC': return 'Bitcoin';
+      case 'ETH': return 'Ethereum';
+      case 'ADA': return 'Cardano';
+      case 'SOL': return 'Solana';
+      default: return symbol;
+    }
+  }
+  
+  // Get current price of a cryptocurrency
+  getCryptoPrice(symbol: string): number {
+    switch (symbol) {
+      case 'BTC': return this.bitcoinPrice;
+      case 'ETH': return this.ethereumPrice;
+      case 'ADA': return this.cardanoPrice;
+      case 'SOL': return this.solanaPrice;
+      default: return 0;
+    }
+  }
+  
   // Method to format date for display
   formatDate(date: Date): string {
     return date.toLocaleTimeString();

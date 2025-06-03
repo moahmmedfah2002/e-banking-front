@@ -8,21 +8,19 @@
         <div class="mt-4 md:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <button id="btn-add-user" class="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                 <i class="fas fa-user-plus mr-2"></i>
-                Add New User
+                Add New Client
             </button>
            
         </div>
     </div>
-    
-    <!-- User Stats Cards -->
+      <!-- User Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <div class="card bg-white rounded-lg shadow p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Total Users</p>
-                    <p class="text-2xl font-bold text-gray-800">24,521</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ users.length| number }}</p>
                     <p class="text-xs text-green-500 flex items-center mt-1">
-                        <i class="fas fa-arrow-up mr-1"></i> 12% increase
                     </p>
                 </div>
                 <div class="bg-blue-100 p-3 rounded-full">
@@ -35,10 +33,8 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Active Users</p>
-                    <p class="text-2xl font-bold text-gray-800">18,249</p>
-                    <p class="text-xs text-green-500 flex items-center mt-1">
-                        <i class="fas fa-arrow-up mr-1"></i> 8% increase
-                    </p>
+                    <p class="text-2xl font-bold text-gray-800">{{ getActiveUsersCount() | number }}</p>
+                    
                 </div>
                 <div class="bg-green-100 p-3 rounded-full">
                     <i class="fas fa-user-check text-green-600 text-xl"></i>
@@ -50,9 +46,9 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Admins &amp; Managers</p>
-                    <p class="text-2xl font-bold text-gray-800">245</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ userStats.adminsAndManagers }}</p>
                     <p class="text-xs text-yellow-500 flex items-center mt-1">
-                        <i class="fas fa-minus mr-1"></i> No change
+                        <i class="fas fa-minus mr-1"></i> {{ userStats.adminsChange }}
                     </p>
                 </div>
                 <div class="bg-purple-100 p-3 rounded-full">
@@ -65,9 +61,9 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Flagged Accounts</p>
-                    <p class="text-2xl font-bold text-gray-800">23</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ userStats.flaggedAccounts }}</p>
                     <p class="text-xs text-red-500 flex items-center mt-1">
-                        <i class="fas fa-arrow-up mr-1"></i> 15% increase
+                        <i class="fas fa-arrow-up mr-1"></i> {{ userStats.flaggedIncrease }}% increase
                     </p>
                 </div>
                 <div class="bg-red-100 p-3 rounded-full">
@@ -82,15 +78,14 @@
         <div class="p-6 border-b border-gray-200">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <h3 class="text-lg font-semibold text-gray-800">User List</h3>
-                <div class="mt-3 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                    <div class="relative">
-                        <button id="filter-dropdown-btn" class="flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                <div class="mt-3 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">                    <div class="relative">
+                        <button id="filter-dropdown-btn" (click)="toggleFilterDropdown()" class="flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
                             <i class="fas fa-filter mr-2"></i>
                             Filter
                             <i class="fas fa-chevron-down ml-2 text-xs"></i>
                         </button>
                         
-                        <div id="filter-dropdown" class="filter-dropdown bg-white rounded-md shadow-lg border border-gray-200">
+                        <div *ngIf="isFilterDropdownVisible" class="filter-dropdown absolute right-0 mt-2 z-10 w-64 bg-white rounded-md shadow-lg border border-gray-200">
                             <div class="p-4">
                                 <h4 class="font-medium text-gray-700 mb-3">Filter Users</h4>
                                 <div class="space-y-3">
@@ -98,19 +93,19 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
                                         <div class="space-y-2">
                                             <label class="flex items-center">
-                                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
+                                                <input type="checkbox" [(ngModel)]="filters.roles.admin" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
                                                 <span class="text-sm text-gray-700">Admin</span>
                                             </label>
                                             <label class="flex items-center">
-                                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
+                                                <input type="checkbox" [(ngModel)]="filters.roles.manager" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
                                                 <span class="text-sm text-gray-700">Manager</span>
                                             </label>
                                             <label class="flex items-center">
-                                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
+                                                <input type="checkbox" [(ngModel)]="filters.roles.agent" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
                                                 <span class="text-sm text-gray-700">Agent</span>
                                             </label>
                                             <label class="flex items-center">
-                                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
+                                                <input type="checkbox" [(ngModel)]="filters.roles.user" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
                                                 <span class="text-sm text-gray-700">User</span>
                                             </label>
                                         </div>
@@ -120,15 +115,15 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                                         <div class="space-y-2">
                                             <label class="flex items-center">
-                                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
+                                                <input type="checkbox" [(ngModel)]="filters.status.active" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
                                                 <span class="text-sm text-gray-700">Active</span>
                                             </label>
                                             <label class="flex items-center">
-                                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
+                                                <input type="checkbox" [(ngModel)]="filters.status.inactive" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
                                                 <span class="text-sm text-gray-700">Inactive</span>
                                             </label>
                                             <label class="flex items-center">
-                                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
+                                                <input type="checkbox" [(ngModel)]="filters.status.flagged" class="rounded text-blue-600 focus:ring-blue-500 mr-2">
                                                 <span class="text-sm text-gray-700">Flagged</span>
                                             </label>
                                         </div>
@@ -136,24 +131,23 @@
                                 </div>
                                 
                                 <div class="mt-4 flex justify-end space-x-2">
-                                    <button class="px-3 py-1 text-sm text-gray-600 hover:text-gray-800">
+                                    <button (click)="clearFilters()" class="px-3 py-1 text-sm text-gray-600 hover:text-gray-800">
                                         Clear All
                                     </button>
-                                    <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
+                                    <button (click)="applyFilters()" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
                                         Apply Filters
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="relative">
-                        <select class="appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option>Sort by: Name</option>
-                            <option>Sort by: Role</option>
-                            <option>Sort by: Status</option>
-                            <option>Sort by: Last Login</option>
-                            <option>Sort by: Date Created</option>
+                      <div class="relative">
+                        <select (change)="onSortChange($event)" class="appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="name">Sort by: Name</option>
+                            <option value="role">Sort by: Role</option>
+                            <option value="status">Sort by: Status</option>
+                            <option value="lastLogin">Sort by: Last Login</option>
+                            <option value="dateCreated">Sort by: Date Created</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <i class="fas fa-chevron-down text-xs"></i>
@@ -193,39 +187,45 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
+                    <tr *ngFor="let user of users">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-4">
                                 <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-800 font-semibold">
-                                        JD
+                                    <div class="h-10 w-10 rounded-full" 
+                                         [ngClass]="{'bg-red-100 text-red-800': user.id === 1, 
+                                                    'bg-blue-100 text-blue-800': user.id === 2, 
+                                                    'bg-green-100 text-green-800': user.id === 3,
+                                                    'bg-purple-100 text-purple-800': user.id === 4,
+                                                    'bg-yellow-100 text-yellow-800': user.id === 5}" 
+                                         class="flex items-center justify-center font-semibold">
+                                        {{ user.initials }}
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">John Doe</div>
-                                        <div class="text-xs text-gray-500">john.doe&#64;example.com</div>
+                                        <div class="text-sm font-medium text-gray-900">{{ user.prenom }} {{ user.nom }}</div>
+                                        <div class="text-xs text-gray-500">{{ user.email }}</div>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="role-badge role-badge-admin">
-                                <i class="fas fa-user-shield mr-1"></i> Admin
+                            <span class="role-badge" [ngClass]="user.roleBadgeClass">
+                                <i [class]="user.roleIcon + ' mr-1'"></i> {{ user.roleLabel }}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Active
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="user.statusClass">
+                                {{ user.estActif ? 'Active' : 'Inactive' }}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Today, 10:45 AM
+                            {{ user.lastLogin }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Jan 15, 2023
+                            {{ user.dateCreation | date:'MMM dd, yyyy' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900 mr-3" data-user-id="1">
+                            <button class="text-blue-600 hover:text-blue-900 mr-3" [attr.data-user-id]="user.id">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button class="text-gray-600 hover:text-gray-900">
@@ -233,204 +233,9 @@
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-4">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-800 font-semibold">
-                                        SM
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Sarah Miller</div>
-                                        <div class="text-xs text-gray-500">sarah.miller&#64;example.com</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="role-badge role-badge-manager">
-                                <i class="fas fa-user-tie mr-1"></i> Manager
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Active
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Today, 09:32 AM
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Mar 22, 2023
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900 mr-3" data-user-id="2">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-4">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-800 font-semibold">
-                                        RJ
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Robert Johnson</div>
-                                        <div class="text-xs text-gray-500">robert.johnson&#64;example.com</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="role-badge role-badge-agent">
-                                <i class="fas fa-headset mr-1"></i> Agent
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Active
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Yesterday, 4:23 PM
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Apr 10, 2023
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900 mr-3" data-user-id="3">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-4">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-800 font-semibold">
-                                        AT
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Alice Thompson</div>
-                                        <div class="text-xs text-gray-500">alice.thompson&#64;example.com</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="role-badge role-badge-user">
-                                <i class="fas fa-user mr-1"></i> User
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                Inactive
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Oct 12, 11:20 AM
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            May 5, 2023
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900 mr-3" data-user-id="4">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-4">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-800 font-semibold">
-                                        MB
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Michael Brown</div>
-                                        <div class="text-xs text-gray-500">michael.brown&#64;example.com</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="role-badge role-badge-user">
-                                <i class="fas fa-user mr-1"></i> User
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                Flagged
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Sep 28, 2:15 PM
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Jun 18, 2023
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900 mr-3" data-user-id="5">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <input type="checkbox" class="rounded text-blue-600 focus:ring-blue-500 mr-4">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-800 font-semibold">
-                                        JW
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Jennifer Wilson</div>
-                                        <div class="text-xs text-gray-500">jennifer.wilson&#64;example.com</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="role-badge role-badge-manager">
-                                <i class="fas fa-user-tie mr-1"></i> Manager
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Active
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Today, 8:45 AM
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            Jul 3, 2023
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900 mr-3" data-user-id="6">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
+                    <tr *ngIf="users.length === 0">
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                            No users found.
                         </td>
                     </tr>
                 </tbody>
@@ -439,7 +244,7 @@
         <div class="px-6 py-4 border-t border-gray-200">
             <div class="flex items-center justify-between">
                 <div class="text-sm text-gray-500">
-                    Showing 6 of 245 users
+                    Showing {{ users.length }} of {{ userStats.adminsAndManagers }} users
                 </div>
                 <div class="flex space-x-2">
                     <button class="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">

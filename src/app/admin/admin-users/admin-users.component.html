@@ -2,7 +2,7 @@
     <!-- User Management Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
-            <h1 class="text-2xl font-semibold text-gray-800">User Management</h1>
+            <h1 class="text-2xl font-semibold text-gray-800">Client Management</h1>
             <p class="text-sm text-gray-600 mt-1">Manage users, roles, and permissions</p>
         </div>
         <div class="mt-4 md:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
@@ -57,20 +57,7 @@
             </div>
         </div>
         
-        <div class="card bg-white rounded-lg shadow p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Flagged Accounts</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ userStats.flaggedAccounts }}</p>
-                    <p class="text-xs text-red-500 flex items-center mt-1">
-                        <i class="fas fa-arrow-up mr-1"></i> {{ userStats.flaggedIncrease }}% increase
-                    </p>
-                </div>
-                <div class="bg-red-100 p-3 rounded-full">
-                    <i class="fas fa-user-lock text-red-600 text-xl"></i>
-                </div>
-            </div>
-        </div>
+        
     </div>
     
     <!-- User Management Tools -->
@@ -246,19 +233,7 @@
                 <div class="text-sm text-gray-500">
                     Showing {{ users.length }} of {{ userStats.adminsAndManagers }} users
                 </div>
-                <div class="flex space-x-2">
-                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="px-3 py-1 rounded bg-blue-600 text-white">1</button>
-                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">2</button>
-                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">3</button>
-                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">4</button>
-                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">5</button>
-                    <button class="px-3 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-50">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
+                
             </div>
         </div>
     </div>

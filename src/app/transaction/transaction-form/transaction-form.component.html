@@ -1,120 +1,289 @@
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-200">
         <div class="flex space-x-8">
-            <button class="tab tab-active px-1 py-2 text-sm font-medium">Transfer Money</button>
-            <button class="tab text-gray-500 px-1 py-2 text-sm font-medium">Pay Bills</button>
-            <button class="tab text-gray-500 px-1 py-2 text-sm font-medium">Mobile Deposit</button>
+            <button (click)="switchTab('transfer')" [class]="'tab px-1 py-2 text-sm font-medium ' + (activeTab === 'transfer' ? 'tab-active' : 'text-gray-500')">Transfer Money</button>
+            <button (click)="switchTab('payBills')" [class]="'tab px-1 py-2 text-sm font-medium ' + (activeTab === 'payBills' ? 'tab-active' : 'text-gray-500')">Pay Bills</button>
+            <button (click)="switchTab('mobileDeposit')" [class]="'tab px-1 py-2 text-sm font-medium ' + (activeTab === 'mobileDeposit' ? 'tab-active' : 'text-gray-500')">Mobile Deposit</button>
         </div>
     </div>
-    
-    <div class="p-6">
-        <h2 class="text-lg font-medium text-gray-900 mb-6">Make a Transfer</h2>
-        
-        <form id="transfer-form">
-            <div class="space-y-6">
-                <!-- From Account -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">From</label>
-                    <select class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                        <option>Checking Account (**** 4567) - $4,285.75</option>
-                        <option>Savings Account (**** 8901) - $12,580.42</option>
-                    </select>
-                </div>
-                
-                <!-- To Account -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">To</label>
-                    <div class="relative">
-                        <select id="recipient-type" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                            <option value="my-account">My Accounts</option>
-                            <option value="other-account">Someone Else's Account</option>
-                            <option value="external">External Account</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Recipient Account (conditional) -->
-                <div id="recipient-account-section">
-                    <div id="my-account-option">
-                        <select class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                            <option>Savings Account (**** 8901)</option>
+      <div class="p-6">
+        <!-- Transfer Money Form -->
+        <div *ngIf="activeTab === 'transfer'">
+            <h2 class="text-lg font-medium text-gray-900 mb-6">Make a Transfer</h2>
+            
+            <form [formGroup]="transferForm" (ngSubmit)="onTransferSubmit()">
+                <div class="space-y-6">
+                    <!-- From Account -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">From</label>
+                        <select formControlName="fromAccount" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="checking">Checking Account (**** 4567) - $4,285.75</option>
+                            <option value="savings">Savings Account (**** 8901) - $12,580.42</option>
                         </select>
                     </div>
                     
-                    <div id="other-account-option" class="hidden space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Recipient Name</label>
-                            <input type="text" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Full name">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
-                            <input type="text" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Account number">
+                    <!-- To Account -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">To</label>
+                        <div class="relative">
+                            <select formControlName="recipientType" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                <option value="my-account">My Accounts</option>
+                                <option value="other-account">Someone Else's Account</option>
+                                <option value="external">External Account</option>
+                            </select>
                         </div>
                     </div>
                     
-                    <div id="external-account-option" class="hidden space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
-                            <input type="text" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Bank name">
+                    <!-- Recipient Account (conditional) -->
+                    <div>
+                        <!-- My Account Option -->
+                        <div *ngIf="recipientType === 'my-account'">
+                            <select formControlName="toMyAccount" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                <option value="savings">Savings Account (**** 8901)</option>
+                                <option value="checking">Checking Account (**** 4567)</option>
+                            </select>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Routing Number</label>
-                            <input type="text" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="9 digits">
+                        
+                        <!-- Other Account Option -->
+                        <div *ngIf="recipientType === 'other-account'" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Recipient Name</label>
+                                <input type="text" formControlName="recipientName" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Full name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                                <input type="text" formControlName="recipientAccountNumber" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Account number">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
-                            <input type="text" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Account number">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Amount -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
-                    <div class="mt-1 relative rounded-md shadow-sm">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span class="text-gray-500 sm:text-sm">$</span>
-                        </div>
-                        <input type="text" name="amount" id="amount" class="input-field block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="0.00">
-                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <span class="text-gray-500 sm:text-sm">USD</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Date -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">When</label>
-                    <div class="flex space-x-4">
-                        <div class="flex items-center">
-                            <input id="now" name="transfer-time" type="radio" checked="" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="now" class="ml-2 block text-sm text-gray-700">Now</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input id="later" name="transfer-time" type="radio" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="later" class="ml-2 block text-sm text-gray-700">Schedule</label>
+                        
+                        <!-- External Account Option -->
+                        <div *ngIf="recipientType === 'external'" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
+                                <input type="text" formControlName="bankName" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Bank name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Routing Number</label>
+                                <input type="text" formControlName="routingNumber" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="9 digits">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                                <input type="text" formControlName="externalAccountNumber" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Account number">
+                            </div>
                         </div>
                     </div>
+                    
+                    <!-- Amount -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">$</span>
+                            </div>
+                            <input type="text" formControlName="amount" class="input-field block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="0.00">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">USD</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Date -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">When</label>
+                        <div class="flex space-x-4">
+                            <div class="flex items-center">
+                                <input id="transfer-now" formControlName="transferTime" value="now" type="radio" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                                <label for="transfer-now" class="ml-2 block text-sm text-gray-700">Now</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="transfer-schedule" formControlName="transferTime" value="schedule" type="radio" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                                <label for="transfer-schedule" class="ml-2 block text-sm text-gray-700">Schedule</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="scheduledTransfer">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                        <input type="date" formControlName="scheduleDate" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm">
+                    </div>
+                    
+                    <!-- Note -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Note (Optional)</label>
+                        <textarea formControlName="note" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" rows="2" placeholder="Add a note"></textarea>
+                    </div>
+                    
+                    <!-- Submit -->
+                    <div class="pt-4">
+                        <button type="submit" class="transaction-button w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Transfer Money
+                        </button>
+                    </div>
                 </div>
-                
-                <div id="schedule-date" class="hidden">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                    <input type="date" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm">
+            </form>
+        </div>
+
+        <!-- Pay Bills Form -->
+        <div *ngIf="activeTab === 'payBills'">
+            <h2 class="text-lg font-medium text-gray-900 mb-6">Pay a Bill</h2>
+            
+            <form [formGroup]="payBillForm" (ngSubmit)="onPayBillSubmit()">
+                <div class="space-y-6">
+                    <!-- From Account -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">From</label>
+                        <select formControlName="fromAccount" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="checking">Checking Account (**** 4567) - $4,285.75</option>
+                            <option value="savings">Savings Account (**** 8901) - $12,580.42</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Payee -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Payee</label>
+                        <select formControlName="payee" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="">Select a payee</option>
+                            <option value="electric">Electric Company</option>
+                            <option value="water">Water Utility</option>
+                            <option value="internet">Internet Provider</option>
+                            <option value="credit-card">Credit Card</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Account Number -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                        <input type="text" formControlName="accountNumber" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="Account number with payee">
+                    </div>
+                    
+                    <!-- Amount -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">$</span>
+                            </div>
+                            <input type="text" formControlName="amount" class="input-field block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="0.00">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">USD</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Date -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">When</label>
+                        <div class="flex space-x-4">
+                            <div class="flex items-center">
+                                <input id="pay-now" formControlName="paymentDate" value="now" type="radio" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                                <label for="pay-now" class="ml-2 block text-sm text-gray-700">Now</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="pay-schedule" formControlName="paymentDate" value="schedule" type="radio" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                                <label for="pay-schedule" class="ml-2 block text-sm text-gray-700">Schedule</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="scheduledTransfer">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                        <input type="date" formControlName="scheduleDate" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm">
+                    </div>
+                    
+                    <!-- Memo -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Memo (Optional)</label>
+                        <textarea formControlName="memo" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" rows="2" placeholder="Add a memo"></textarea>
+                    </div>
+                    
+                    <!-- Submit -->
+                    <div class="pt-4">
+                        <button type="submit" class="transaction-button w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Pay Bill
+                        </button>
+                    </div>
                 </div>
-                
-                <!-- Note -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Note (Optional)</label>
-                    <textarea class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" rows="2" placeholder="Add a note"></textarea>
+            </form>
+        </div>
+
+        <!-- Mobile Deposit Form -->
+        <div *ngIf="activeTab === 'mobileDeposit'">
+            <h2 class="text-lg font-medium text-gray-900 mb-6">Mobile Check Deposit</h2>
+            
+            <form [formGroup]="mobileDepositForm" (ngSubmit)="onMobileDepositSubmit()">
+                <div class="space-y-6">
+                    <!-- To Account -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Deposit To</label>
+                        <select formControlName="toAccount" class="input-field block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="checking">Checking Account (**** 4567)</option>
+                            <option value="savings">Savings Account (**** 8901)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Amount -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Check Amount</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">$</span>
+                            </div>
+                            <input type="text" formControlName="amount" class="input-field block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="0.00">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">USD</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Check Images -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Check Images</label>
+                        
+                        <div class="space-y-4">
+                            <!-- Front Image -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500 mb-1">Front of Check</label>
+                                <div class="mt-1 flex items-center">
+                                    <input type="file" class="sr-only" id="front-image" (change)="onFrontImageSelected($event)" accept="image/*">
+                                    <label for="front-image" class="cursor-pointer py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:text-gray-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        Choose Front Image
+                                    </label>
+                                    <span class="ml-2 text-sm text-gray-500" *ngIf="mobileDepositForm.get('frontImage')?.value">
+                                        Image selected
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Back Image -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500 mb-1">Back of Check</label>
+                                <div class="mt-1 flex items-center">
+                                    <input type="file" class="sr-only" id="back-image" (change)="onBackImageSelected($event)" accept="image/*">
+                                    <label for="back-image" class="cursor-pointer py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:text-gray-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        Choose Back Image
+                                    </label>
+                                    <span class="ml-2 text-sm text-gray-500" *ngIf="mobileDepositForm.get('backImage')?.value">
+                                        Image selected
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Memo -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Memo (Optional)</label>
+                        <textarea formControlName="memo" class="input-field block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" rows="2" placeholder="Add a memo"></textarea>
+                    </div>
+                    
+                    <!-- Submit -->
+                    <div class="pt-4">
+                        <button type="submit" class="transaction-button w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Deposit Check
+                        </button>
+                    </div>
                 </div>
-                
-                <!-- Submit -->
-                <div class="pt-4">
-                    <button type="submit" class="transaction-button w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Transfer Money
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { Input } from '@angular/core';
 import { User } from '../modele/User';
 import { Router } from '@angular/router';
+import {HomeService} from '../services/homeService';
+import {UpperCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,11 +17,20 @@ logout() {
     this.router.navigate(['/login']);
 }
 sendHelp() {
-  
+
 }
 
-  @Input()
-    public user:User=new User();
-    constructor(public router: Router) {
-    }
+  public user:User=new User();
+  public homeService:HomeService=inject(HomeService);
+  constructor(public router: Router) {
+    let token = sessionStorage.getItem('authToken');
+
+    if(token!=null) {
+
+      this.homeService.getUser(token).subscribe(e => {
+        this.user = e;
+      });
+    }}
+
+  protected readonly UpperCasePipe = UpperCasePipe;
 }

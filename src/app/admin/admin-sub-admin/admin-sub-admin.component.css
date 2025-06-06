@@ -1,0 +1,59 @@
+/* Admin Sub Admin Component CSS */
+.mainPage {
+  height: calc(100vh - 50px);
+}
+.mainPage{
+    top: 0;
+    margin-left:250px;
+
+}
+@media (max-width: 768px) {
+    .mainPage {
+        margin-left: 0;
+    }
+}
+.role-badge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.role-badge-admin {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+/* Table Styles */
+.table-container {
+  overflow-x: auto;
+}
+
+/* Card Styles */
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Animation for alerts */
+@keyframes slideIn {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+[class*="bg-"].rounded-md {
+  animation: slideIn 0.3s ease-out;
+}

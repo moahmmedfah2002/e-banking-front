@@ -1,0 +1,99 @@
+.mainPage{
+    top: 0;
+    margin-left:220px;
+}
+
+@media (max-width: 768px) {
+    .mainPage {
+        margin-left: 0;
+    }
+}
+
+/* Status badge styles */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Transaction type colors */
+.entrante-type {
+    color: #059669; /* green-600 */
+}
+
+.sortante-type {
+    color: #dc2626; /* red-600 */
+}
+
+/* Hover effects for table rows */
+.transaction-row:hover {
+    background-color: #f9fafb; /* gray-50 */
+}
+
+/* Card hover effects */
+.stats-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Filters section styles */
+.filters-container {
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Custom scrollbar for tables */
+.table-container::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Modal styles */
+:host ::ng-deep .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    overflow: hidden;
+}
+
+:host ::ng-deep .modal-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* For preventing body scroll when modal is open */
+body.overflow-hidden {
+    overflow: hidden;
+}

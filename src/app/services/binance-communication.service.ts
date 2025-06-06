@@ -101,35 +101,29 @@ export class BinanceCommunicationService {
       console.error('WebSocket is not open. Cannot subscribe to streams.');
     }
   }
-
-  // Subscribe to trade streams for specified symbols
-  public subscribeToTrades(symbols: string[]): void {
+  
+  // Subscribe to trade streams
+  private subscribeToTrades(symbols: string[]): void {
     const streams = symbols.map(symbol => `${symbol}@trade`);
     this.connectWebSocket(streams);
   }
-
-  // Subscribe to depth (order book) data for a specific symbol
-  public subscribeToDepth(symbol: string): void {
-    const stream = `${symbol.toLowerCase()}@depth`;
-    this.connectWebSocket([stream]);
-  }
-
-  // Method to get Bitcoin rate
+  
+  // Get observable for Bitcoin rate
   public getBitcoinRate(): Observable<CryptoRate> {
     return this.bitcoinRate.asObservable();
   }
   
-  // Method to get Ethereum rate
+  // Get observable for Ethereum rate
   public getEthereumRate(): Observable<CryptoRate> {
     return this.ethereumRate.asObservable();
   }
   
-  // Method to get Cardano rate
+  // Get observable for Cardano rate
   public getCardanoRate(): Observable<CryptoRate> {
     return this.cardanoRate.asObservable();
   }
   
-  // Method to get Solana rate
+  // Get observable for Solana rate
   public getSolanaRate(): Observable<CryptoRate> {
     return this.solanaRate.asObservable();
   }

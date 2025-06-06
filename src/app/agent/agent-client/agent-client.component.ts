@@ -1,60 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Filters, UserDisplay, UserStats } from '../../admin/admin-users/admin-users.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Role } from '../../modele/Role';
-import { User } from '../../modele/User';
 import { Client } from '../../modele/Client';
-import { addClient, updateClient, MOCK_CLIENTS } from '../../modele/mock-clients';
-
-export interface UserStats {
-  totalUsers: number;
-  totalIncrease: number;
-  activeUsers: number;
-  activeIncrease: number;
-  adminsAndManagers: number;
-  adminsChange: string;
-  flaggedAccounts: number;
-  flaggedIncrease: number;
-}
-
-export interface UserDisplay extends User, Partial<Client> {
-  initials?: string;
-  lastLogin?: string;
-  statusClass?: string;
-  roleBadgeClass?: string;
-  roleIcon?: string;
-  roleLabel?: string;
-  numeroClient?: number;
-}
-
-export interface Filters {
-  roles: {
-    admin: boolean;
-    manager: boolean;
-    agent: boolean;
-    user: boolean;
-  };
-  status: {
-    active: boolean;
-    inactive: boolean;
-    flagged: boolean;
-  };
-  clientInfo: {
-    hasAccounts: boolean;
-    newClient: boolean;
-  };
-}
+import { addClient, MOCK_CLIENTS, updateClient } from '../../modele/mock-clients';
 
 @Component({
-  selector: 'app-admin-users',
+  selector: 'app-agent-client',
   standalone: false,
-  templateUrl: './admin-users.component.html',
-  styleUrl: './admin-users.component.css',
+  templateUrl: './agent-client.component.html',
+  styleUrl: './agent-client.component.css',
   host: {
     '(document:click)': 'onClickOutside($event)',
   }
 })
-export class AdminUsersComponent implements OnInit {  
-  // Client statistics
+export class AgentClientComponent {
   userStats: UserStats = {
     totalUsers: 18249,
     totalIncrease: 8,
@@ -658,5 +618,4 @@ export class AdminUsersComponent implements OnInit {
     this.users = [...this.allUsers];
     this.applySorting(this.users);
   }
-  
 }

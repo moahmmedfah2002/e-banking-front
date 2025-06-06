@@ -2,59 +2,30 @@
     <h2 class="text-lg font-medium text-gray-900 mb-4">Recent Transactions</h2>
     <div class="bg-white shadow overflow-hidden sm:rounded-md">
         <ul class="divide-y divide-gray-200">
-            <li>
+            <li *ngFor="let transaction of transactions">
                 <div class="px-4 py-4 sm:px-6">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <div class="bg-blue-100 rounded-full p-2 mr-4">
-                                <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <div [class]="'rounded-full p-2 mr-4 ' + getIconClass(transaction)">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getIconPath(transaction)"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-medium text-gray-900">Grocery Store</p>
-                                <p class="text-xs text-gray-500">May 15, 2023 • 10:23 AM</p>
+                                <p class="text-sm font-medium text-gray-900">{{ getTransactionDescription(transaction) }}</p>
+                                <p class="text-xs text-gray-500">
+                                    {{ transaction.dateTransaction }}
+                                </p>
                             </div>
                         </div>
-                        <p class="text-sm font-semibold text-red-600">-$84.32</p>
+                        <p class="text-sm font-semibold" [class]="getAmountClass(transaction)">
+                            {{ formatAmount(transaction.monet) }}
+                        </p>
                     </div>
                 </div>
             </li>
-            <li>
-                <div class="px-4 py-4 sm:px-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div class="bg-green-100 rounded-full p-2 mr-4">
-                                <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">Payroll Deposit</p>
-                                <p class="text-xs text-gray-500">May 12, 2023 • 12:01 AM</p>
-                            </div>
-                        </div>
-                        <p class="text-sm font-semibold text-green-600">+$2,450.00</p>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="px-4 py-4 sm:px-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div class="bg-blue-100 rounded-full p-2 mr-4">
-                                <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">Electric Bill</p>
-                                <p class="text-xs text-gray-500">May 10, 2023 • 9:45 AM</p>
-                            </div>
-                        </div>
-                        <p class="text-sm font-semibold text-red-600">-$142.57</p>
-                    </div>
-                </div>
+            <li *ngIf="transactions.length === 0" class="px-4 py-4 sm:px-6 text-center text-gray-500">
+                No transactions found
             </li>
         </ul>
     </div>

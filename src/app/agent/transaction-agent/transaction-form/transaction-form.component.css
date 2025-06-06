@@ -1,0 +1,23 @@
+/* Style for form inputs when they're invalid and touched */
+.ng-invalid.ng-touched {
+  border-color: #ef4444 !important;
+}
+
+/* Animation for modal */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); }
+  to { transform: translateY(0); }
+}
+
+div.fixed {
+  animation: fadeIn 0.3s ease-out;
+}
+
+div.fixed > div {
+  animation: slideIn 0.3s ease-out;
+}

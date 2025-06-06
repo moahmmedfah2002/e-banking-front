@@ -1,0 +1,252 @@
+<main class="flex-grow py-6 mainPage">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header section with title and action button -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Transaction History</h1>
+        <p class="text-sm text-gray-500">View and manage transactions</p>
+      </div>      <button (click)="toggleTransactionForm()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+        New Transaction
+      </button>
+    </div>
+
+    <!-- Statistics cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- Total Transactions Card -->
+      <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm font-medium text-gray-500">Total Transactions</p>
+            <p class="text-2xl font-bold text-gray-900">{{totalTransactions}}</p>
+          </div>
+          <div class="bg-blue-100 p-3 rounded-full">
+            <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Incoming Card -->
+      <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm font-medium text-gray-500">Total Incoming</p>
+            <p class="text-2xl font-bold text-gray-900">${{formatAmount(totalIncoming)}}</p>
+          </div>
+          <div class="bg-green-100 p-3 rounded-full">
+            <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Outgoing Card -->
+      <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-red-500">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-sm font-medium text-gray-500">Total Outgoing</p>
+            <p class="text-2xl font-bold text-gray-900">${{formatAmount(totalOutgoing)}}</p>
+          </div>
+          <div class="bg-red-100 p-3 rounded-full">
+            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters and search -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
+        <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
+          <!-- Type filter -->
+          <div>
+            <label for="filter-type" class="block text-sm font-medium text-gray-700 mb-1">Transaction Type</label>
+            <select id="filter-type" [(ngModel)]="filterType" (change)="applyFilters()" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+              <option value="all">All Types</option>
+              <option value="Entrante">Incoming</option>
+              <option value="Sortante">Outgoing</option>
+            </select>
+          </div>
+          
+          <!-- Status filter -->
+          <div>
+            <label for="filter-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select id="filter-status" [(ngModel)]="filterStatus" (change)="applyFilters()" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+              <option value="all">All Statuses</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <!-- Search input -->
+          <div class="relative flex-grow">
+            <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="Search by ID or account number" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Reset filters button -->
+          <button (click)="resetFilters()" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction List -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b">
+        <h2 class="text-lg font-medium text-gray-900">Transaction List</h2>
+        <div class="text-sm text-gray-500">
+          Showing {{filteredTransactions.length}} of {{transactions.length}} transactions
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div *ngIf="loading" class="flex justify-center items-center p-12">
+        <svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="!loading" class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From Account</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To Account</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let transaction of filteredTransactions" (click)="selectTransaction(transaction)" class="hover:bg-gray-50 cursor-pointer transaction-row">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{transaction.id}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm" [ngClass]="getTypeClass(transaction.typeTransaction)">
+                <span class="font-medium">{{transaction.typeTransaction === 'Entrante' ? 'Incoming' : 'Outgoing'}}</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{transaction.compteAdebit}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{transaction.compteAcredit}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{formatAmount(transaction.monet)}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{formatDate(transaction.dateTransaction)}}</td>              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button class="text-blue-600 hover:text-blue-900" (click)="selectTransaction(transaction); $event.stopPropagation();">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+
+            <!-- Empty state when no transactions match filters -->
+            <tr *ngIf="filteredTransactions.length === 0 && !loading">
+              <td colspan="7" class="px-6 py-10 text-center">
+                <div class="text-gray-500">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                  </svg>
+                  <h3 class="mt-2 text-lg font-medium text-gray-900">No transactions found</h3>
+                  <p class="mt-1 text-sm">Try adjusting your search or filter parameters.</p>
+                  <div class="mt-6">
+                    <button (click)="resetFilters()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                      Reset filters
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->      <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div class="flex-1 flex justify-between sm:hidden">
+          <button (click)="prevPage()" [disabled]="currentPage === 1" 
+            [ngClass]="{'opacity-50 cursor-not-allowed': currentPage === 1}"
+            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            Previous
+          </button>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages" 
+            [ngClass]="{'opacity-50 cursor-not-allowed': currentPage === totalPages}"
+            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            Next
+          </button>
+        </div>
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm text-gray-700">
+              Showing
+              <span class="font-medium">{{ (currentPage - 1) * pageSize + 1 }}</span>
+              to
+              <span class="font-medium">{{ 
+                currentPage * pageSize > totalItems ? totalItems : currentPage * pageSize 
+              }}</span>
+              of
+              <span class="font-medium">{{ totalItems }}</span>
+              results
+            </p>
+          </div>
+          <div>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <button (click)="prevPage()" [disabled]="currentPage === 1" 
+                [ngClass]="{'opacity-50 cursor-not-allowed': currentPage === 1}"
+                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <span class="sr-only">Previous</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </button>
+              
+              <!-- Page numbers -->
+              <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+                <button (click)="changePage(i + 1)" 
+                  [ngClass]="{'bg-blue-50 text-blue-600': currentPage === i + 1, 'bg-white text-gray-500': currentPage !== i + 1}" 
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium">
+                  {{ i + 1 }}
+                </button>
+              </ng-container>
+              
+              <button (click)="nextPage()" [disabled]="currentPage === totalPages" 
+                [ngClass]="{'opacity-50 cursor-not-allowed': currentPage === totalPages}"
+                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <span class="sr-only">Next</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </nav>
+          </div>
+        </div>      </div>
+    </div>
+  </div>
+  <!-- Transaction Form Modal -->
+  <app-transaction-form 
+    *ngIf="showTransactionForm"
+    (closeForm)="closeTransactionForm()"
+    >
+  </app-transaction-form>
+
+  <!-- Transaction Detail Modal -->
+  <app-transaction-detail
+    *ngIf="showTransactionDetail"
+    [transaction]="selectedTransaction"
+    (close)="closeTransactionDetail()">
+  </app-transaction-detail>
+</main>

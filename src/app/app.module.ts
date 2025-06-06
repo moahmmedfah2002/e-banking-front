@@ -41,6 +41,14 @@ import { CardManagementComponent } from './card-management/card-management.compo
 import { TransactionSummaryComponent } from './Account/component/transaction-summary/transaction-summary.component';
 import { AgentComponent } from './agent/agent.component';
 import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.component';
+import { AgentSideBarComponent } from './agent/agent-side-bar/agent-side-bar.component';
+import { AgentClientComponent } from './agent/agent-client/agent-client.component';
+import { AdminSubAdminComponent } from './admin/admin-sub-admin/admin-sub-admin.component';
+import { TransactionAgentComponent } from './agent/transaction-agent/transaction-agent.component';
+import { AccountAgentComponent } from './agent/account-agent/account-agent.component';
+import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.component';
+import { TransactionDetailComponent } from "./agent/transaction-agent/transaction-detail/transaction-detail.component";
+import { TransactionFormComponent as AgentTransactionFormComponent } from "./agent/transaction-agent/transaction-form/transaction-form.component";
 
 @NgModule({
   declarations: [
@@ -78,7 +86,11 @@ import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.componen
     AdminlayoutComponent,
     CardManagementComponent,
     AgentComponent,
-    AgentLayoutComponent
+    AgentLayoutComponent,
+    AgentSideBarComponent,    AgentClientComponent,
+    AdminSubAdminComponent,
+    TransactionAgentComponent,    AccountAgentComponent,
+    CryptoHistoryComponent,
   ],  imports: [
     // Add SideBarComponent to imports since it's standalone
     BrowserModule,
@@ -87,8 +99,9 @@ import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.componen
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
-  ],
+    FormsModule,    TransactionDetailComponent,
+    AgentTransactionFormComponent
+],
   providers: [DatePipe],
   bootstrap: [AppComponent]
 })

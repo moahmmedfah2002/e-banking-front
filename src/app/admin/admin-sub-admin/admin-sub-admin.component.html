@@ -1,0 +1,566 @@
+<main class="flex-1 overflow-y-auto p-6 bg-gray-50 mainPage">
+    <!-- Alert message -->
+    <div *ngIf="alertMessage" class="mb-4 p-4 rounded-md" [ngClass]="alertType === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg *ngIf="alertType === 'success'" class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <svg *ngIf="alertType === 'error'" class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium">{{ alertMessage }}</p>
+            </div>
+            <div class="ml-auto pl-3">
+                <div class="-mx-1.5 -my-1.5">
+                    <button (click)="closeAlert()" class="inline-flex rounded-md p-1.5" [ngClass]="alertType === 'success' ? 'text-green-500 hover:bg-green-100' : 'text-red-500 hover:bg-red-100'">
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Management Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">Admin Management</h1>
+            <p class="text-sm text-gray-600 mt-1">Manage administrators and permissions</p>
+        </div>
+        <div class="mt-4 md:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+            <button id="btn-add-admin" (click)="toggleAdminModal()" class="flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
+                <i class="fas fa-user-shield mr-2"></i>
+                Add New Admin
+            </button>
+        </div>
+    </div>
+    
+    <!-- Admin Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div class="card bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Total Admins</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ admins.length| number }}</p>
+                    <p class="text-xs text-green-500 flex items-center mt-1">
+                        <i class="fas fa-arrow-up mr-1"></i> {{ adminStats.totalIncrease }}% from last month
+                    </p>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-full">
+                    <i class="fas fa-user-shield text-purple-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Active Admins</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ getActiveAdminsCount() | number }}</p>
+                    <p class="text-xs text-green-500 flex items-center mt-1">
+                        <i class="fas fa-arrow-up mr-1"></i> {{ adminStats.activeIncrease }}% from last month
+                    </p>
+                </div>
+                <div class="bg-green-100 p-3 rounded-full">
+                    <i class="fas fa-user-check text-green-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Super Admins</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ adminStats.superAdmins }}</p>
+                    <p class="text-xs text-yellow-500 flex items-center mt-1">
+                        <i class="fas fa-minus mr-1"></i> {{ adminStats.superAdminsChange }}
+                    </p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-full">
+                    <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Inactive Accounts</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ adminStats.inactiveAccounts }}</p>
+                    <p class="text-xs text-red-500 flex items-center mt-1">
+                        <i class="fas fa-arrow-up mr-1"></i> {{ adminStats.inactiveIncrease }}% from last month
+                    </p>
+                </div>
+                <div class="bg-red-100 p-3 rounded-full">
+                    <i class="fas fa-user-slash text-red-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Management Tools -->
+    <div class="bg-white rounded-lg shadow mb-6">
+        <div class="p-6 border-b border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800">Admin List</h3>
+                    <!-- Search indicator badge -->
+                    <div *ngIf="searchQuery.trim()" class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800">
+                        <span>Search: "{{searchQuery}}"</span>
+                        <button (click)="clearSearch()" class="ml-1 inline-flex items-center justify-center h-4 w-4 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-600 focus:outline-none" title="Clear search">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="searchQuery.trim() && admins.length === 0" class="mt-1 text-sm text-red-600">
+                        No results found. <button (click)="clearSearch()" class="underline text-blue-600 hover:text-blue-800">Clear search</button>
+                    </div>
+                </div>
+                <div class="mt-3 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                    <!-- Enhanced Search Bar -->
+                    <div class="relative flex-grow">
+                        <input 
+                            type="text" 
+                            [(ngModel)]="searchQuery" 
+                            (input)="onSearchChange()"
+                            (keydown.enter)="onSearchChange()"
+                            placeholder="Search by name, email, or phone..."
+                            class="w-full border border-gray-300 rounded-md py-2 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 shadow-sm"
+                            aria-label="Search admins"
+                        />
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <div *ngIf="searchQuery" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <button (click)="clearSearch()" class="text-gray-400 hover:text-gray-600" title="Clear search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button id="filter-dropdown-btn" (click)="toggleFilterDropdown()" class="flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-filter mr-2"></i>
+                            Filter
+                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                        </button>
+                        
+                        <div *ngIf="isFilterDropdownVisible" class="filter-dropdown absolute right-0 mt-2 z-10 w-64 bg-white rounded-md shadow-lg border border-gray-200">
+                            <div class="p-4">
+                                <h4 class="font-medium text-gray-700 mb-3">Filter Admins</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                                        <div class="space-y-2">
+                                            <label class="flex items-center">
+                                                <input type="checkbox" [(ngModel)]="filters.roles.superAdmin" class="rounded text-purple-600 focus:ring-purple-500 mr-2">
+                                                <span class="text-sm text-gray-700">Super Admin</span>
+                                            </label>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" [(ngModel)]="filters.roles.admin" class="rounded text-purple-600 focus:ring-purple-500 mr-2">
+                                                <span class="text-sm text-gray-700">Admin</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                        <div class="space-y-2">
+                                            <label class="flex items-center">
+                                                <input type="checkbox" [(ngModel)]="filters.status.active" class="rounded text-purple-600 focus:ring-purple-500 mr-2">
+                                                <span class="text-sm text-gray-700">Active</span>
+                                            </label>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" [(ngModel)]="filters.status.inactive" class="rounded text-purple-600 focus:ring-purple-500 mr-2">
+                                                <span class="text-sm text-gray-700">Inactive</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex justify-end space-x-2">
+                                    <button (click)="clearFilters()" class="px-3 py-1 text-sm text-gray-600 hover:text-gray-800">
+                                        Clear All
+                                    </button>
+                                    <button (click)="applyFilters()" class="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700">
+                                        Apply Filters
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <select (change)="onSortChange($event)" class="appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="name">Sort by: Name</option>
+                            <option value="role">Sort by: Role</option>
+                            <option value="status">Sort by: Status</option>
+                            <option value="lastLogin">Sort by: Last Login</option>
+                            <option value="dateCreated">Sort by: Date Created</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search results counter -->
+        <div *ngIf="searchQuery.trim()" class="px-6 pt-2 pb-0 text-sm text-gray-600">
+            Found {{ admins.length }} results for "{{ searchQuery }}"
+        </div>
+        
+        <div class="table-container">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <div class="flex items-center">
+                                <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500 mr-2">
+                                Admin
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Role
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Last Login
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Created
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr *ngFor="let admin of admins">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500 mr-4">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 rounded-full flex items-center justify-center font-semibold" 
+                                         [ngClass]="{'bg-purple-100 text-purple-800': admin.roleLabel === 'Super Admin', 
+                                                    'bg-blue-100 text-blue-800': admin.roleLabel === 'Admin'}">
+                                        {{ admin.initials }}
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">{{ admin.prenom }} {{ admin.nom }}</div>
+                                        <div class="text-xs text-gray-500">{{ admin.email }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full" 
+                                  [ngClass]="{'bg-purple-100 text-purple-800': admin.roleLabel === 'Super Admin', 
+                                             'bg-blue-100 text-blue-800': admin.roleLabel === 'Admin'}">
+                                <i [class]="admin.roleIcon + ' mr-1'"></i> {{ admin.roleLabel }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="admin.statusClass">
+                                {{ admin.estActif ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ admin.lastLogin }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ admin.dateCreation | date:'MMM dd, yyyy' }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex items-center justify-end space-x-2">
+                                <button (click)="editAdmin(admin)" class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                </button>
+                                <button (click)="deleteAdmin(admin.id)" class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                                <div class="relative inline-block text-left">
+                                    <button [attr.data-admin-id]="admin.id" (click)="toggleAdminActions(admin.id)" class="text-gray-600 hover:text-gray-900 p-1 rounded-full hover:bg-gray-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Dropdown menu -->
+                                    <div *ngIf="activeDropdownId === admin.id" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none z-10">
+                                        <div class="py-1">
+                                            <a href="javascript:void(0)" (click)="toggleAdminStatus(admin)" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <svg *ngIf="admin.estActif" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                </svg>
+                                                <svg *ngIf="!admin.estActif" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                {{ admin.estActif ? 'Deactivate Account' : 'Activate Account' }}
+                                            </a>
+                                            <a href="javascript:void(0)" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                </svg>
+                                                Send Message
+                                            </a>
+                                        </div>
+                                        <div class="py-1">
+                                            <a href="javascript:void(0)" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                                View Activity Log
+                                            </a>
+                                            <a href="javascript:void(0)" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                                Manage Permissions
+                                            </a>
+                                        </div>
+                                        <div class="py-1">
+                                            <a href="javascript:void(0)" (click)="viewAdminDetails(admin)" class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                                View Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="admins.length === 0">
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                            No admins found.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="px-6 py-4 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                    Showing {{ admins.length }} {{ searchQuery.trim() ? 'filtered' : '' }} admins {{ searchQuery.trim() ? 'out of ' + allAdmins.length + ' total' : '' }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Admin Modal -->
+    <div *ngIf="isAdminModalVisible" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 md:mx-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-5 border-b border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800">{{ isEditMode ? 'Edit Admin' : 'Add New Admin' }}</h3>
+                <button (click)="toggleAdminModal()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Form -->
+            <form [formGroup]="adminForm" (ngSubmit)="onAdminSubmit()">
+                <div class="p-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- First Name -->
+                        <div>
+                            <label for="prenom" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                            <input
+                                type="text"
+                                id="prenom"
+                                formControlName="prenom"
+                                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm">
+                            <div *ngIf="adminForm.get('prenom')?.invalid && (adminForm.get('prenom')?.dirty || adminForm.get('prenom')?.touched)" class="text-red-500 text-xs mt-1">
+                                <span *ngIf="adminForm.get('prenom')?.errors?.['required']">First name is required</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Last Name -->
+                        <div>
+                            <label for="nom" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                            <input
+                                type="text"
+                                id="nom"
+                                formControlName="nom"
+                                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm">
+                            <div *ngIf="adminForm.get('nom')?.invalid && (adminForm.get('nom')?.dirty || adminForm.get('nom')?.touched)" class="text-red-500 text-xs mt-1">
+                                <span *ngIf="adminForm.get('nom')?.errors?.['required']">Last name is required</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                formControlName="email"
+                                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm">
+                            <div *ngIf="adminForm.get('email')?.invalid && (adminForm.get('email')?.dirty || adminForm.get('email')?.touched)" class="text-red-500 text-xs mt-1">
+                                <span *ngIf="adminForm.get('email')?.errors?.['required']">Email is required</span>
+                                <span *ngIf="adminForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div>
+                            <label for="telephone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <input
+                                type="tel"
+                                id="telephone"
+                                formControlName="telephone"
+                                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm">
+                            <div *ngIf="adminForm.get('telephone')?.invalid && (adminForm.get('telephone')?.dirty || adminForm.get('telephone')?.touched)" class="text-red-500 text-xs mt-1">
+                                <span *ngIf="adminForm.get('telephone')?.errors?.['required']">Phone is required</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                formControlName="password"
+                                [placeholder]="isEditMode ? 'Leave blank to keep current password' : 'Enter password'"
+                                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 text-sm">
+                            <div *ngIf="adminForm.get('password')?.invalid && (adminForm.get('password')?.dirty || adminForm.get('password')?.touched)" class="text-red-500 text-xs mt-1">
+                                <span *ngIf="adminForm.get('password')?.errors?.['required']">Password is required</span>
+                                <span *ngIf="adminForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Super Admin toggle -->
+                        <div class="col-span-2">
+                            <div class="flex items-center">
+                                <input 
+                                    id="isSuperAdmin" 
+                                    type="checkbox" 
+                                    formControlName="isSuperAdmin" 
+                                    class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                <label for="isSuperAdmin" class="ml-2 block text-sm text-gray-700">
+                                    Is Super Admin (has all privileges)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Actions -->
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                    <button type="button" (click)="toggleAdminModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">Cancel</button>
+                    <button type="submit" [disabled]="adminForm.invalid" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <i class="fas fa-check mr-2"></i> {{ isEditMode ? 'Update Admin' : 'Save Admin' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- Admin Details Modal -->
+<div *ngIf="isViewMode && selectedAdmin" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 md:mx-auto">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center p-5 border-b border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-800">Admin Details</h3>
+            <button (click)="closeAdminDetails()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Admin Details -->
+        <div class="p-6">
+            <div class="flex items-center mb-6">
+                <div class="h-16 w-16 rounded-full flex items-center justify-center font-bold text-xl mr-4" 
+                     [ngClass]="{'bg-purple-100 text-purple-800': selectedAdmin.roleLabel === 'Super Admin', 
+                                'bg-blue-100 text-blue-800': selectedAdmin.roleLabel === 'Admin'}">
+                    {{ selectedAdmin.initials }}
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">{{ selectedAdmin.prenom }} {{ selectedAdmin.nom }}</h2>
+                    <div class="mt-1 flex items-center">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="selectedAdmin.statusClass">
+                            {{ selectedAdmin.estActif ? 'Active' : 'Inactive' }}
+                        </span>
+                        <span class="ml-2 text-sm text-gray-500">
+                            <i [class]="selectedAdmin.roleIcon + ' mr-1'"></i> 
+                            {{ selectedAdmin.roleLabel }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-medium text-gray-900 mb-2">Contact Information</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span class="text-sm text-gray-600">{{ selectedAdmin.email }}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <span class="text-sm text-gray-600">{{ selectedAdmin.telephone }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-medium text-gray-900 mb-2">Account Information</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Username</span>
+                            <span class="text-sm font-medium">{{ selectedAdmin.identifiant }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Created on</span>
+                            <span class="text-sm font-medium">{{ selectedAdmin.dateCreation | date:'mediumDate' }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Last login</span>
+                            <span class="text-sm font-medium">{{ selectedAdmin.lastLogin }}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Status</span>
+                            <span class="text-sm font-medium">{{ selectedAdmin.estActif ? 'Active' : 'Inactive' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Actions -->
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+            <button (click)="editAdmin(selectedAdmin)" class="px-4 py-2 border border-gray-300 rounded-md text-sm text-blue-600 hover:bg-blue-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                Edit Admin
+            </button>
+            <button (click)="closeAdminDetails()" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                Close
+            </button>
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@ import { User } from '../../modele/User';
 import { Client } from '../../modele/Client';
 import { addClient, updateClient, MOCK_CLIENTS } from '../../modele/mock-clients';
 
-export interface UserStats {
+interface UserStats {
   totalUsers: number;
   totalIncrease: number;
   activeUsers: number;
@@ -16,7 +16,7 @@ export interface UserStats {
   flaggedIncrease: number;
 }
 
-export interface UserDisplay extends User, Partial<Client> {
+interface UserDisplay extends User, Partial<Client> {
   initials?: string;
   lastLogin?: string;
   statusClass?: string;
@@ -26,7 +26,7 @@ export interface UserDisplay extends User, Partial<Client> {
   numeroClient?: number;
 }
 
-export interface Filters {
+interface Filters {
   roles: {
     admin: boolean;
     manager: boolean;
@@ -78,9 +78,7 @@ export class AdminUsersComponent implements OnInit {
   
   // Client edit state
   isEditMode: boolean = false;
-  editClientId: number | undefined;
-  
-  // Client view state
+  editClientId: number | undefined;  // Client view state
   isViewMode: boolean = false;
   selectedClient: UserDisplay | null = null;
   
@@ -267,40 +265,8 @@ export class AdminUsersComponent implements OnInit {
     toggleFilterDropdown(): void {
     this.isFilterDropdownVisible = !this.isFilterDropdownVisible;
   }
-    // Enhanced search input handler
-  onSearchChange(): void {
-    if (!this.searchQuery.trim()) {
-      // If search is empty, reset to all users
-      this.users = [...this.allUsers];
-    } else {
-      // Filter users by name, email, phone, or CIN with improved search
-      const query = this.searchQuery.toLowerCase().trim();
-      this.users = this.allUsers.filter(user => 
-        // Search by full name
-        `${user.prenom} ${user.nom}`.toLowerCase().includes(query) || 
-        // Search by first name only
-        user.prenom?.toLowerCase().includes(query) ||
-        // Search by last name only
-        user.nom?.toLowerCase().includes(query) ||
-        // Search by email
-        user.email?.toLowerCase().includes(query) ||
-        // Search by phone number
-        user.telephone?.toLowerCase().includes(query) ||
-        // Search by CIN (ID number)
-        (user.cin && user.cin.toLowerCase().includes(query)) ||
-        // Search by client number if available
-        (user.numeroClient && user.numeroClient.toString().includes(query))
-      );
-    }
-    // Apply any existing sort after filtering
-    this.applySorting(this.users);
+    // This duplicate searchQuery and onSearchChange was removed to fix errors
     
-    // Show feedback if no results found
-    if (this.searchQuery.trim() && this.users.length === 0) {
-      this.showAlert(`No users found matching "${this.searchQuery}"`, 'error', 3000);
-    }
-  }
-  
   applyFilters(): void {
     let filteredUsers = [...this.allUsers];
     
@@ -430,13 +396,12 @@ export class AdminUsersComponent implements OnInit {
       this.resetClientForm();
     }
   }
-    // Reset form when closing modal
+  
+  // Reset form when closing modal
   resetClientForm(): void {
     this.clientForm.reset();
   }
-  
-  // Handle client form submission
-  onClientSubmit(): void {
+    // Handle client form submission  onClientSubmit(): void {
     if (this.clientForm.invalid) {
       return;
     }
@@ -460,9 +425,7 @@ export class AdminUsersComponent implements OnInit {
           codePostal: formValues.codePostal,
           pays: formValues.pays,
           dateNaissance: new Date(formValues.dateNaissance),
-          cin: formValues.cin,
-          numeroClient: this.users[clientIndex].numeroClient ?? 0, // Ensure numeroClient is a number
-          comptes: this.users[clientIndex].comptes || [] // Ensure comptes is an array
+          cin: formValues.cin
         };
         
         // Update the mock data
@@ -652,10 +615,20 @@ export class AdminUsersComponent implements OnInit {
     }
   }
   
-  // Clear search and reset users list
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.users = [...this.allUsers];
+  // Handle search input changes
+  onSearchChange(): void {
+    if (!this.searchQuery.trim()) {
+      // If search is empty, reset to all users
+      this.users = [...this.allUsers];
+    } else {
+      // Filter users by name or CIN
+      const query = this.searchQuery.toLowerCase().trim();
+      this.users = this.allUsers.filter(user => 
+        `${user.prenom} ${user.nom}`.toLowerCase().includes(query) || 
+        (user.cin && user.cin.toLowerCase().includes(query))
+      );
+    }
+    // Apply any existing sort after filtering
     this.applySorting(this.users);
   }
   

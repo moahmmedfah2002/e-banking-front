@@ -16,16 +16,20 @@ export class HomePageComponent implements OnInit{
   public router:Router=inject(Router);
 
   ngOnInit(): void {
-    let token=sessionStorage.getItem('authToken');
-    if(token==null){
-      this.router.navigate(['/login']);
+     let token=sessionStorage.getItem('authToken');
+    // if(token==null){
+    //   this.router.navigate(['/login']);
 
-    }else{
-     this.homeService.getUser(token).subscribe(e=>{
-       this.user=e;
-
-     })
-    }
+    // }else{
+  if (token) {
+    this.homeService.getUser(token).subscribe(e => {
+      this.user = e;
+    });
+  } else {
+    // handle the case when token is null, e.g., redirect to login
+    // this.router.navigate(['/login']);
+  }
+    // }
 
 
   }

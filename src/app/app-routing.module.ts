@@ -14,6 +14,12 @@ import {AdminUsersComponent} from './admin/admin-users/admin-users.component';
 import {AdminBanksComponent} from './admin/admin-banks/admin-banks.component';
 import {AdminlayoutComponent} from './adminlayout/adminlayout.component';
 import {CardManagementComponent} from './card-management/card-management.component';
+import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.component';
+import { AgentClientComponent } from './agent/agent-client/agent-client.component';
+import { AdminSubAdminComponent } from './admin/admin-sub-admin/admin-sub-admin.component';
+import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.component';
+import { AccountAgentComponent } from './agent/account-agent/account-agent.component';
+import { TransactionAgentComponent } from './agent/transaction-agent/transaction-agent.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -39,7 +45,19 @@ const routes: Routes = [
     children: [
       { path: 'users', component: AdminUsersComponent },
       { path: 'banks', component: AdminBanksComponent },
+      {path: 'admins', component: AdminSubAdminComponent},
       { path: '', redirectTo: 'users', pathMatch: 'full' }
+    ]
+  },
+  {
+    path: 'agent',
+    component: AgentLayoutComponent,
+    children: [
+      {path: 'clients', component: AgentClientComponent},
+      {path: 'crypto', component: CryptoHistoryComponent},
+      {path: 'accounts', component: AccountAgentComponent},
+      {path: 'transactions', component: TransactionAgentComponent},
+      {path: '', redirectTo: 'clients', pathMatch: 'full' }
     ]
   }
 ];

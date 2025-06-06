@@ -10,32 +10,39 @@
 
     <nav class="flex-grow">
         <ul class="space-y-2">
-            
             <li>
-                <button (click)="this.router.navigate(['admin/users'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 text-white" data-target="accounts">
+                <button (click)="this.router.navigate(['agent'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg +* bg-opacity-10 text-white" data-target="dashboard">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
                     </svg>
-                    Clients
+                    Users
                 </button>
             </li>
             <li>
-                <button (click)="this.router.navigate(['admin/banks'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 text-white" data-target="transfers">
+                <button (click)="this.router.navigate(['agent/crypto'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg +* bg-opacity-10 text-white" data-target="dashboard">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
                     </svg>
-                    Banks
+                    Cryptocurrency
                 </button>
             </li>
             <li>
-                <button (click)="this.router.navigate(['admin/admins'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 text-white" data-target="transfers">
+                <button (click)="this.router.navigate(['agent/transactions'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg +* bg-opacity-10 text-white" data-target="dashboard">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
                     </svg>
-                    Admins
+                    Transactions
                 </button>
             </li>
-            
+            <li>
+                <button (click)="this.router.navigate(['agent/accounts'])" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg +* bg-opacity-10 text-white" data-target="dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                    </svg>
+                    Accounts
+                </button>
+            </li>
+
         </ul>
     </nav>
 
@@ -56,13 +63,20 @@
         </div>
         <div class="flex items-center mt-6 px-4">
             <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-                <span class="text-blue-900 font-semibold">AM</span>
+
+                <span class="text-blue-900 font-semibold">@if(user!=null){
+                 {{user.nom?.at(0) | uppercase}}
+
+                }
+
+                  </span>
             </div>
             <div>
                 <p class="font-medium">{{user.prenom}} {{user.nom}}</p>
                 <p class="text-xs opacity-75">Premium Client</p>
             </div>
         </div>
+        <!-- Logout Button -->
         <button (click)="logout()" class="w-full flex items-center justify-center mt-4 px-4 py-2 bg-red-500 bg-opacity-20 hover:bg-opacity-30 text-white rounded-lg transition-all duration-200">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

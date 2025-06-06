@@ -8,9 +8,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Angular CLI and dependencies
+        run: |
+          npm install -g @angular/cli
+          npm ci
+
+      - name: Build Angular app
+        run: npm run build -- --configuration=production
+
       - name: Install Docker Compose
         run: |
-          # Install Docker Compose v2 (modern plugin version)
           mkdir -p ~/.docker/cli-plugins/
           curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
           chmod +x ~/.docker/cli-plugins/docker-compose

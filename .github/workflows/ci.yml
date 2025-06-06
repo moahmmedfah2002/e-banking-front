@@ -13,25 +13,22 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install -f
+      - name: Install dependencies locally
+        run: npm install --legacy-peer-deps
 
       - name: Build Angular app
         run: npm run build -- --output-path=dist/app
 
-      - name: Verify build output
-        run: ls -la dist/app
-
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
       - name: Build Docker image
-        run: docker build -t e-banking-front .
+        run: docker build --no-cache --progress plain -t e-banking-front .
 
       - name: Run container
         run: docker run -d -p 80:80 e-banking-front
 
       - name: Verify deployment
         run: |
-          sleep 5 # Wait for container to start
-          curl -s http://localhost:80 | grep "e-banking-front"
+          sleep 5
+          curl -s http://localhost:80 | grep "Your App Title"

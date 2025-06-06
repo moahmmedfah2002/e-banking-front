@@ -2,28 +2,255 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #f5f7fa;
 }
-.sidebar {
-    background: linear-gradient(180deg, #00205b 0%, #003087 100%);
-    flex-direction: column;
-    transition: all 0.3s ease;
-}
-.card {
-    transition: all 0.3s ease;
-}
 
+/* Container styles */
+.container {
+    margin: 0 auto;
+    padding: 20px;
+}
 .mainPage{
-    top: 0;
-    margin-left:220px;
+            top: 0;
+            margin-left:250px;
+        
+        }
+        @media (max-width: 768px) {
+            .mainPage {
+                margin-left: 0;
+            }
+        }
+/* Welcome section styles */
+.welcome-section {
+    margin-bottom: 30px;
+}
 
+.welcome-section h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #00205b;
+    margin-bottom: 8px;
 }
-@media (max-width: 768px) {
-    .mainPage {
-        margin-left: 0;
-    }
+
+.subtitle {
+    color: #666;
+    margin-bottom: 5px;
 }
-.card:hover {
+
+.login-time {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Account cards styles */
+.account-cards-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.account-card {
+    min-width: 280px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.account-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.account-card.selected {
+    border-color: #00205b;
+    background-color: #f0f7ff;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.account-type {
+    font-weight: 600;
+    color: #00205b;
+}
+
+.account-status {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background-color: #e5e5e5;
+    color: #666;
+}
+
+.account-status.active {
+    background-color: #e7f5ea;
+    color: #2e7d32;
+}
+
+.card-body {
+    margin-bottom: 18px;
+}
+
+.account-number {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.account-balance {
+    font-size: 24px;
+    font-weight: 700;
+    color: #00205b;
+    margin-bottom: 8px;
+}
+
+.account-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-details, .btn-transfer {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.btn-details {
+    color: #00205b;
+    background-color: #f0f7ff;
+}
+
+.btn-details:hover {
+    background-color: #d0e2ff;
+}
+
+.btn-transfer {
+    color: #fff;
+    background-color: #00205b;
+}
+
+.btn-transfer:hover {
+    background-color: #003087;
+}
+
+/* Activity section styles */
+.activity-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #00205b;
+    margin-bottom: 8px;
+}
+
+.section-header p {
+    font-size: 14px;
+    color: #666;
+}
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s;
+}
+
+.transaction-item:hover {
+    background-color: #f0f7ff;
+}
+
+.transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+}
+
+.transaction-outgoing {
+    background-color: #ffe9e9;
+    color: #d32f2f;
+}
+
+.transaction-incoming {
+    background-color: #e7f5ea;
+    color: #2e7d32;
+}
+
+.transaction-details {
+    flex-grow: 1;
+}
+
+.transaction-title {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.transaction-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.transaction-amount {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.no-transactions {
+    padding: 30px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .account-cards-container {
+        flex-direction: column;
+    }
+    
+    .account-card {
+        width: 100%;
+        min-width: auto;
+    }
 }
 .btn-primary {
     background: linear-gradient(90deg, #00205b 0%, #003087 100%);

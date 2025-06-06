@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Transaction } from '../../modele/Transaction';
 import { TransactionService } from '../../transaction.service';
-import { TransactionFormComponent } from './transaction-form/transaction-form.component';
+import { TransactionAgentFormComponent } from './transaction-form/transaction-form.component';
 import { TransactionDetailComponent } from './transaction-detail/transaction-detail.component';
 
 @Component({

@@ -12,7 +12,7 @@
     </div>
     
     <!-- Form -->
-    <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="px-6 py-4">
+    <form transactionForm="formGroup" (ngSubmit)="onSubmit()" class="px-6 py-4">
       <!-- Transaction Type -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 mb-1">Transaction Type</label>

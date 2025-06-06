@@ -1,12 +1,11 @@
-<main class="flex-grow py-6 mainPage">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<main class="flex-grow py-6 mainPage">  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header section with title and action button -->
     <div class="flex justify-between items-center mb-6">
       <div>
         <h1 class="text-2xl font-bold text-gray-900">Crypto Transaction History</h1>
         <p class="text-sm text-gray-500">View and manage crypto transactions</p>
       </div>
-      <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+      <button (click)="openTransactionModal()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
         New Transaction
       </button>
     </div>
@@ -281,8 +280,14 @@
               </button>
             </nav>
           </div>
-        </div>
-      </div>
+        </div>      </div>
     </div>
   </div>
+  
+  <!-- Transaction Modal -->
+  <app-crypto-transaction-modal 
+    [isVisible]="isModalVisible"
+    (close)="closeTransactionModal()"
+    (transactionComplete)="onTransactionComplete($event)">
+  </app-crypto-transaction-modal>
 </main>

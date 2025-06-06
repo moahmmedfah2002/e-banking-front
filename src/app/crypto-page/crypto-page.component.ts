@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { BinanceCommunicationService } from '../services/binance-communication.service';
+import { CryptoService, CryptoTransaction } from '../crypto.service';
 import { Subscription, interval } from 'rxjs';
 import { Chart, registerables } from 'chart.js';
 import { FormsModule } from '@angular/forms';
@@ -22,7 +23,8 @@ interface PortfolioItem {
   styleUrl: './crypto-page.component.css'
 })
 export class CryptoPageComponent implements OnInit, OnDestroy, AfterViewInit {
-  binanceConnection = inject(BinanceCommunicationService);  
+  binanceConnection = inject(BinanceCommunicationService);
+  cryptoService = inject(CryptoService);
   
   // Properties to store the current rates
   bitcoinPrice: number = 0;
@@ -42,6 +44,15 @@ export class CryptoPageComponent implements OnInit, OnDestroy, AfterViewInit {
   tradeAmount: number = 0;
   estimatedQuantity: string = '0.00000000';
   selectedPaymentMethod: string = 'cash';
+  
+  // Modal control
+  showTransactionModal: boolean = false;
+  
+  // Cash balance
+  cashBalance: number = 15420.75;
+  
+  // Recent transactions
+  recentTransactions: CryptoTransaction[] = [];
   
   // Portfolio data
   portfolio: PortfolioItem[] = [
@@ -88,8 +99,13 @@ export class CryptoPageComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly MAX_DATA_POINTS = 20;
   
   constructor() {}
-  
-  ngOnInit(): void {
+    ngOnInit(): void {
+    // Load recent transactions
+    this.loadRecentTransactions();
+    
+    // Build portfolio data from transactions
+    this.buildPortfolioFromTransactions();
+    
     // Subscribe to Bitcoin rate updates
     this.subscriptions.push(
       this.binanceConnection.getBitcoinRate().subscribe(rate => {
@@ -172,13 +188,130 @@ export class CryptoPageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.initCharts();
     }, 100);
   }
-  
-  ngOnDestroy(): void {
+    ngOnDestroy(): void {
     // Clean up subscriptions to prevent memory leaks
     this.subscriptions.forEach(sub => sub.unsubscribe());
     
     // Destroy charts
     this.destroyCharts();
+  }
+  
+  // Load recent transactions
+  loadRecentTransactions(): void {
+    this.cryptoService.getCryptoTransactions().subscribe(transactions => {
+      this.recentTransactions = transactions.slice(0, 5); // Get first 5 transactions
+    });
+  }
+  
+  // Open transaction modal
+  openTransactionModal(): void {
+    this.showTransactionModal = true;
+  }
+  
+  // Close transaction modal
+  closeTransactionModal(): void {
+    this.showTransactionModal = false;
+  }
+    // Handle completed transactions
+  handleTransactionAdded(transaction: CryptoTransaction): void {
+    // Reload transactions to update the displayed list
+    this.loadRecentTransactions();
+    
+    // Update portfolio data
+    this.updatePortfolioAfterTransaction(transaction);
+    
+    // Update cash balance
+    this.updateCashBalanceAfterTransaction(transaction);
+    
+    // Show notification
+    this.showTransactionNotification(transaction);
+    
+    console.log('Transaction added:', transaction);
+  }
+  
+  // Update portfolio data after a transaction
+  private updatePortfolioAfterTransaction(transaction: CryptoTransaction): void {
+    const { symbol, amount, price, type } = transaction;
+    
+    // Find existing portfolio item for this crypto
+    const portfolioItemIndex = this.portfolio.findIndex(item => item.symbol === symbol);
+    
+    if (type === 'buy') {
+      if (portfolioItemIndex >= 0) {
+        // Update existing portfolio item
+        const currentItem = this.portfolio[portfolioItemIndex];
+        const totalQuantity = currentItem.quantity + amount;
+        const totalValue = (currentItem.quantity * currentItem.averageBuyPrice) + (amount * price);
+        const newAveragePrice = totalValue / totalQuantity;
+        
+        this.portfolio[portfolioItemIndex] = {
+          ...currentItem,
+          quantity: totalQuantity,
+          averageBuyPrice: newAveragePrice,
+          profitLoss: ((this.getCryptoPrice(symbol) / newAveragePrice) - 1) * 100
+        };
+      } else {
+        // Add new portfolio item
+        this.portfolio.push({
+          symbol,
+          quantity: amount,
+          averageBuyPrice: price,
+          profitLoss: 0 // New purchase has no profit/loss yet
+        });
+      }
+    } else if (type === 'sell') {
+      if (portfolioItemIndex >= 0) {
+        // Update existing portfolio item after sell
+        const currentItem = this.portfolio[portfolioItemIndex];
+        const newQuantity = currentItem.quantity - amount;
+        
+        if (newQuantity <= 0) {
+          // Remove from portfolio if all sold
+          this.portfolio.splice(portfolioItemIndex, 1);
+        } else {
+          // Update quantity but keep average buy price
+          this.portfolio[portfolioItemIndex] = {
+            ...currentItem,
+            quantity: newQuantity,
+            profitLoss: ((this.getCryptoPrice(symbol) / currentItem.averageBuyPrice) - 1) * 100
+          };
+        }
+      }
+    }
+  }
+  
+  // Update cash balance after transaction
+  private updateCashBalanceAfterTransaction(transaction: CryptoTransaction): void {
+    if (transaction.type === 'buy') {
+      // Subtract transaction amount plus fee from cash balance
+      this.cashBalance -= (transaction.total + (transaction.fee || 0));
+    } else {
+      // Add transaction amount minus fee to cash balance
+      this.cashBalance += (transaction.total - (transaction.fee || 0));
+    }
+  }
+  
+  // Show notification to user
+  private showTransactionNotification(transaction: CryptoTransaction): void {
+    const action = transaction.type === 'buy' ? 'purchased' : 'sold';
+    const message = `Successfully ${action} ${transaction.amount} ${transaction.symbol} for $${transaction.total.toFixed(2)}`;
+    
+    // In a real app, this would use a proper notification service
+    const notification = document.createElement('div');
+    notification.className = 'transaction-notification';
+    notification.textContent = message;
+    
+    // Add success class based on transaction type
+    notification.classList.add(transaction.type === 'buy' ? 'buy-notification' : 'sell-notification');
+    
+    // Append to body and remove after 5 seconds
+    document.body.appendChild(notification);
+    setTimeout(() => {
+      notification.classList.add('fade-out');
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 500);
+    }, 5000);
   }
 
   // Method to switch between tabs
@@ -432,5 +565,67 @@ export class CryptoPageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.solanaChart.destroy();
       this.solanaChart = null;
     }
+  }
+
+  // Build portfolio data from transactions
+  private buildPortfolioFromTransactions(): void {
+    // Start with a clean portfolio
+    this.portfolio = [];
+    
+    // Get all completed transactions
+    this.cryptoService.getCryptoTransactions({
+      status: 'completed'
+    }).subscribe(transactions => {
+      // Process each transaction to update the portfolio
+      transactions.forEach(transaction => {
+        const { symbol, amount, price, type } = transaction;
+        
+        // Find existing portfolio item for this crypto
+        const portfolioItemIndex = this.portfolio.findIndex(item => item.symbol === symbol);
+        
+        if (type === 'buy') {
+          if (portfolioItemIndex >= 0) {
+            // Update existing portfolio item
+            const currentItem = this.portfolio[portfolioItemIndex];
+            const totalQuantity = currentItem.quantity + amount;
+            const totalValue = (currentItem.quantity * currentItem.averageBuyPrice) + (amount * price);
+            const newAveragePrice = totalValue / totalQuantity;
+            
+            this.portfolio[portfolioItemIndex] = {
+              ...currentItem,
+              quantity: totalQuantity,
+              averageBuyPrice: newAveragePrice,
+              profitLoss: ((this.getCryptoPrice(symbol) / newAveragePrice) - 1) * 100
+            };
+          } else {
+            // Add new portfolio item
+            this.portfolio.push({
+              symbol,
+              quantity: amount,
+              averageBuyPrice: price,
+              profitLoss: ((this.getCryptoPrice(symbol) / price) - 1) * 100
+            });
+          }
+        } else if (type === 'sell') {
+          if (portfolioItemIndex >= 0) {
+            // Update existing portfolio item after sell
+            const currentItem = this.portfolio[portfolioItemIndex];
+            const newQuantity = currentItem.quantity - amount;
+            
+            if (newQuantity <= 0) {
+              // Remove from portfolio if all sold
+              this.portfolio.splice(portfolioItemIndex, 1);
+            } else {
+              // Update quantity but keep average buy price
+              this.portfolio[portfolioItemIndex] = {
+                ...currentItem,
+                quantity: newQuantity,
+                profitLoss: ((this.getCryptoPrice(symbol) / currentItem.averageBuyPrice) - 1) * 100
+              };
+            }
+          }
+        }
+      });
+    });
   }
 }

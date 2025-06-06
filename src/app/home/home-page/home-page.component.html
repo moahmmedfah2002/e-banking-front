@@ -1,3 +1,58 @@
-<div class="flex flex-col md:flex-row min-h-screen min-h-screen">
-        <app-main-content [user]="user" class="flex-grow p-4 md:p-8 overflow-y-auto mainPage"></app-main-content>
+<div class="container mainPage">
+    <!-- Welcome section -->
+    <div class="welcome-section">
+        <h1>Welcome back, {{user.prenom}} {{user.nom}}</h1>
+        <p class="subtitle">Here's your financial overview</p>
+        <p class="login-time">Last login: Today, {{formatDate(currentDate)}}</p>
+    </div>
+
+    <!-- Accounts section - Cards for each account -->
+    <div class="account-cards-container">
+        <div *ngFor="let compte of comptes" class="account-card" 
+             [class.selected]="selectedCompte?.numericCompte === compte.numericCompte"
+             (click)="selectCompte(compte)">
+            <div class="card-header">
+                <span class="account-type">{{ compte.typeCompte }}</span>
+                <span class="account-status" [class.active]="compte.statue">
+                    {{ compte.statue ? 'Active' : 'Inactive' }}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="account-number">{{ compte.numericCompte }}</div>
+                <div class="account-balance">{{ compte.solde }} MAD</div>
+                <div class="account-date">Created: {{ formatDate(compte.dateCreation) }}</div>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    </div>
+
+    <!-- Account activity section -->
+    <div class="activity-section">
+        <div class="section-header">
+            <h2>Account Activity</h2>
+            <p *ngIf="selectedCompte">
+                Showing transactions for: {{ selectedCompte.typeCompte }} ({{ selectedCompte.numericCompte }})
+            </p>
+        </div>
+
+        <div class="transaction-list">
+            <!-- Show when no transactions -->
+            <div *ngIf="!displayedTransactions || displayedTransactions.length === 0" class="no-transactions">
+                No transactions to display for this account.
+            </div>
+
+            <!-- Transaction items -->
+            <div *ngFor="let transaction of displayedTransactions" class="transaction-item">
+                
+                <div class="transaction-details">
+                    <div class="transaction-title">{{ getTransactionLabel(transaction) }}</div>
+                    <div class="transaction-date">{{ formatDate(transaction.dateTransaction) }}</div>
+                </div>
+                <div class="transaction-amount" [ngClass]="getTransactionTypeClass(transaction.typeTransaction)">
+                    {{ transaction.typeTransaction === 'Sortante' ? '-' : '+' }}{{ transaction.monet }} MAD
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

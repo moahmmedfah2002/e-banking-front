@@ -4,17 +4,15 @@ import { CommonModule } from '@angular/common';
 import { Transaction } from '../../../modele/Transaction';
 
 @Component({
-  selector: 'app-transaction-form',
-  templateUrl: './transaction-form.component.html',
-  styleUrls: ['./transaction-form.component.css'],
-  imports: [CommonModule, ReactiveFormsModule],
-  standalone: true
+  selector: 'app-transaction-agent-form',
+  templateUrl: './transaction-form-agent.component.html',
+  styleUrls: ['./transaction-form-agent.component.css'],
+  standalone: false
 })
-export class TransactionFormComponent {
+export class TransactionAgentFormComponent {
   @Output() closeForm = new EventEmitter<void>();
   @Output() transactionCreated = new EventEmitter<Transaction>();
-  
-  transactionForm: FormGroup;
+  protected transactionForm: FormGroup;
   loading = false;
   
   constructor(private fb: FormBuilder) {

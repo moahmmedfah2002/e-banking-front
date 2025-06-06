@@ -131,6 +131,13 @@ export class CryptoService {
     return of(transaction);
   }
   
+  // Add a new crypto transaction
+  addCryptoTransaction(transaction: CryptoTransaction): Observable<CryptoTransaction> {
+    // In a real app, this would be an API call
+    MOCK_CRYPTO_TRANSACTIONS.push(transaction);
+    return of(transaction);
+  }
+  
   // Get transaction statistics
   getTransactionStats(): Observable<{
     totalBought: number;

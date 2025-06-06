@@ -1,0 +1,96 @@
+<!-- Modal backdrop -->
+<div *ngIf="isVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <!-- Modal content -->
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
+    <!-- Modal header -->
+    <div class="px-6 py-4 border-b border-gray-200">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-bold text-gray-900">Trade Cryptocurrency</h2>
+        <button (click)="closeModal()" class="text-gray-400 hover:text-gray-500">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="px-6 py-4">
+      <form (ngSubmit)="submitTransaction()">
+        <div class="space-y-6">
+          <!-- Trade Type -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">I want to</label>
+            <div class="flex space-x-4">
+              <div class="flex-1">
+                <button type="button" [class]="'w-full py-2 px-4 border rounded-md shadow-sm text-sm font-medium ' + (tradeType === 'buy' ? 'text-white bg-blue-600 hover:bg-blue-700 border-transparent' : 'text-gray-700 bg-white hover:bg-gray-50 border-gray-300')" (click)="setTradeType('buy')">
+                  Buy
+                </button>
+              </div>
+              <div class="flex-1">
+                <button type="button" [class]="'w-full py-2 px-4 border rounded-md shadow-sm text-sm font-medium ' + (tradeType === 'sell' ? 'text-white bg-blue-600 hover:bg-blue-700 border-transparent' : 'text-gray-700 bg-white hover:bg-gray-50 border-gray-300')" (click)="setTradeType('sell')">
+                  Sell
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cryptocurrency -->
+          <div>
+            <label for="cryptocurrency" class="block text-sm font-medium text-gray-700 mb-1">Cryptocurrency</label>
+            <div class="relative">
+              <select id="cryptocurrency" [(ngModel)]="selectedCrypto" name="cryptocurrency" class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md" (change)="updateEstimatedQuantity()">
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="ETH">Ethereum (ETH)</option>
+                <option value="ADA">Cardano (ADA)</option>
+                <option value="SOL">Solana (SOL)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Amount -->
+          <div>
+            <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+            <div class="mt-1 relative rounded-md shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="text-gray-500 sm:text-sm">$</span>
+              </div>
+              <input type="number" name="amount" id="amount" [(ngModel)]="tradeAmount" class="block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm" placeholder="0.00" (input)="updateEstimatedQuantity()">
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <span class="text-gray-500 sm:text-sm">USD</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estimated Quantity -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Estimated Quantity</label>
+            <div class="flex items-center justify-between bg-gray-50 rounded-md px-3 py-2">
+              <span id="estimated-quantity" class="text-sm">{{estimatedQuantity}}</span>
+              <span id="crypto-symbol" class="text-sm text-gray-500">{{selectedCrypto}}</span>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">{{tradeType === 'buy' ? 'Payment Method' : 'Deposit To'}}</label>
+            <div class="relative">
+              <select class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md" [(ngModel)]="selectedPaymentMethod" name="paymentMethod">
+                <option value="cash">Cash Balance (${{cashBalance.toFixed(2)}})</option>
+                <option value="checking">Checking Account (**** 4567)</option>
+                <option value="credit">Credit Card (**** 1234)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="pt-4">
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              {{tradeType === 'buy' ? 'Buy' : 'Sell'}} {{getCryptoName(selectedCrypto)}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

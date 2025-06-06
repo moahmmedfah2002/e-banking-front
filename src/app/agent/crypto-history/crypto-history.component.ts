@@ -34,6 +34,9 @@ export class CryptoHistoryComponent implements OnInit {
   // UI state
   selectedTransaction: CryptoTransaction | null = null;
   
+  // Modal state
+  isModalVisible = false;
+  
   constructor(
     private cryptoService: CryptoService,
     private binanceService: BinanceCommunicationService
@@ -42,6 +45,21 @@ export class CryptoHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.loadTransactions();
     this.subscribeToRates();
+  }
+  
+  // Open the transaction modal
+  openTransactionModal(): void {
+    this.isModalVisible = true;
+  }
+  
+  // Handle transaction complete event from modal
+  onTransactionComplete(transaction: CryptoTransaction): void {
+    this.loadTransactions(); // Reload transactions to include the new one
+  }
+  
+  // Close the transaction modal
+  closeTransactionModal(): void {
+    this.isModalVisible = false;
   }
   
   loadTransactions(): void {

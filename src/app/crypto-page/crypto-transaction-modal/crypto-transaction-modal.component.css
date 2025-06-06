@@ -1,0 +1,28 @@
+/* Animation for modal */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+:host {
+  display: block;
+}
+
+.fixed {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.bg-white {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Input focus styles */
+input:focus, select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}

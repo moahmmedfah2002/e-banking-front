@@ -5,6 +5,7 @@
         </div>
     </div>
     <div class="h-64">
+      @for (compte of comptes;track  compte.id){
         @for (item of compte.transactions; track item.id) {
             <div class="transaction-item flex items-center py-3 border-t border-gray-200">
                 <div class="bg-red-100 rounded-full p-2 mr-3">
@@ -22,5 +23,6 @@
                 </div>
             </div>
         }
+      }
         </div>
 </div>

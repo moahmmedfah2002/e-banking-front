@@ -9,9 +9,8 @@ import { Compte } from '../../modele/Compte';
 })
 export class AccountInfoComponent {
  @Input()
- public compte: Compte;
+ public comptes:Array<any>|undefined=new Array<any>();
 
  constructor() {
-    this.compte = new Compte();
  }
 }

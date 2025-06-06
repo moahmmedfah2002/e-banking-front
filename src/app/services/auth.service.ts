@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
-    return this.http.post<Auth>("http://localhost:8000/banque_war_exploded/auth/login", {username: email, password: password}).pipe(
+    return this.http.post<Auth>("http://localhost:8081/auth/login", {username: email, password: password}).pipe(
       tap((response: Auth) => {
         if (response.token) {
           if (rememberMe) {

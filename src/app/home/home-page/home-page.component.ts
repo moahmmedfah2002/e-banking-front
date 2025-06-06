@@ -17,19 +17,18 @@ export class HomePageComponent implements OnInit{
 
   ngOnInit(): void {
      let token=sessionStorage.getItem('authToken');
-    // if(token==null){
-    //   this.router.navigate(['/login']);
+    if(token==null){
+      this.router.navigate(['/login']);
 
-    // }else{
+    }else{
   if (token) {
     this.homeService.getUser(token).subscribe(e => {
       this.user = e;
     });
   } else {
-    // handle the case when token is null, e.g., redirect to login
-    // this.router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
-    // }
+    }
 
 
   }

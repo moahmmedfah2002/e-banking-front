@@ -11,8 +11,8 @@
             </div>
         </div>
     </section>
-    <app-acount-summary-card></app-acount-summary-card>
+    <app-acount-summary-card [accounts]="user.comptes"></app-acount-summary-card>
     <div class="grid grid-cols-1 gap-6">
-        <app-account-info class="lg:col-span-2" [compte]="this.selectedCompte"></app-account-info>
+        <app-account-info class="lg:col-span-2" [comptes]="user.comptes"></app-account-info>
     </div>
 </main>

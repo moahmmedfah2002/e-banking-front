@@ -15,7 +15,7 @@ export class CarteComponent{
   @Input() carte_numbre: number = 0;
   @Input() account_number: string = "0000-0000-0000";
   @Input() routing_number: string = "000000000";
-  
+
   @HostBinding("style.--color")
   @Input()
   public color: string='linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)';
@@ -27,7 +27,7 @@ export class CarteComponent{
       this.balance = this.formatCurrency(this.accountData.solde || 0);
       this.account_number = this.accountData.numericCompte || this.account_number;
       // Last 4 digits of account number for card display
-      this.carte_numbre = parseInt(this.account_number.substring(Math.max(0, this.account_number.length - 4)));
+      this.carte_numbre =  this.account_number.length ;
     }
   }
 

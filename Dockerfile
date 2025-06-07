@@ -16,6 +16,7 @@ RUN ng build --configuration=production
 FROM nginx:latest
 WORKDIR /
 RUN npm install -g node@11.4.1
+RUN npm install -g @angular/cli
 COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY  dist/e-banking-front/browser /usr/share/nginx/html

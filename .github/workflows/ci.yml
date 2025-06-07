@@ -40,6 +40,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: fahlaouimohammed/e-banking-front-github:latest
+          tags: mohammedfahlaoui/e-banking-front-github:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -28,7 +28,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Login to Docker Hub
-        run: docker login -u fahlaouimohammed@gmail.com -p Mohammed20022
+        run: echo Mohammed20022 | docker login -u fahlaouimohammed@gmail.com --password-stdin
 
       - name: Build and push
         uses: docker/build-push-action@v4

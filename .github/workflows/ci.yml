@@ -28,7 +28,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
+      - name: install ng
+        run: npm install -g @angular/cli
       - name: Build and push
         uses: docker/build-push-action@v4
         with:

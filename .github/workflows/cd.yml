@@ -1,0 +1,34 @@
+name: Docker CD Pipeline
+
+on:
+  workflow_run:
+    workflows: [Docker CI Pipeline]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        env:
+          DOCKER_LOGIN: ${{secrets.DOCKER_LOGIN}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
+      - name: pull Docker image
+        run: sudo docker push mohammedfahlaoui/e-banking-front-github:latest
+
+      - name: rm old container
+        run: sudo docker rm -f e-banking-front-github || true
+      - name: run Docker container
+        run: sudo docker run -d -p 4200:80 --name e-banking-front-github mohammedfahlaoui/e-banking-front-github:latest
+
+
+
+
+      - name: Build Docker image
+        run: sudo docker build -t mohammedfahlaoui/e-banking-front-github .
+

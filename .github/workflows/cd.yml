@@ -29,6 +29,5 @@ jobs:
 
 
 
-      - name: Build Docker image
-        run: sudo docker build -t mohammedfahlaoui/e-banking-front-github .
+
 

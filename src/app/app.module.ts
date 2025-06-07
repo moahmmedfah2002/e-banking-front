@@ -50,6 +50,7 @@ import { AccountAgentComponent } from './agent/account-agent/account-agent.compo
 import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.component';
 import { TransactionDetailComponent } from "./agent/transaction-agent/transaction-detail/transaction-detail.component";
 import { TransactionAgentFormComponent } from './agent/transaction-agent/transaction-form/transaction-form.component';
+import { ChatbotComponent } from './chatbot/chatbot.component';
 @NgModule({
   declarations: [
     // Remove SideBarComponent from here since it's standalone
@@ -93,7 +94,8 @@ import { TransactionAgentFormComponent } from './agent/transaction-agent/transac
     TransactionAgentComponent,    
     AccountAgentComponent,    CryptoHistoryComponent,
     TransactionAgentFormComponent,
-    CryptoTransactionModalComponent
+    CryptoTransactionModalComponent,
+    ChatbotComponent
   ],imports: [
     // Add SideBarComponent to imports since it's standalone
     BrowserModule,

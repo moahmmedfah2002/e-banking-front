@@ -18,6 +18,9 @@ jobs:
       - name: install ng
         run: npm install -g @angular/cli
 
+      - name: npm install
+        run: npm install -f
+
       - name: Build Angular app
         run: npm run build -- --output-path=dist/app
 

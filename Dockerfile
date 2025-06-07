@@ -18,12 +18,7 @@ RUN ng build --configuration=production
 FROM nginx:latest
 WORKDIR /
 
-RUN apk add nodejs-current --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
-    apk add npm=latest --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 
-
-RUN npm install -g node@11.4.1
-RUN npm install -g @angular/cli
 
 COPY nginx.conf /etc/nginx/nginx.conf
 

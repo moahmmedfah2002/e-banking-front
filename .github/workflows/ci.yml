@@ -22,7 +22,7 @@ jobs:
         run: npm install -f
 
       - name: Build Angular app
-        run: npm run build -- --output-path=dist/app
+        run: npm run build -- --output-path=dist/e-banking-front
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

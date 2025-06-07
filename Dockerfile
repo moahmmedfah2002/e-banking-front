@@ -3,7 +3,7 @@ FROM node:latest
 WORKDIR /app
 
 COPY package*.json ./
-
+RUN npm install -g node@11.4.1
 RUN npm install
 
 RUN npm install -g @angular/cli

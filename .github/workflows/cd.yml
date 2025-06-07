@@ -19,7 +19,7 @@ jobs:
 
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
       - name: pull Docker image
-        run: sudo docker push mohammedfahlaoui/e-banking-front-github:latest
+        run: sudo docker pull mohammedfahlaoui/e-banking-front-github:latest
 
       - name: rm old container
         run: sudo docker rm -f e-banking-front-github || true

@@ -33,7 +33,11 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Login to Docker Hub
-        run: echo Mohammed20022 | docker login -u fahlaouimohammed@gmail.com --password-stdin
+        env:
+          DOCKER_LOGIN: ${{secrets.DOCKER_LOGIN}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
 
       - name: Build and push
         uses: docker/build-push-action@v4

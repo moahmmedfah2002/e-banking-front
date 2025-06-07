@@ -13,7 +13,8 @@ import {Auth} from '../modele/Auth';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'http://localhost:8082'; // Replace with your actual API endpoint
+ // Replace with your actual API endpoint
+
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
   constructor() {
@@ -23,7 +24,9 @@ export class AuthService {
   }
 
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
-    return this.http.post<Auth>("http://localhost:8082/auth/login", {username: email, password: password}).pipe(
+
+    return this.http.post<Auth>("http://127.0.0.1:8082/auth/login", {username: email, password: password}).pipe(
+
       tap((response: Auth) => {
         if (response.token) {
           if (rememberMe) {

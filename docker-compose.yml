@@ -1,0 +1,16 @@
+services:
+  front:
+    build:
+      context: .
+    ports:
+      - "4200:80"
+    networks:
+      - app-network
+
+
+
+
+networks:
+  app-network:
+    external: true
+    name: app-network

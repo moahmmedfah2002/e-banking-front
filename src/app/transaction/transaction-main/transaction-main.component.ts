@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {User} from '../../modele/User';
 
 @Component({
   selector: 'app-transaction-main',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './transaction-main.component.css'
 })
 export class TransactionMainComponent {
-
+  @Input()
+  public client?: User;
 }

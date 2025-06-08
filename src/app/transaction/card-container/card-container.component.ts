@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {User} from '../../modele/User';
 
 @Component({
   selector: 'app-card-container',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './card-container.component.css'
 })
 export class CardContainerComponent {
+  @Input()
+  public client?: User;
 
 }

@@ -11,7 +11,7 @@ export class User {
   public  telephone?:string;
   public  identifiant?:string;
   public  password?:string;
-  public role?:Role;
+  public role?:Role; // Role can be a string or an object, depending on your implementation
   public dateCreation?:Date;
   public estActif?:boolean;
   public comptes?:Array<Compte>;

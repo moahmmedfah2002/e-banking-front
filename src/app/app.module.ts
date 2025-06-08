@@ -18,6 +18,7 @@ import { AccountDetails } from './Account/component/details/detail.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { AgentService } from './services/agent.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatBotComponent } from './chatbot/chatbot.component';
 import { Auth2faComponent } from './auth2fa/auth2fa.component';
@@ -39,7 +40,6 @@ import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { AdminBanksComponent } from './admin/admin-banks/admin-banks.component';
 import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
 import { AdminlayoutComponent } from './adminlayout/adminlayout.component';
-import { CardManagementComponent } from './card-management/card-management.component';
 import { TransactionSummaryComponent } from './Account/component/transaction-summary/transaction-summary.component';
 import { AgentComponent } from './agent/agent.component';
 import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.component';
@@ -51,6 +51,7 @@ import { AccountAgentComponent } from './agent/account-agent/account-agent.compo
 import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.component';
 import { TransactionDetailComponent } from "./agent/transaction-agent/transaction-detail/transaction-detail.component";
 import { TransactionAgentFormComponent } from './agent/transaction-agent/transaction-form/transaction-form.component';
+import { AgentManagementPageComponent } from './agent-management-page/agent-management-page.component';
 @NgModule({
   declarations: [
     // Remove SideBarComponent from here since it's standalone
@@ -85,7 +86,6 @@ import { TransactionAgentFormComponent } from './agent/transaction-agent/transac
     AdminBanksComponent,
     SidebarAdminComponent,
     AdminlayoutComponent,
-    CardManagementComponent,
     AgentComponent,
     AgentLayoutComponent,
     AgentSideBarComponent,    
@@ -94,7 +94,8 @@ import { TransactionAgentFormComponent } from './agent/transaction-agent/transac
     TransactionAgentComponent,    
     AccountAgentComponent,    CryptoHistoryComponent,    TransactionAgentFormComponent,
     CryptoTransactionModalComponent,
-    ChatBotComponent
+    ChatBotComponent,
+    AgentManagementPageComponent
   ],imports: [
     // Add SideBarComponent to imports since it's standalone
     BrowserModule,
@@ -106,8 +107,11 @@ import { TransactionAgentFormComponent } from './agent/transaction-agent/transac
     HttpClientModule,
     FormsModule,
     TransactionDetailComponent,
-],
-  providers: [DatePipe],
+],  providers: [
+    DatePipe,
+    AuthService,
+    AgentService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

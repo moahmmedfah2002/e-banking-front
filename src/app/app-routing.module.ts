@@ -13,13 +13,14 @@ import {AdminDashboardComponent} from './admin/admin-dashboard/admin-dashboard.c
 import {AdminUsersComponent} from './admin/admin-users/admin-users.component';
 import {AdminBanksComponent} from './admin/admin-banks/admin-banks.component';
 import {AdminlayoutComponent} from './adminlayout/adminlayout.component';
-import {CardManagementComponent} from './card-management/card-management.component';
-import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.component';
+  import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.component';
 import { AgentClientComponent } from './agent/agent-client/agent-client.component';
 import { AdminSubAdminComponent } from './admin/admin-sub-admin/admin-sub-admin.component';
 import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.component';
 import { AccountAgentComponent } from './agent/account-agent/account-agent.component';
 import { TransactionAgentComponent } from './agent/transaction-agent/transaction-agent.component';
+import { ChatBotComponent } from './chatbot/chatbot.component';
+import { AgentManagementPageComponent } from './agent-management-page/agent-management-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,18 +35,17 @@ const routes: Routes = [
       { path: 'transaction', component: TransactionPageComponent },
       { path: 'account', component: AccountComponent },
       { path: 'crypto', component: CryptoPageComponent },
-      { path: 'card', component: CardManagementComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   }
-  ,
-  {
+  ,  {
     path: 'admin',
     component: AdminlayoutComponent,
     children: [
       { path: 'users', component: AdminUsersComponent },
       { path: 'banks', component: AdminBanksComponent },
-      {path: 'admins', component: AdminSubAdminComponent},
+      { path: 'admins', component: AdminSubAdminComponent},
+      { path: 'agent-management', component: AgentManagementPageComponent },
       { path: '', redirectTo: 'users', pathMatch: 'full' }
     ]
   },

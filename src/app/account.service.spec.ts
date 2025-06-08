@@ -24,7 +24,7 @@ describe('AccountService', () => {
     service.getAccounts().subscribe(accounts => {
       expect(accounts.length).toBeGreaterThan(0);
       accounts.forEach(account => {
-        expect(USER_ACCOUNTS).toContain(account.numericCompte);
+        expect(USER_ACCOUNTS).toContain(account.numericCompte || "");
       });
     });
   });

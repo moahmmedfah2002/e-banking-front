@@ -87,10 +87,10 @@ import { TransactionAgentFormComponent } from './agent/transaction-agent/transac
     CardManagementComponent,
     AgentComponent,
     AgentLayoutComponent,
-    AgentSideBarComponent,    
+    AgentSideBarComponent,
     AgentClientComponent,
     AdminSubAdminComponent,
-    TransactionAgentComponent,    
+    TransactionAgentComponent,
     AccountAgentComponent,    CryptoHistoryComponent,
     TransactionAgentFormComponent,
     CryptoTransactionModalComponent
@@ -104,6 +104,7 @@ import { TransactionAgentFormComponent } from './agent/transaction-agent/transac
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+
     TransactionDetailComponent,
 ],
   providers: [DatePipe],

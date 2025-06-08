@@ -12,7 +12,7 @@ export class HomeService {
 
   }
   getUser(token: string) {
-    return this.http.post<User>("http://localhost:8081/auth/isAuth",{},{headers:{Authorization:`Bearer ${token}`}, params:{token: String(token)}});
+    return this.http.post<User>("http://localhost:8082/auth/isAuth",{},{headers:{Authorization:`Bearer ${token}`}, params:{token: String(token)}});
   }
 
 }

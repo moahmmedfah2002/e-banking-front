@@ -1,19 +1,25 @@
-import {Role} from './Role';
-import {Compte} from './Compte';
-import {Transaction} from './Transaction';
+import { Role } from './Role';
+import { Compte } from './Compte';
 
 export class User {
-  public  id?:number;
+  public id?: number;
+  public nom?: string;
+  public prenom?: string;
+  public email?: string;
+  public telephone?: string;
+  public identifiant?: string;
+  public dateCreation?: Date;
+  public estActif?: boolean;
+  public enabled?: boolean;
+  public comptes?: Compte[];
+  public virements?: [];
+  public adresse?: string;
+  public cin?: string;
+  public dateNaissance?: Date;
+  public profession?: string;
 
-  public  nom?:string;
-  public  prenom?:string;
-  public  email?:string;
-  public  telephone?:string;
-  public  identifiant?:string;
-  public  password?:string;
-  public role?:Role;
-  public dateCreation?:Date;
-  public estActif?:boolean;
-  public comptes?:Array<Compte>;
-  public transactions?:Array<Transaction>;
+  constructor() {
+    this.comptes = [];
+    this.virements = [];
+  }
 }

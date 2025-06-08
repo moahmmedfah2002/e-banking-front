@@ -11,7 +11,7 @@ const createAgent = (id: number, nom: string, prenom: string, email: string, tel
     email,
     telephone,
     identifiant: `${prenom.toLowerCase()[0]}${nom.toLowerCase()}`,
-    password: '********',
+
     estActif: true,
     bank: { id: bankId } as Bank, // partial reference to avoid circular dependency
     clientIds: []

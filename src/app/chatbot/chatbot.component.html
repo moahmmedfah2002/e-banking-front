@@ -1,1 +1,99 @@
-<p>chatbot works!</p>
+<div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+  <!-- Chat Window -->  <div 
+    *ngIf="isOpen" 
+    class="mb-4 w-80 sm:w-96 h-96 chat-window-bg bg-white rounded-2xl shadow-lg flex flex-col slide-up"
+    [class.slide-up]="isOpen">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-4 border-b border-gray-100">
+      <div class="flex items-center">
+        <div class="h-8 w-8 rounded-full bg-primary-500 flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+          </svg>
+        </div>
+        <span class="ml-2 font-medium text-gray-800">Assistant</span>
+      </div>
+      <button 
+        (click)="toggleChat()" 
+        class="text-gray-500 hover:text-gray-700 transition-colors"
+        aria-label="Close chat">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Messages -->
+    <div #messageContainer class="flex-1 p-4 overflow-y-auto">      <div 
+        *ngFor="let message of messages" 
+        class="mb-3 max-w-[85%] animate-fade-in"
+        [ngClass]="{'ml-auto': message.sender === 'user'}">        <div 
+          class="p-3 rounded-2xl inline-block text-sm message-bubble"
+          [ngClass]="message.sender === 'user' ? 
+            'bg-blue-500 text-white rounded-tr-none' : 
+            'bg-gray-100 text-gray-800 rounded-tl-none animate-wave'">
+          {{ message.content }}
+        </div>
+        <div 
+          class="text-xs text-gray-500 mt-1"
+          [ngClass]="{'text-right': message.sender === 'user'}">
+          {{ message.timestamp | date:'shortTime' }}
+        </div>
+      </div>
+      
+      <!-- Typing indicator -->
+      <div *ngIf="isTyping" class="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    
+    <!-- Input -->
+    <div class="p-3 border-t border-gray-100">
+      <form (ngSubmit)="sendMessage()" class="flex items-center">        <input
+          type="text"
+          [(ngModel)]="newMessage"
+          name="newMessage"
+          placeholder="Type your message..."
+          class="input-animation flex-1 py-2 px-3 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          autofocus
+        /><button 
+          type="submit" 
+          [disabled]="!newMessage.trim() || isSending"
+          class="ml-2 animated-gradient text-white rounded-full p-2 disabled:opacity-50 flex items-center justify-center rotate-on-hover"
+          aria-label="Send message"
+          [class.opacity-50]="isSending">
+          <ng-container *ngIf="!isSending; else loading">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+            </svg>
+          </ng-container>
+          <ng-template #loading>
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </ng-template>
+        </button>
+      </form>
+    </div>
+  </div>
+    <!-- Chat Button -->  <button 
+    (click)="toggleChat()" 
+    class="chat-button bg-blue-600 animated-gradient w-20 h-20 rounded-full shadow-lg flex items-center justify-center text-white transition-all duration-300 ease-in-out rotate-on-hover relative ripple tilt-effect"
+    [class.pulse-ring]="!isOpen"
+    [class.heartbeat]="!isOpen && hasUnreadMessages"
+    [class.float]="!isOpen && !hasUnreadMessages"
+    aria-label="Open chat">
+    <div *ngIf="!isOpen && hasUnreadMessages" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center bounce">
+      1
+    </div>
+    <svg *ngIf="!isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+    </svg>
+    <svg *ngIf="isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+</div>

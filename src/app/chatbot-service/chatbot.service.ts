@@ -48,7 +48,7 @@ export class ChatService {
   }
    private getBotResponse(userMessage: string): Observable<any> {
     const message = userMessage.toLowerCase();
-    const token = "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3NDkzMjc1MzUsImV4cCI6MTc0OTMyODk3NSwic3ViIjoiaGF5dGFtc0BnbWFpbC5jb20ifQ.vRRtIWSKcAOaDPizR6KNCMQKlqR_mzeCz5LYG_aOSDYsPeXPilPvggssuEw6eViK-RF9zQkVjmvlvvOpFKvvow";
+    const token = "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3NDkzMzA4NTcsImV4cCI6MTc0OTMzMjI5Nywic3ViIjoiaGF5dGFtc0BnbWFpbC5jb20ifQ.vme_qUS3vPUey9y3DWcTCPIh7vS-iq8jXlL8kaak3mkOudFhoYwFsngHmUEyxN2lKkesnoh2Ph0ck7_cextGIw"
     return this.http.post(
       `http://localhost:8082/api/gemini/chat?request=${message}`,
       {},

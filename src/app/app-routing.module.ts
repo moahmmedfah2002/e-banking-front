@@ -20,6 +20,7 @@ import { AdminSubAdminComponent } from './admin/admin-sub-admin/admin-sub-admin.
 import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.component';
 import { AccountAgentComponent } from './agent/account-agent/account-agent.component';
 import { TransactionAgentComponent } from './agent/transaction-agent/transaction-agent.component';
+import { ChatBotComponent } from './chatbot/chatbot.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -60,6 +61,7 @@ const routes: Routes = [
       {path: '', redirectTo: 'clients', pathMatch: 'full' }
     ]
   }
+  ,{ path: 'chat', component: ChatBotComponent },
 ];
 
 @NgModule({

@@ -19,6 +19,7 @@ import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ChatBotComponent } from './chatbot/chatbot.component';
 import { Auth2faComponent } from './auth2fa/auth2fa.component';
 import { DatePipe } from '@angular/common';
 import { TransactionPageComponent } from './transaction/transaction-page/transaction-page.component';
@@ -50,7 +51,6 @@ import { AccountAgentComponent } from './agent/account-agent/account-agent.compo
 import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.component';
 import { TransactionDetailComponent } from "./agent/transaction-agent/transaction-detail/transaction-detail.component";
 import { TransactionAgentFormComponent } from './agent/transaction-agent/transaction-form/transaction-form.component';
-import { ChatbotComponent } from './chatbot/chatbot.component';
 @NgModule({
   declarations: [
     // Remove SideBarComponent from here since it's standalone
@@ -92,10 +92,9 @@ import { ChatbotComponent } from './chatbot/chatbot.component';
     AgentClientComponent,
     AdminSubAdminComponent,
     TransactionAgentComponent,    
-    AccountAgentComponent,    CryptoHistoryComponent,
-    TransactionAgentFormComponent,
+    AccountAgentComponent,    CryptoHistoryComponent,    TransactionAgentFormComponent,
     CryptoTransactionModalComponent,
-    ChatbotComponent
+    ChatBotComponent
   ],imports: [
     // Add SideBarComponent to imports since it's standalone
     BrowserModule,

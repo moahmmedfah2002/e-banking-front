@@ -9,8 +9,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">      <!-- Account Header -->
       <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">        <div>
           <h1 class="text-2xl font-bold text-gray-900">My Account</h1>
-          <p class="text-sm text-gray-500" *ngIf="user?.nom && user?.prenom">Welcome, {{ user.prenom }} {{ user.nom }}</p>
-          <p class="text-sm text-gray-500" *ngIf="!user?.nom || !user?.prenom">View and manage your personal information and account settings</p>
+          <p class="text-sm text-gray-500" *ngIf="client?.nom && client?.prenom">Welcome, {{ client?.prenom }} {{ client?.nom }}</p>
+          <p class="text-sm text-gray-500" *ngIf="!client?.nom || !client?.prenom">View and manage your personal information and account settings</p>
         </div>
         <div class="mt-4 md:mt-0 flex space-x-3">
           <!-- <button-add-transfer/> -->
@@ -19,47 +19,29 @@
       <div class="mb-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- Transaction Summary on the first column -->
-          <div class="lg:col-span-1">
-            <transaction-summary [userId]="user.id"></transaction-summary>
-          </div>
-          
+
+
           <!-- Account Cards -->
           <div class="lg:col-span-2">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <ng-container *ngIf="!loading && accounts.length > 0">
-                <carte 
-                  *ngFor="let account of accounts; let i = index" 
+              <ng-container >
+                <carte
+                  *ngFor="let account of client?.comptes; let i = index"
                   [accountData]="account"
-                  [color]="i % 3 === 0 ? 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)' : 
-                          i % 3 === 1 ? 'linear-gradient(135deg, #047857 0%, #10b981 100%)' : 
+                  [color]="i % 3 === 0 ? 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)' :
+                          i % 3 === 1 ? 'linear-gradient(135deg, #047857 0%, #10b981 100%)' :
                           'linear-gradient(135deg, #7e22ce 0%, #a855f7 100%)'"
                 ></carte>
               </ng-container>
-              <div *ngIf="loading" class="col-span-2 text-center py-10">
-                <p class="text-gray-500">Loading account data...</p>
-              </div>
-              <div *ngIf="!loading && accounts.length === 0" class="col-span-2 text-center py-10">
-                <p class="text-gray-500">No accounts found</p>
-              </div>
+
             </div>
           </div>
         </div>
       </div>
-      
+
 
 
       <!-- Account Management Tabs -->
-      <details-account/>
-
-
-  <!-- Footer -->
-  <footer class="bg-white border-t border-gray-200 py-4 mt-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-center text-sm text-gray-500">
-        © 2025 E-BANKING. All rights reserved.
-      </p>
     </div>
-  </footer>
-
-
-
+  </main>
+</div>

@@ -7,6 +7,7 @@ export class Compte {
   public statue?:boolean;
   public dateCreation?:Date;
   public typeCompte?:string;
+  public client?:string;
 
   public transactions?: Transaction[];
   public transactionsBill?: Transaction[];

@@ -2,8 +2,8 @@
         <div class="account-card rounded-lg shadow-lg p-6 text-white">
             <div class="flex justify-between items-start mb-4">
                 <div>
-                    <p class="text-sm font-medium opacity-80">Checking Account</p>
-                    <p class="text-lg font-bold">**** 4567</p>
+                    <p class="text-sm font-medium opacity-80"></p>
+                   
                 </div>
                 <svg class="h-8 w-8 opacity-80" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M22 4H2c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h20c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H2V6h20v12zM16 8H8v2h8V8zm-8 4h8v2H8v-2z"></path>
@@ -11,9 +11,9 @@
             </div>
             <div class="mb-4">
                 <p class="text-sm opacity-80">Available Balance</p>
-                <p class="text-2xl font-bold">$4,285.75</p>
+                <p class="text-2xl font-bold">{{compte?.solde}} MAD</p>
             </div>
             <div class="text-xs opacity-80">
-                <p>JOHN SMITH</p>
+                <p>{{compte?.client}}</p>
             </div>
         </div>

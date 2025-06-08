@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {User} from '../../modele/User';
 
 @Component({
   selector: 'app-transaction-form',
@@ -8,13 +9,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './transaction-form.component.css'
 })
 export class TransactionFormComponent implements OnInit {
+
+  @Input()
+  public client?: User;
   activeTab: string = 'transfer';
-  
+
   // Form groups for different transaction types
   transferForm!: FormGroup;
   payBillForm!: FormGroup;
   mobileDepositForm!: FormGroup;
-  
+
   // Properties for form handling
   recipientType: string = 'my-account';
   scheduledTransfer: boolean = false;
@@ -61,7 +65,7 @@ export class TransactionFormComponent implements OnInit {
       backImage: [null, Validators.required],
       memo: ['']
     });
-    
+
     // Set up form value change listeners
     this.setUpFormListeners();
   }
@@ -94,7 +98,7 @@ export class TransactionFormComponent implements OnInit {
     this.transferForm.get('bankName')?.clearValidators();
     this.transferForm.get('routingNumber')?.clearValidators();
     this.transferForm.get('externalAccountNumber')?.clearValidators();
-    
+
     // Apply validators based on recipient type
     switch (this.recipientType) {
       case 'my-account':
@@ -110,7 +114,7 @@ export class TransactionFormComponent implements OnInit {
         this.transferForm.get('externalAccountNumber')?.setValidators([Validators.required]);
         break;
     }
-    
+
     // Update validators
     this.transferForm.get('toMyAccount')?.updateValueAndValidity();
     this.transferForm.get('recipientName')?.updateValueAndValidity();
@@ -185,7 +189,7 @@ export class TransactionFormComponent implements OnInit {
   markFormGroupTouched(formGroup: FormGroup): void {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
-      
+
       if ((control as any).controls) {
         this.markFormGroupTouched(control as FormGroup);
       }

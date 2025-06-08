@@ -1,58 +1,70 @@
 <div class="container mainPage">
-    <!-- Welcome section -->
-    <div class="welcome-section">
-        <h1>Welcome back, {{user.prenom}} {{user.nom}}</h1>
-        <p class="subtitle">Here's your financial overview</p>
-        <p class="login-time">Last login: Today, {{formatDate(currentDate)}}</p>
+  <!-- Welcome section -->
+  <div class="welcome-section">
+    <h1>Welcome back, {{ client.prenom }} {{ client.nom }}</h1>
+    <p class="subtitle">Here's your financial overview</p>
+    <div class="user-info">
+      <p><strong>Email:</strong> {{ client.email }}</p>
+      <p><strong>Phone:</strong> {{ client.telephone || 'Not provided' }}</p>
+      <p><strong>Account Status:</strong> {{ client.enabled ? 'Active' : 'Inactive' }}</p>
+      <p><strong>Member Since:</strong> {{ client.dateCreation || 'Not available' }}</p>
     </div>
+  </div>
 
-    <!-- Accounts section - Cards for each account -->
-    <div class="account-cards-container">
-        <div *ngFor="let compte of comptes" class="account-card" 
-             [class.selected]="selectedCompte?.numericCompte === compte.numericCompte"
-             (click)="selectCompte(compte)">
-            <div class="card-header">
-                <span class="account-type">{{ compte.typeCompte }}</span>
-                <span class="account-status" [class.active]="compte.statue">
-                    {{ compte.statue ? 'Active' : 'Inactive' }}
-                </span>
-            </div>
-            <div class="card-body">
-                <div class="account-number">{{ compte.numericCompte }}</div>
-                <div class="account-balance">{{ compte.solde }} MAD</div>
-                <div class="account-date">Created: {{ formatDate(compte.dateCreation) }}</div>
-            </div>
-            <div class="card-footer">
-            </div>
-        </div>
+  <!-- Accounts section -->
+  <div class="account-cards-container">
+    <div *ngFor="let compte of client.comptes" class="account-card"
+         [class.selected]="selectedCompte?.numericCompte === compte.numericCompte"
+         (click)="selectCompte(compte)">
+      <div class="card-header">
+        <span class="account-type">{{ compte.typeCompte || 'Account' }}</span>
+        <span class="account-status" [class.active]="compte.statue">
+          {{ compte.statue ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <div class="card-body">
+        <div class="account-number">#{{ compte.numericCompte }}</div>
+        <div class="account-balance">{{ compte.solde | currency:'MAD ' }}</div>
+        <div class="account-date">Created: {{ compte.dateCreation | date:'shortDate' }}</div>
+      </div>
     </div>
+  </div>
 
-    <!-- Account activity section -->
-    <div class="activity-section">
-        <div class="section-header">
-            <h2>Account Activity</h2>
-            <p *ngIf="selectedCompte">
-                Showing transactions for: {{ selectedCompte.typeCompte }} ({{ selectedCompte.numericCompte }})
-            </p>
-        </div>
-
-        <div class="transaction-list">
-            <!-- Show when no transactions -->
-            <div *ngIf="!displayedTransactions || displayedTransactions.length === 0" class="no-transactions">
-                No transactions to display for this account.
-            </div>
-
-            <!-- Transaction items -->
-            <div *ngFor="let transaction of displayedTransactions" class="transaction-item">
-                
-                <div class="transaction-details">
-                    <div class="transaction-title">{{ getTransactionLabel(transaction) }}</div>
-                    <div class="transaction-date">{{ formatDate(transaction.dateTransaction) }}</div>
-                </div>
-                <div class="transaction-amount" [ngClass]="getTransactionTypeClass(transaction.typeTransaction)">
-                    {{ transaction.typeTransaction === 'Sortante' ? '-' : '+' }}{{ transaction.monet }} MAD
-                </div>
-            </div>
-        </div>
+  <!-- Selected Account Details -->
+  <div *ngIf="selectedCompte" class="selected-account-details">
+    <h3>Account Details</h3>
+    <div class="account-info">
+      <p><strong>Type:</strong> {{ selectedCompte.typeCompte }}</p>
+      <p><strong>Balance:</strong> {{ selectedCompte.solde | currency:'MAD ' }}</p>
+      <p><strong>Status:</strong> {{ selectedCompte.statue ? 'Active' : 'Inactive' }}</p>
+      <p><strong>Account Number:</strong> {{ selectedCompte.numericCompte }}</p>
     </div>
+  </div>
+
+  <!-- Transactions Section -->
+  <div class="activity-section" *ngIf="selectedCompte">
+    <h2>Recent Transactions</h2>
+    <div *ngIf="selectedCompte.virements && selectedCompte.virements.length > 0; else noTransactions">
+      <div *ngFor="let virement of selectedCompte.virements" class="transaction-item">
+        <div class="transaction-icon" [class.outgoing]="virement.typeTransaction === 'Sortante'">
+          <i class="fas" [ngClass]="{'fa-arrow-up': virement.typeTransaction === 'Sortante', 'fa-arrow-down': virement.typeTransaction === 'Entrante'}"></i>
+        </div>
+        <div class="transaction-details">
+          <div class="transaction-title">
+            {{ virement.typeTransaction === 'Sortante' ? 'Transfer to' : 'Transfer from' }}
+            {{ (virement.typeTransaction === 'Sortante' ? virement.namesource : virement.namedest) || 'Unknown account' }}
+          </div>
+          <div class="transaction-date">{{ virement.dateTransaction | date:'medium' }}</div>
+        </div>
+        <div class="transaction-amount" [class.outgoing]="virement.typeTransaction === 'Sortante'">
+          {{ virement.montant | currency:'MAD ' }}
+        </div>
+      </div>
+    </div>
+    <ng-template #noTransactions>
+      <div class="no-transactions">
+        <p>No recent transactions found</p>
+      </div>
+    </ng-template>
+  </div>
 </div>

@@ -11,7 +11,7 @@ body {
 .mainPage{
             top: 0;
             margin-left:250px;
-        
+
         }
         @media (max-width: 768px) {
             .mainPage {
@@ -154,6 +154,7 @@ body {
     background: #fff;
     border-radius: 12px;
     padding: 24px;
+    width: 80%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -246,7 +247,7 @@ body {
     .account-cards-container {
         flex-direction: column;
     }
-    
+
     .account-card {
         width: 100%;
         min-width: auto;

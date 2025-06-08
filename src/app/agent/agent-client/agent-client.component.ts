@@ -28,25 +28,25 @@ export class AgentClientComponent {
   // Mock users data
   users: UserDisplay[] = [];
   allUsers: UserDisplay[] = [];
-  
+
   // Filter dropdown visibility
   isFilterDropdownVisible: boolean = false;
-  
+
   // Client form properties
   isClientModalVisible: boolean = false;
   clientForm!: FormGroup;
-  
+
   // Client edit state
   isEditMode: boolean = false;
   editClientId: number | undefined;
-  
+
   // Client view state
   isViewMode: boolean = false;
   selectedClient: UserDisplay | null = null;
-  
+
   // Search functionality
   searchQuery: string = '';
-  
+
   // Filters
   filters: Filters = {
     roles: {
@@ -80,7 +80,7 @@ export class AgentClientComponent {
     this.initializeMockData();
     this.allUsers = [...this.users];
   }
-  
+
   private initializeClientForm(): void {
     this.clientForm = this.fb.group({
       prenom: ['', Validators.required],
@@ -103,7 +103,7 @@ export class AgentClientComponent {
         prenom: 'Emily',
         email: 'emily.williams@example.com',
         telephone: '+1 (555) 123-4567',
-        role: Role.CLIENT,
+
         estActif: true,
         dateCreation: new Date('2023-05-18'),
         initials: 'EW',
@@ -126,7 +126,7 @@ export class AgentClientComponent {
         prenom: 'Michael',
         email: 'michael.brown@example.com',
         telephone: '+1 (555) 987-6543',
-        role: Role.CLIENT,
+
         estActif: true,
         dateCreation: new Date('2023-06-05'),
         initials: 'MB',
@@ -150,7 +150,7 @@ export class AgentClientComponent {
         prenom: 'Jessica',
         email: 'jessica.smith@example.com',
         telephone: '+1 (555) 456-7890',
-        role: Role.CLIENT,
+
         estActif: true,
         dateCreation: new Date('2023-07-12'),
         initials: 'JS',
@@ -174,7 +174,7 @@ export class AgentClientComponent {
         prenom: 'David',
         email: 'david.johnson@example.com',
         telephone: '+1 (555) 321-0987',
-        role: Role.CLIENT,
+
         estActif: false,
         dateCreation: new Date('2023-08-20'),
         initials: 'DJ',
@@ -197,7 +197,7 @@ export class AgentClientComponent {
         nom: 'Williams',
         prenom: 'Emily',
         email: 'emily.williams@example.com',
-        role: Role.CLIENT,
+
         estActif: false,
         dateCreation: new Date('2023-05-18'),
         initials: 'EW',
@@ -212,7 +212,7 @@ export class AgentClientComponent {
         nom: 'Brown',
         prenom: 'Michael',
         email: 'michael.brown@example.com',
-        role: Role.CLIENT,
+
         estActif: true,
         dateCreation: new Date('2023-06-05'),
         initials: 'MB',
@@ -235,9 +235,9 @@ export class AgentClientComponent {
     } else {
       // Filter users by name, email, phone, or CIN with improved search
       const query = this.searchQuery.toLowerCase().trim();
-      this.users = this.allUsers.filter(user => 
+      this.users = this.allUsers.filter(user =>
         // Search by full name
-        `${user.prenom} ${user.nom}`.toLowerCase().includes(query) || 
+        `${user.prenom} ${user.nom}`.toLowerCase().includes(query) ||
         // Search by first name only
         user.prenom?.toLowerCase().includes(query) ||
         // Search by last name only
@@ -254,26 +254,26 @@ export class AgentClientComponent {
     }
     // Apply any existing sort after filtering
     this.applySorting(this.users);
-    
+
     // Show feedback if no results found
     if (this.searchQuery.trim() && this.users.length === 0) {
       this.showAlert(`No users found matching "${this.searchQuery}"`, 'error', 3000);
     }
   }
-  
+
   applyFilters(): void {
     let filteredUsers = [...this.allUsers];
-    
+
     // Apply role filters if any are selected
-    const roleFilters = Object.values(this.filters.roles).some(val => val);
+    const roleFilters = Object.values(true).some(val => val);
     if (roleFilters) {
       filteredUsers = filteredUsers.filter(user => {
         // Only client role is relevant
-        if (this.filters.roles.user && user.role === Role.CLIENT) return true;
+        if (true) return true;
         return false;
       });
     }
-    
+
     // Apply status filters if any are selected
     const statusFilters = Object.values(this.filters.status).some(val => val);
     if (statusFilters) {
@@ -286,13 +286,13 @@ export class AgentClientComponent {
         return false;
       });
     }
-    
+
     // Apply sorting
     this.applySorting(filteredUsers);
-    
+
     this.users = filteredUsers;
   }
-  
+
   clearFilters(): void {
     this.filters = {
       roles: {
@@ -311,11 +311,11 @@ export class AgentClientComponent {
         newClient: false
       }
     };
-    
+
     this.users = [...this.allUsers];
     this.applySorting(this.users);
   }
-  
+
   applySorting(userList: UserDisplay[]): void {
     switch(this.sortOption) {
       case 'name':
@@ -349,24 +349,24 @@ export class AgentClientComponent {
     this.sortOption = target.value;
     this.applySorting(this.users);
   }
-  
+
   onClickOutside(event: MouseEvent): void {
     // Close filter dropdown if clicked outside
     const filterDropdownBtn = document.querySelector('#filter-dropdown-btn') as HTMLElement;
     const filterDropdown = document.querySelector('.filter-dropdown') as HTMLElement;
-    
+
     // Check if the click was outside both the button and the dropdown
-    if (filterDropdownBtn && filterDropdown && 
-        !filterDropdownBtn.contains(event.target as Node) && 
+    if (filterDropdownBtn && filterDropdown &&
+        !filterDropdownBtn.contains(event.target as Node) &&
         !filterDropdown.contains(event.target as Node)) {
       this.isFilterDropdownVisible = false;
     }
-    
+
     // Close user action dropdown menus if clicked outside
     if (this.activeDropdownId !== null) {
       const actionDropdown = document.querySelector('.origin-top-right') as HTMLElement;
       const actionBtn = document.querySelector(`button[data-user-id="${this.activeDropdownId}"]`) as HTMLElement;
-      
+
       if (!actionDropdown || !actionDropdown.contains(event.target as Node)) {
         if (!actionBtn || !actionBtn.contains(event.target as Node)) {
           this.activeDropdownId = null;
@@ -374,7 +374,7 @@ export class AgentClientComponent {
       }
     }
   }
-  
+
   // Toggle client modal visibility
   toggleClientModal(): void {
     this.isClientModalVisible = !this.isClientModalVisible;
@@ -394,19 +394,19 @@ export class AgentClientComponent {
   resetClientForm(): void {
     this.clientForm.reset();
   }
-  
+
   // Handle client form submission
   onClientSubmit(): void {
     if (this.clientForm.invalid) {
       return;
     }
-    
+
     const formValues = this.clientForm.value;
-    
+
     if (this.isEditMode && this.editClientId) {
       // Update existing client
       const clientIndex = this.users.findIndex(u => u.id === this.editClientId);
-      
+
       if (clientIndex !== -1) {
         // Update the client data
         const updatedClient: Client = {
@@ -424,10 +424,10 @@ export class AgentClientComponent {
           numeroClient: this.users[clientIndex].numeroClient ?? 0, // Ensure numeroClient is a number
           comptes: this.users[clientIndex].comptes || [] // Ensure comptes is an array
         };
-        
+
         // Update the mock data
         const persistedClient = updateClient(updatedClient);
-        
+
         if (persistedClient) {
           // Update local UI data
           this.users[clientIndex] = {
@@ -435,10 +435,10 @@ export class AgentClientComponent {
             initials: `${formValues.prenom[0]}${formValues.nom[0]}`,
             roleLabel: 'Client'
           };
-          
+
           // Update the allUsers array
           this.allUsers = [...this.users];
-          
+
           console.log('Client updated successfully:', this.users[clientIndex]);
           this.showAlert('Client updated successfully', 'success');
         } else {
@@ -455,8 +455,6 @@ export class AgentClientComponent {
         email: formValues.email,
         telephone: formValues.telephone,
         identifiant: `${formValues.prenom.toLowerCase()[0]}${formValues.nom.toLowerCase()}`,
-        password: formValues.password,
-        role: Role.CLIENT,
         estActif: true,
         dateCreation: new Date(),
         numeroClient: 0, // This will be set by addClient function
@@ -468,10 +466,10 @@ export class AgentClientComponent {
         cin: formValues.cin,
         comptes: []
       };
-      
+
       // Add client to mock data
       const savedClient = addClient(newClientBase);
-      
+
       // Add new client to the users array for UI
       const newClient: UserDisplay = {
         ...savedClient,
@@ -482,29 +480,29 @@ export class AgentClientComponent {
         roleIcon: 'fas fa-user',
         roleLabel: 'Client'
       };
-      
+
       // Add to local data for UI
       this.users.unshift(newClient);
       this.allUsers = [...this.users];
-      
+
       console.log('Client created successfully:', newClient);
       console.log('MOCK_CLIENTS now has', MOCK_CLIENTS.length, 'entries');
       this.showAlert('Client created successfully', 'success');
     }
-    
+
     // Close modal and reset form
     this.toggleClientModal();
   }
-  
+
   // Edit client
   editClient(client: UserDisplay): void {
     this.isEditMode = true;
     this.editClientId = client.id;
-    
+
     // Update form validation for password - not required in edit mode
     this.clientForm.controls['password'].clearValidators();
     this.clientForm.controls['password'].updateValueAndValidity();
-    
+
     // Populate the form with the client's data
     this.clientForm.patchValue({
       prenom: client.prenom,
@@ -518,63 +516,63 @@ export class AgentClientComponent {
       dateNaissance: client.dateNaissance ? this.formatDateForInput(client.dateNaissance) : '',
       cin: client.cin
     });
-    
+
     // Show the modal
     this.isClientModalVisible = true;
   }
-  
+
   // View client details
   viewClientDetails(client: UserDisplay): void {
     this.selectedClient = client;
     this.isViewMode = true;
   }
-  
+
   // Close client details view
   closeClientDetails(): void {
     this.selectedClient = null;
     this.isViewMode = false;
   }
-  
+
   // Format a date for the input[type="date"] field (YYYY-MM-DD)
   private formatDateForInput(date: Date): string {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
     let day = '' + d.getDate();
     const year = d.getFullYear();
-    
+
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-    
+
     return [year, month, day].join('-');
   }
-  
+
   // Active dropdown ID
   activeDropdownId: number | null = null;
-  
+
   // Toggle user actions dropdown
   toggleUserActions(userId: number | undefined): void {
     if (userId === undefined) return;
     this.activeDropdownId = this.activeDropdownId === userId ? null : userId;
   }
-  
+
   // Toggle user active status
   toggleUserStatus(user: UserDisplay): void {
     if (user) {
       user.estActif = !user.estActif;
       user.statusClass = user.estActif ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800';
-      
+
       // Close dropdown menu
       this.activeDropdownId = null;
-      
+
       console.log(`User ${user.prenom} ${user.nom} is now ${user.estActif ? 'active' : 'inactive'}`);
       this.showAlert(`User ${user.prenom} ${user.nom} is now ${user.estActif ? 'active' : 'inactive'}`, 'success');
     }
   }
-  
+
   // Modified deleteClient to handle undefined id
   deleteClient(clientId: number | undefined): void {
     if (clientId === undefined) return;
-    
+
     if (confirm('Are you sure you want to delete this client?')) {
       this.users = this.users.filter(user => user.id !== clientId);
       this.allUsers = [...this.users];
@@ -582,22 +580,22 @@ export class AgentClientComponent {
       this.showAlert('Client deleted successfully', 'success');
     }
   }
-  
+
   // Alert message properties
   alertMessage: string | null = null;
   alertType: 'success' | 'error' = 'success';
   alertTimeout: any;
-  
+
   // Show alert message
   showAlert(message: string, type: 'success' | 'error' = 'success', duration: number = 5000): void {
     this.alertMessage = message;
     this.alertType = type;
-    
+
     // Clear any existing timeout
     if (this.alertTimeout) {
       clearTimeout(this.alertTimeout);
     }
-    
+
     // Auto-hide the alert after the specified duration
     this.alertTimeout = setTimeout(() => {
       this.closeAlert();
@@ -611,7 +609,7 @@ export class AgentClientComponent {
       this.alertTimeout = undefined;
     }
   }
-  
+
   // Clear search and reset users list
   clearSearch(): void {
     this.searchQuery = '';

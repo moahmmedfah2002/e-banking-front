@@ -11,7 +11,7 @@ import { AuthService } from '../../auth.service';
 })
 export class AgentClientService {
   private baseApiUrl = environment.apiUrl ? environment.apiUrl : '/api';
-  private agentUrl = `${this.baseApiUrl}/agent`;
+  private agentUrl = `${this.baseApiUrl}/api/agent`;
   private agentId: number | null = null;
 
   constructor(

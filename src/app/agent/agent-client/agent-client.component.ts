@@ -88,7 +88,6 @@ export class AgentClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadClients();
-    this.loadClientStats();
   }
 
   
@@ -140,25 +139,7 @@ export class AgentClientComponent implements OnInit {
   /**
    * Load client statistics from the service
    */
-  loadClientStats(): void {
-    this.agentClientService.getClientStats().subscribe(
-      (stats) => {
-        this.userStats = {
-          totalUsers: stats.totalClients,
-          totalIncrease: 0, // You might calculate this if you have historical data
-          activeUsers: stats.activeClients,
-          activeIncrease: 0,
-          adminsAndManagers: 0,
-          adminsChange: 'N/A',
-          flaggedAccounts: stats.inactiveClients,
-          flaggedIncrease: 0
-        };
-      },
-      (error) => {
-        console.error('Error loading client stats:', error);
-      }
-    );
-  }
+  
 
   /**
    * Map a Client object to UserDisplay format
@@ -485,7 +466,6 @@ export class AgentClientComponent implements OnInit {
         
         this.showAlert('Client created successfully', 'success');
         this.isClientModalVisible = false;
-        this.loadClientStats(); // Refresh stats
       },
       (error) => {
         console.error('Error creating client:', error);
@@ -574,7 +554,6 @@ export class AgentClientComponent implements OnInit {
           this.allUsers = this.allUsers.filter(user => user.id !== clientId);
           
           this.showAlert('Client deleted successfully', 'success');
-          this.loadClientStats(); // Refresh stats
         },
         (error) => {
           console.error('Error deleting client:', error);
@@ -620,7 +599,6 @@ export class AgentClientComponent implements OnInit {
         this.activeDropdownId = null;
         
         this.showAlert(`Client ${client.estActif ? 'activated' : 'deactivated'} successfully`, 'success');
-        this.loadClientStats(); // Refresh stats
       },
       (error) => {
         console.error('Error updating client status:', error);

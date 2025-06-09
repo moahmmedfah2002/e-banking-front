@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { User } from '../../modele/User';
 import { Role } from '../../modele/Role';
@@ -39,109 +39,10 @@ export class AdminSubAdminService {
     let url = `${this.apiUrl}/api/admins`;
     
     // Return mock data if apiUrl is null (for development)
-    if (!this.apiUrl) {
-      // Generate some mock admin users
-      const mockAdmins: User[] = [
-        {
-          id: 1,
-          nom: 'Admin',
-          prenom: 'Super',
-          email: 'super.admin@ebanking.com',
-          telephone: '+1234567890',
-          identifiant: 'superadmin',
-          role: Role.ADMIN,
-          estActif: true,
-          dateCreation: new Date('2023-01-01')
-        },
-        {
-          id: 2,
-          nom: 'Admin',
-          prenom: 'Regular',
-          email: 'regular.admin@ebanking.com',
-          telephone: '+1234567891',
-          identifiant: 'regadmin',
-          role: Role.ADMIN,
-          estActif: true,
-          dateCreation: new Date('2023-02-15')
-        },
-        {
-          id: 3,
-          nom: 'Admin',
-          prenom: 'System',
-          email: 'system.admin@ebanking.com',
-          telephone: '+1234567892',
-          identifiant: 'sysadmin',
-          role: Role.ADMIN,
-          estActif: true,
-          dateCreation: new Date('2023-03-10')
-        },
-        {
-          id: 4,
-          nom: 'Admin',
-          prenom: 'Network',
-          email: 'network.admin@ebanking.com',
-          telephone: '+1234567893',
-          identifiant: 'netadmin',
-          role: Role.ADMIN,
-          estActif: true,
-          dateCreation: new Date('2023-04-05')
-        },
-        {
-          id: 5,
-          nom: 'Admin',
-          prenom: 'Inactive',
-          email: 'inactive.admin@ebanking.com',
-          telephone: '+1234567894',
-          identifiant: 'inactiveadmin',
-          role: Role.ADMIN,
-          estActif: false,
-          dateCreation: new Date('2023-05-20')
-        }
-      ];
-      
-      let filteredAdmins = [...mockAdmins];
-      
-      if (filters) {
-        // Apply filters to mock data
-        if (filters.status) {
-          filteredAdmins = filteredAdmins.filter(admin => {
-            if (filters.status === 'active') return admin.estActif === true;
-            if (filters.status === 'inactive') return admin.estActif === false;
-            return true;
-          });
-        }
-        
-        if (filters.searchTerm) {
-          const searchLower = filters.searchTerm.toLowerCase();
-          filteredAdmins = filteredAdmins.filter(admin => 
-            admin.nom?.toLowerCase().includes(searchLower) || 
-            admin.prenom?.toLowerCase().includes(searchLower) || 
-            admin.email?.toLowerCase().includes(searchLower)
-          );
-        }
-        
-        // Add pagination
-        if (filters.page !== undefined && filters.pageSize !== undefined) {
-          const startIndex = filters.page * filters.pageSize;
-          filteredAdmins = filteredAdmins.slice(startIndex, startIndex + filters.pageSize);
-        }
-      }
-      
-      return of(filteredAdmins);
-    }
     
-    // Build query parameters
-    let params = new HttpParams();
-    if (filters) {
-      if (filters.role) params = params.append('role', filters.role);
-      if (filters.status) params = params.append('status', filters.status);
-      if (filters.searchTerm) params = params.append('search', filters.searchTerm);
-      if (filters.page !== undefined) params = params.append('page', filters.page.toString());
-      if (filters.pageSize !== undefined) params = params.append('size', filters.pageSize.toString());
-    }
-    
-    return this.http.get<User[]>(url, { params }).pipe(
-      catchError(this.handleError<User[]>('getAdmins', []))
+    return this.http.get<User[]>(url).pipe(
+      map(response => response as User[])
+      , catchError(this.handleError<User[]>('getAdmins', []))
     );
   }
 
@@ -220,7 +121,7 @@ export class AdminSubAdminService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`);
+      console.error(`${operation} failed: ${JSON.stringify(error)}`);
       
       // Let the app keep running by returning an empty result.
       return of(result as T);

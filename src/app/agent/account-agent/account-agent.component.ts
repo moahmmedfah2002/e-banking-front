@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Compte } from '../../modele/Compte';
+import { Client } from '../../modele/Client'; // Import Client model
 import { ACCOUNT_TYPES } from '../../modele/mock-accounts';
 import { AgentAccountService } from '../../services/agent-services/agent-account/agent-account.service';
 import { AccountService } from '../../services/account.service';
+import { HomeService } from '../../services/homeService';
+import { AgentClientService } from '../../services/agent-services/agent-client/agent-client.service';
 
 interface AccountStats {
   totalAccounts: number;
@@ -34,6 +37,7 @@ export class AccountAgentComponent implements OnInit {
   // All accounts
   accounts: Compte[] = [];
   allAccounts: Compte[] = [];
+  clients: Client[] = []; // Add clients array
   
   // Account statistics
   accountStats: AccountStats = {
@@ -83,6 +87,7 @@ export class AccountAgentComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private agentAccountService: AgentAccountService,
+    private agentClientService: AgentClientService, // Inject AgentClientService
     private fb: FormBuilder
   ) {
     this.initializeAccountForm();
@@ -91,6 +96,7 @@ export class AccountAgentComponent implements OnInit {
   ngOnInit(): void {
     // Load all accounts
     this.loadAccounts();
+    this.loadClients(); // Call loadClients
     
     // Get available account types
     this.accountTypes = this.accountService.getAccountTypes();
@@ -107,16 +113,31 @@ export class AccountAgentComponent implements OnInit {
   }
   // Load all accounts
   loadAccounts(): void {
-    this.agentAccountService.getAccounts().subscribe({
-      next: (accounts) => {
+    this.agentAccountService.getAccounts(
+      sessionStorage.getItem('user') ? parseInt(JSON.parse(sessionStorage.getItem('user') || "{}").id) : parseInt(JSON.parse(localStorage.getItem('user') || "{}").id)
+    ).subscribe({
+      next: (accounts: Compte[]) => { // Add type for accounts
         this.accounts = accounts;
         this.allAccounts = [...accounts];
         // Calculate account statistics
         this.calculateAccountStats();
       },
-      error: (error) => {
+      error: (error: any) => { // Add type for error
         console.error('Error loading accounts:', error);
         this.showAlert('Error loading accounts', 'error');
+      }
+    });
+  }
+
+  // Load all clients
+  loadClients(): void {
+    this.agentClientService.getClients().subscribe({ // Assuming getClients method exists in AgentClientService
+      next: (clients: Client[]) => { // Add type for clients
+        this.clients = clients;
+      },
+      error: (error: any) => { // Add type for error
+        console.error('Error loading clients:', error);
+        this.showAlert('Error loading clients', 'error');
       }
     });
   }
@@ -182,7 +203,8 @@ export class AccountAgentComponent implements OnInit {
         numericCompte: this.editAccountId,
         typeCompte: formValues.typeCompte,
         solde: formValues.solde,
-        statue: formValues.statue
+        statue: formValues.statue,
+        client: formValues.clientId // Assign clientId to client property
       };
         
       this.agentAccountService.updateAccount(accountToUpdate).subscribe({
@@ -207,7 +229,8 @@ export class AccountAgentComponent implements OnInit {
         typeCompte: formValues.typeCompte,
         solde: formValues.solde,
         statue: formValues.statue,
-        dateCreation: new Date()
+        dateCreation: new Date(),
+        client: formValues.clientId // Assign clientId to client property
       };
       
       this.agentAccountService.createAccount(newAccount).subscribe({
@@ -235,7 +258,7 @@ export class AccountAgentComponent implements OnInit {
       typeCompte: account.typeCompte || '',
       solde: account.solde || 0,
       statue: account.statue !== undefined ? account.statue : true,
-      clientId: '' // In a real app, we would set this to the client ID
+      clientId: account.client || '' // Populate clientId from account.client
     });
     
     this.toggleAccountModal();

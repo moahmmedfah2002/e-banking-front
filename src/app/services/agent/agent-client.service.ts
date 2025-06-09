@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AgentClientService {
-  private apiUrl = `${environment.apiUrl}/agent/clients`;
+  private apiUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +17,7 @@ export class AgentClientService {
    * @returns Observable with client data
    */
   getClients(filters?: any): Observable<any> {
-    return this.http.get(this.apiUrl, { params: filters });
+    return this.http.get(`${this.apiUrl}/agent/clients`);
   }
 
   /**
@@ -26,7 +26,7 @@ export class AgentClientService {
    * @returns Observable with client details
    */
   getClientDetails(clientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${clientId}`);
+    return this.http.get(`${this.apiUrl}/agent/clients/${clientId}`);
   }
 
   /**
@@ -35,7 +35,7 @@ export class AgentClientService {
    * @returns Observable with client account summaries
    */
   getClientAccounts(clientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${clientId}/accounts`);
+    return this.http.get(`${this.apiUrl}/agent/clients/${clientId}/accounts`);
   }
 
   /**
@@ -45,7 +45,7 @@ export class AgentClientService {
    * @returns Observable with the updated client
    */
   updateClient(clientId: string, clientData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${clientId}`, clientData);
+    return this.http.put(`${this.apiUrl}/agent/clients/${clientId}`, clientData);
   }
 
   /**
@@ -54,7 +54,7 @@ export class AgentClientService {
    * @returns Observable with the created client
    */
   addClient(clientData: any): Observable<any> {
-    return this.http.post(this.apiUrl, clientData);
+    return this.http.post(`${this.apiUrl}/agent/clients`, clientData);
   }
 
   /**
@@ -63,6 +63,6 @@ export class AgentClientService {
    * @returns Observable with crypto portfolio data
    */
   getClientCryptoPortfolio(clientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${clientId}/crypto-portfolio`);
+    return this.http.get(`${this.apiUrl}/agent/clients/${clientId}/crypto-portfolio`);
   }
 }

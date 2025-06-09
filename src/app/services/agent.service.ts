@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AgentService {
-  private apiUrl = `${environment.apiUrl}/api/admins`;
+  private apiUrl = `${environment.apiUrl}/api/agent`;
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };

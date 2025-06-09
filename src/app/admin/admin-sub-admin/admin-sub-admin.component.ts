@@ -452,83 +452,77 @@ export class AdminSubAdminComponent implements OnInit {
     // Handle admin form submission
   onAdminSubmit(): void {
     if (this.adminForm.invalid) {
+      this.showAlert('Please fill all required fields.', 'error');
       return;
     }
-    
+
     const formValues = this.adminForm.value;
-    
-    if (this.isEditMode && this.editAdminId) {
+
+    if (this.isEditMode && this.editAdminId !== undefined) {
       // Update existing admin
-      const adminIndex = this.admins.findIndex(a => a.id === this.editAdminId);
-      
-      if (adminIndex !== -1) {
-        // Create updated admin object
-        const existingAdmin = this.admins[adminIndex];
-        const updatedAdmin: User = {
-          ...existingAdmin,
-          nom: formValues.nom,
-          prenom: formValues.prenom,
-          email: formValues.email,
-          telephone: formValues.telephone,
-          // Other properties from the form
-        };
-        
-        // Update admin via service
-        this.adminSubAdminService.updateAdmin(updatedAdmin).subscribe((e)=>{
-          next: (result: AdminDisplay) => {
-            // Update display object with new data
-            const updatedDisplay: AdminDisplay = {
-              ...result,
-              initials: `${result.prenom?.[0] || ''}${result.nom?.[0] || ''}`,
-              lastLogin: existingAdmin.lastLogin,
-              statusClass: result.estActif ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800',
-              roleLabel: formValues.isSuperAdmin ? 'Super Admin' : 'Admin',
-              roleBadgeClass: 'role-badge-admin',
-              roleIcon: formValues.isSuperAdmin ? 'fas fa-shield-alt' : 'fas fa-user-shield'
-            };
-            
-            // Update local UI data
-            this.admins[adminIndex] = updatedDisplay;
-        
-        // Update the allAdmins array
-        this.allAdmins = [...this.admins];
-        
-        console.log('Admin updated successfully:', this.admins[adminIndex]);
-        this.showAlert('Admin updated successfully', 'success');
-      }});
-      } else {
-      // Create new admin
-      const newAdmin: AdminDisplay = {
-        id: Math.max(...this.admins.map(a => a.id || 0)) + 1,
+      const existingAdmin = this.allAdmins.find(a => a.id === this.editAdminId);
+      if (!existingAdmin) {
+        this.showAlert('Admin not found for editing.', 'error');
+        return;
+      }
+
+      const adminToUpdate: User = {
+        ...existingAdmin, // Preserve existing fields like id, dateCreation, etc.
         nom: formValues.nom,
         prenom: formValues.prenom,
         email: formValues.email,
         telephone: formValues.telephone,
-        identifiant: `${formValues.prenom.toLowerCase()[0]}${formValues.nom.toLowerCase()}`,
-        password: formValues.password,
-        role: Role.ADMIN,
-        estActif: true,
-        dateCreation: new Date(),
-        initials: `${formValues.prenom[0]}${formValues.nom[0]}`,
-        lastLogin: 'Just now',
-        statusClass: 'bg-green-100 text-green-800',
-        roleBadgeClass: 'role-badge-admin',
-        roleIcon: formValues.isSuperAdmin ? 'fas fa-shield-alt' : 'fas fa-user-shield',
-        roleLabel: formValues.isSuperAdmin ? 'Super Admin' : 'Admin'
+        // estActif should be handled by a separate mechanism if needed, or included if part of the form
+        // role might also need specific handling if it can be changed via this form
+        // For now, assuming isSuperAdmin from form determines the role for update if applicable
+        // password should only be sent if it's being changed.
+        // The service should handle partial updates or expect all fields.
       };
-      
-      // Add to local data for UI
-      this.admins.unshift(newAdmin);
-      this.allAdmins = [...this.admins];
-      
-      console.log('Admin created successfully:', newAdmin);
-      this.showAlert('Admin created successfully', 'success');
+      // Conditionally add password if provided (and if backend supports changing it here)
+      if (formValues.password) {
+        adminToUpdate.password = formValues.password;
+      }
+
+
+      this.adminSubAdminService.updateAdmin(adminToUpdate).subscribe({
+        next: (updatedAdminFromServer) => {
+          this.showAlert('Admin updated successfully', 'success');
+          this.loadAdmins(); // Reload admins to reflect changes
+          this.toggleAdminModal();
+        },
+        error: (err) => {
+          console.error('Error updating admin:', err);
+          this.showAlert('Failed to update admin. ' + (err.error?.message || err.message), 'error');
+        }
+      });
+
+    } else {
+      // Create new admin
+      const newAdminPayload: Partial<User> = { // Use Partial<User> or a specific DTO for creation
+        nom: formValues.nom,
+        prenom: formValues.prenom,
+        email: formValues.email,
+        telephone: formValues.telephone,
+        password: formValues.password, // Password is required for new admin
+        // identifiant: `${formValues.prenom.toLowerCase()[0]}${formValues.nom.toLowerCase()}`, // Backend should generate this
+        role: formValues.isSuperAdmin ? Role.ADMIN : Role.ADMIN, // Using Role.ADMIN for now
+        estActif: true, // Default to active, or get from form if available
+        // dateCreation: new Date() // Backend should set this
+      };
+
+      this.adminSubAdminService.createAdmin(newAdminPayload as User).subscribe({
+        next: (createdAdminFromServer) => {
+          this.showAlert('Admin created successfully', 'success');
+          this.loadAdmins(); // Reload admins to reflect changes and get the new admin with ID
+          this.toggleAdminModal();
+        },
+        error: (err) => {
+          console.error('Error creating admin:', err);
+          this.showAlert('Failed to create admin. ' + (err.error?.message || err.message), 'error');
+        }
+      });
     }
-    
-    // Close modal and reset form
-    this.toggleAdminModal();
   }
-}
   // Edit admin
   editAdmin(admin: AdminDisplay): void {
     this.isEditMode = true;

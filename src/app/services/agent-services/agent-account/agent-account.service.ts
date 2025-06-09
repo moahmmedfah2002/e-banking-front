@@ -10,7 +10,7 @@ import { AuthService } from '../../auth.service';
   providedIn: 'root'
 })
 export class AgentAccountService {
-  private apiUrl = environment.apiUrl ? `${environment.apiUrl}/agents/accounts` : '/api/agents/accounts';
+  private apiUrl = `${environment.apiUrl}`;
 
   constructor(
     private http: HttpClient,
@@ -21,9 +21,9 @@ export class AgentAccountService {
    * Get all accounts managed by this agent
    * @returns Observable of Compte array
    */
-  getAccounts(): Observable<Compte[]> {
+  getAccounts(agentId:number): Observable<Compte[]> {
     const token = this.authService.getToken();
-    return this.http.get<Compte[]>(this.apiUrl, {
+    return this.http.get<Compte[]>(`${this.apiUrl}/comptes/agent/${agentId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -83,6 +83,24 @@ export class AgentAccountService {
       tap((newAccount: Compte) => console.log(`Created account w/ id=${newAccount.numericCompte}`)),
       catchError(this.handleError<Compte>('createAccount'))
     );
+  }
+
+  updateAccountToClient(accountId: string, accountData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${accountId}`, accountData);
+  }
+
+  /**
+   * Create a new account for a client
+   * @param clientId The ID of the client
+   * @param accountData The account details
+   * @returns Observable with the created account
+   */
+  createAccountToClient(clientId: string, accountData: any): Observable<any> {
+    const data = {
+      ...accountData,
+      clientId
+    };
+    return this.http.post(this.apiUrl, data);
   }
 
   /**

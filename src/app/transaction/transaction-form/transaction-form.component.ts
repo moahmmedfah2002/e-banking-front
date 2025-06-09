@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {User} from '../../modele/User';
+import {ViremntService} from '../../services/viremntService';
 
 @Component({
   selector: 'app-transaction-form',
@@ -9,11 +10,13 @@ import {User} from '../../modele/User';
   styleUrl: './transaction-form.component.css'
 })
 export class TransactionFormComponent implements OnInit {
-
+  public virement:ViremntService=inject(ViremntService);
   @Input()
   public client?: User;
+  public status?:boolean;
+  public msg?:string;
   activeTab: string = 'transfer';
-
+  private dialog: MatDialog=inject(MatDialog)
   // Form groups for different transaction types
   transferForm!: FormGroup;
   payBillForm!: FormGroup;
@@ -45,6 +48,7 @@ export class TransactionFormComponent implements OnInit {
       scheduleDate: [''],
       note: ['']
     });
+
 
     // Initialize Pay Bills form
     this.payBillForm = this.fb.group({
@@ -206,6 +210,29 @@ export class TransactionFormComponent implements OnInit {
     }
   }
 
+  strip(){
+    this.virement.viremntStrip(this.transferForm.get("accountDebit")?.value,this.transferForm.get("amount")?.value)
+  }
+  virementAccount(){
+    this.virement.viremntAccount(this.transferForm.get("accountDebit")?.value,this.transferForm.get("toMyAccount")?.value,this.transferForm.get("amount")?.value,this.transferForm.get("note"))
+      .subscribe(
+        {
+
+          next: (msg) => {
+            // Show popup with message
+            this.dialog.open(MessagePopupComponent, {
+              data: { message: msg }
+            });
+          },
+          error: (error) => {
+            this.dialog.open(MessagePopupComponent, {
+              data: { message: error.error.message }
+            });
+
+
+        }}
+      )
+  }
   onBackImageSelected(event: any): void {
     const file = event?.target?.files?.[0];
     if (file) {

@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AgentTransactionService {
+  private origin= environment.apiUrl;
   private apiUrl = `${environment.apiUrl}/agent/transactions`;
 
   constructor(private http: HttpClient) { }
@@ -16,8 +17,8 @@ export class AgentTransactionService {
    * @param filters Optional filters to apply (status, type, symbol, etc.)
    * @returns Observable with transactions data
    */
-  getAllTransactions(filters?: any): Observable<any> {
-    return this.http.get(this.apiUrl, { params: filters });
+  getAllTransactions(agentId : number): Observable<any> {
+    return this.http.get(`${this.origin}/api/agent/${agentId}/transactions`);
   }
 
   /**

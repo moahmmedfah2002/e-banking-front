@@ -10,7 +10,7 @@ import { AuthService } from '../../auth.service';
   providedIn: 'root'
 })
 export class AgentTransactionService {
-  private apiUrl = environment.apiUrl ? `${environment.apiUrl}/agents/transactions` : '/api/agents/transactions';
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,

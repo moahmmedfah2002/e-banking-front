@@ -7,7 +7,8 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AgentAccountService {
-  private apiUrl = `${environment.apiUrl}/agent/accounts`;
+  private origin = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/comptes`;
 
   constructor(private http: HttpClient) { }
 
@@ -60,7 +61,7 @@ export class AgentAccountService {
       ...accountData,
       clientId
     };
-    return this.http.post(this.apiUrl, data);
+    return this.http.post(`${this.apiUrl}/add`, data);
   }
 
   /**

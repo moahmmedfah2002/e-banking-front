@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { Compte } from '../../modele/Compte';
 import { Client } from '../../modele/Client'; // Import Client model
 import { ACCOUNT_TYPES } from '../../modele/mock-accounts';
@@ -60,7 +61,7 @@ export class AccountAgentComponent implements OnInit {
   
   // Account view state
   isViewMode: boolean = false;
-  selectedAccount: Compte | null = null;
+  selectedAccount: Compte = new Compte(); // Initialize with empty Compte object
   
   // Search functionality
   searchQuery: string = '';
@@ -83,12 +84,12 @@ export class AccountAgentComponent implements OnInit {
   
   // Available account types
   accountTypes: string[] = [];
-  
-  constructor(
+    constructor(
     private accountService: AccountService,
     private agentAccountService: AgentAccountService,
     private agentClientService: AgentClientService, // Inject AgentClientService
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
     this.initializeAccountForm();
   }
@@ -111,6 +112,7 @@ export class AccountAgentComponent implements OnInit {
       clientId: ['', Validators.required]
     });
   }
+  
   // Load all accounts
   loadAccounts(): void {
     this.agentAccountService.getAccounts(
@@ -163,9 +165,13 @@ export class AccountAgentComponent implements OnInit {
   // Reset form
   resetAccountForm(): void {
     this.accountForm.reset({
+      typeCompte: '',
+      solde: 0,
       statue: true,
-      solde: 0
+      clientId: ''
     });
+    this.accountForm.markAsPristine();
+    this.accountForm.markAsUntouched();
   }
 
   // Format account number for display
@@ -177,6 +183,12 @@ export class AccountAgentComponent implements OnInit {
   formatBalance(balance: number | undefined): string {
     return this.accountService.formatBalance(balance);
   }
+  
+  // Format date for display
+  formatDate(date: Date | undefined): string {
+    if (!date) return '';
+    return this.datePipe.transform(date, 'MMM d, y') || '';
+  }
 
   // Handle view account details
   viewAccount(account: Compte): void {
@@ -187,8 +199,9 @@ export class AccountAgentComponent implements OnInit {
   // Close view mode
   closeViewMode(): void {
     this.isViewMode = false;
-    this.selectedAccount = null;
+    this.selectedAccount = new Compte(); // Reset selected account
   }
+
   // Handle account form submission
   onAccountSubmit(): void {
     if (this.accountForm.invalid) {
@@ -196,6 +209,7 @@ export class AccountAgentComponent implements OnInit {
     }
     
     const formValues = this.accountForm.value;
+    console.log('Form values:', formValues);
     
     if (this.isEditMode && this.editAccountId) {
       // Update existing account
@@ -204,11 +218,13 @@ export class AccountAgentComponent implements OnInit {
         typeCompte: formValues.typeCompte,
         solde: formValues.solde,
         statue: formValues.statue,
-        client: formValues.clientId // Assign clientId to client property
+        client: formValues.clientId 
       };
+      
+      console.log('Updating account:', accountToUpdate);
         
       this.agentAccountService.updateAccount(accountToUpdate).subscribe({
-        next: (updatedAccount) => {
+        next: (updatedAccount: Compte) => {
           const index = this.accounts.findIndex(a => a.numericCompte === this.editAccountId);
           if (index !== -1) {
             this.accounts[index] = updatedAccount;
@@ -218,7 +234,7 @@ export class AccountAgentComponent implements OnInit {
           this.calculateAccountStats();
           this.toggleAccountModal();
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error updating account:', error);
           this.showAlert('Error updating account', 'error');
         }
@@ -230,18 +246,20 @@ export class AccountAgentComponent implements OnInit {
         solde: formValues.solde,
         statue: formValues.statue,
         dateCreation: new Date(),
-        client: formValues.clientId // Assign clientId to client property
+        client: formValues.clientId 
       };
       
+      console.log('Creating account:', newAccount);
+      
       this.agentAccountService.createAccount(newAccount).subscribe({
-        next: (createdAccount) => {
+        next: (createdAccount: Compte) => {
           this.accounts.unshift(createdAccount);
           this.allAccounts = [...this.accounts];
           this.showAlert('Account created successfully', 'success');
           this.calculateAccountStats();
           this.toggleAccountModal();
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error creating account:', error);
           this.showAlert('Error creating account', 'error');
         }
@@ -263,6 +281,7 @@ export class AccountAgentComponent implements OnInit {
     
     this.toggleAccountModal();
   }
+
   // Delete an account
   deleteAccount(accountNumber: string | undefined): void {
     if (!accountNumber) return;
@@ -282,6 +301,7 @@ export class AccountAgentComponent implements OnInit {
       });
     }
   }
+
   // Toggle account status (active/inactive)
   toggleAccountStatus(account: Compte): void {
     if (!account.numericCompte) return;
@@ -292,7 +312,7 @@ export class AccountAgentComponent implements OnInit {
     };
     
     this.agentAccountService.updateAccount(updatedAccount).subscribe({
-      next: (result) => {
+      next: (result: Compte) => {
         const accountIndex = this.accounts.findIndex(a => a.numericCompte === account.numericCompte);
         if (accountIndex !== -1) {
           this.accounts[accountIndex] = result;
@@ -302,7 +322,7 @@ export class AccountAgentComponent implements OnInit {
           this.showAlert(`Account ${statusText} successfully`, 'success');
         }
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error toggling account status:', error);
         this.showAlert('Error updating account status', 'error');
       }

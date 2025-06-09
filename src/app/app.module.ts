@@ -61,6 +61,7 @@ import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.co
 import { TransactionDetailComponent } from "./agent/transaction-agent/transaction-detail/transaction-detail.component";
 import { TransactionAgentFormComponent } from './agent/transaction-agent/transaction-form/transaction-form.component';
 import { AgentManagementPageComponent } from './agent-management-page/agent-management-page.component';
+
 @NgModule({
   declarations: [
     // Remove SideBarComponent from here since it's standalone

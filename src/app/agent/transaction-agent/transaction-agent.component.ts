@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Transaction } from '../../modele/Transaction';
-import { AgentTransactionService } from '../../services/agent-services/agent-transaction/agent-transaction.service';
+import { AgentTransactionService } from '../../services/agent/agent-transaction.service';
 import { TransactionAgentFormComponent } from './transaction-form/transaction-form.component';
 import { TransactionDetailComponent } from './transaction-detail/transaction-detail.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-transaction-agent',
@@ -46,36 +47,28 @@ export class TransactionAgentComponent implements OnInit {
   }
   loadTransactions(): void {
     this.loading = true;
-    
-    // Get transaction stats
-    this.transactionService.getTransactionStats().subscribe({
-      next: (stats) => {
-        this.totalTransactions = stats.totalTransactions;
-        this.totalIncoming = stats.totalIncoming;
-        this.totalOutgoing = stats.totalOutgoing;
-      },
-      error: (error) => {
-        console.error('Error loading transaction stats:', error);
-        this.loading = false;
-      }
-    });
-    
-    // Get paginated transactions with filters
-    this.transactionService.getPaginatedTransactions({
-      page: this.currentPage,
-      pageSize: this.pageSize,
-      type: this.filterType !== 'all' ? this.filterType : undefined,
-      status: this.filterStatus !== 'all' ? this.filterStatus : undefined,
-      searchQuery: this.searchQuery || undefined
-    }).subscribe({
+
+    this.transactionService.getAllTransactions(
+      sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user') || '{}').id : JSON.parse(localStorage.getItem('user') || '{}').id,
+    ).subscribe({
       next: (result) => {
-        this.filteredTransactions = result.transactions;
-        this.totalItems = result.total;
-        this.totalPages = Math.ceil(result.total / this.pageSize);
+        if (result && Array.isArray(result.transactions)) {
+          this.filteredTransactions = result.transactions;
+          this.totalItems = result.total || 0;
+          this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+          this.transactions =  this.filteredTransactions
+        } else {
+          this.filteredTransactions = [];
+          this.totalItems = 0;
+          this.totalPages = 1;
+        }
         this.loading = false;
       },
       error: (error) => {
         console.error('Error loading transactions:', error);
+        this.filteredTransactions = [];
+        this.totalItems = 0;
+        this.totalPages = 1;
         this.loading = false;
       }
     });
@@ -142,7 +135,8 @@ export class TransactionAgentComponent implements OnInit {
     closeTransactionForm(): void {
     this.showTransactionForm = false;
     document.body.classList.remove('overflow-hidden');
-  }    handleNewTransaction(transaction: Transaction): void {
+  }    
+  handleNewTransaction(transaction: Transaction): void {
     this.transactionService.createTransaction(transaction).subscribe({
       next: () => {
         this.showTransactionForm = false;

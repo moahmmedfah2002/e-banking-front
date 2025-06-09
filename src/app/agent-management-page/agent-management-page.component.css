@@ -324,6 +324,24 @@ input[type="checkbox"] {
   height: 16px;
 }
 
+.action-btn.activate {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.action-btn.activate:hover {
+  background-color: #bbf7d0;
+}
+
+.action-btn.deactivate {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.action-btn.deactivate:hover {
+  background-color: #fecaca;
+}
+
 /* Agent info styling */
 .agent-info {
   display: flex;

@@ -567,19 +567,20 @@ export class AgentClientComponent implements OnInit {
       );
     }
   }
+
   /**
    * Toggle client active status
    */
   toggleUserStatus(user: UserDisplay): void {
     if (!user || user.id === undefined) return;
     
-    // Determine if we need to activate or deactivate the client
-    const activate = !user.estActif;
-    const method = activate ? 
-      this.agentClientService.activateClient(user.id) : 
-      this.agentClientService.deactivateClient(user.id);
+    // Create a copy with the toggled status
+    const updatedClient: Client = {
+      ...(user as Client),
+      estActif: !user.estActif
+    };
     
-    method.subscribe(
+    this.agentClientService.updateClient(updatedClient).subscribe(
       (client) => {
         // Update in local arrays
         const index = this.users.findIndex(u => u.id === client.id);

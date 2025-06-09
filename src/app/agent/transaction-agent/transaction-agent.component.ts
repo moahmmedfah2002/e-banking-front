@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Transaction } from '../../modele/Transaction';
-import { TransactionService } from '../../transaction.service';
+import { AgentTransactionService } from '../../services/agent-services/agent-transaction/agent-transaction.service';
 import { TransactionAgentFormComponent } from './transaction-form/transaction-form.component';
 import { TransactionDetailComponent } from './transaction-detail/transaction-detail.component';
 
@@ -32,18 +32,19 @@ export class TransactionAgentComponent implements OnInit {
   selectedTransaction: Transaction | null = null;
   showTransactionForm = false;
   showTransactionDetail = false;
-    // Pagination
+  
+  // Pagination
   currentPage = 1;
-  pageSize = 5; // Changed to 5 to match the example
+  pageSize = 5;
   totalItems = 0;
   totalPages = 1;
   
-  constructor(private transactionService: TransactionService) {}
+  constructor(private transactionService: AgentTransactionService) {}
   
   ngOnInit(): void {
     this.loadTransactions();
   }
-    loadTransactions(): void {
+  loadTransactions(): void {
     this.loading = true;
     
     // Get transaction stats
@@ -55,14 +56,16 @@ export class TransactionAgentComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading transaction stats:', error);
+        this.loading = false;
       }
     });
     
-    // Get paginated transactions
+    // Get paginated transactions with filters
     this.transactionService.getPaginatedTransactions({
       page: this.currentPage,
       pageSize: this.pageSize,
       type: this.filterType !== 'all' ? this.filterType : undefined,
+      status: this.filterStatus !== 'all' ? this.filterStatus : undefined,
       searchQuery: this.searchQuery || undefined
     }).subscribe({
       next: (result) => {
@@ -96,24 +99,9 @@ export class TransactionAgentComponent implements OnInit {
       this.changePage(this.currentPage + 1);
     }
   }
-    applyFilters(): void {
-    this.loading = true;
-    
-    const options = {
-      type: this.filterType !== 'all' ? this.filterType : undefined,
-      searchQuery: this.searchQuery || undefined
-    };
-    
-    this.transactionService.getTransactions(options).subscribe({
-      next: (data) => {
-        this.filteredTransactions = data;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error applying filters:', error);
-        this.loading = false;
-      }
-    });
+  applyFilters(): void {
+    this.currentPage = 1; // Reset to first page when applying filters
+    this.loadTransactions();
   }
     resetFilters(): void {
     this.filterType = 'all';
@@ -154,25 +142,11 @@ export class TransactionAgentComponent implements OnInit {
     closeTransactionForm(): void {
     this.showTransactionForm = false;
     document.body.classList.remove('overflow-hidden');
-  }
-    handleNewTransaction(transaction: Transaction): void {
-    // Use the service to create a new transaction
+  }    handleNewTransaction(transaction: Transaction): void {
     this.transactionService.createTransaction(transaction).subscribe({
-      next: (newTransaction) => {
-        // Update the UI with the new transaction
-        this.transactions = [newTransaction, ...this.transactions];
-        this.filteredTransactions = [newTransaction, ...this.filteredTransactions];
-        this.totalTransactions++;
-        
-        if (newTransaction.typeTransaction === 'Entrante') {
-          this.totalIncoming += newTransaction.monet || 0;
-        } else {
-          this.totalOutgoing += newTransaction.monet || 0;
-        }
-        
+      next: () => {
         this.showTransactionForm = false;
-        
-        // Reload transactions to refresh the list with proper pagination
+        // Reload transactions to refresh the list with proper pagination and updated stats
         this.loadTransactions();
       },
       error: (error) => {

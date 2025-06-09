@@ -11,15 +11,17 @@ import { UpperCasePipe } from '@angular/common';
   styleUrl: './agent-side-bar.component.css'
 })
 export class AgentSideBarComponent {
+   public user : User = JSON.parse(sessionStorage.getItem('user') || '{}'); 
+  
 logout() {
     sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('user');
     this.router.navigate(['/login']);
 }
 sendHelp() {
 
 }
 
-  public user:User=new User();
   public homeService:HomeService=inject(HomeService);
   constructor(public router: Router) {
     let token = sessionStorage.getItem('authToken');

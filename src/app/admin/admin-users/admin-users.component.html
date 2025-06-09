@@ -24,15 +24,14 @@
             </div>
         </div>
     </div>
-    
-    <!-- User Management Header -->
+      <!-- Client Management Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Client Management</h1>
-            <p class="text-sm text-gray-600 mt-1">Manage users, roles, and permissions</p>
+            <p class="text-sm text-gray-600 mt-1">Manage client accounts and information</p>
         </div>
         <div class="mt-4 md:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-            <button id="btn-add-user" (click)="toggleClientModal()" class="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+            <button id="btn-add-client" (click)="toggleClientModal()" class="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                 <i class="fas fa-user-plus mr-2"></i>
                 Add New Client
             </button>
@@ -276,7 +275,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                     </svg>
                                 </button>
-                                <button (click)="deleteClient(user.id)" class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-100">
+                                <button (click)="deleteClient(user.id || 0)" class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -544,19 +543,18 @@
         
         <!-- Client Details -->
         <div class="p-6">
-            <div class="flex items-center mb-6">
-                <div class="h-16 w-16 rounded-full flex items-center justify-center font-bold text-xl mr-4"
+            <div class="flex items-center mb-6">                <div class="h-16 w-16 rounded-full flex items-center justify-center font-bold text-xl mr-4"
                      [ngClass]="{'bg-red-100 text-red-800': selectedClient.id === 1, 
                                 'bg-blue-100 text-blue-800': selectedClient.id === 2, 
                                 'bg-green-100 text-green-800': selectedClient.id === 3,
                                 'bg-purple-100 text-purple-800': selectedClient.id === 4,
                                 'bg-yellow-100 text-yellow-800': selectedClient.id === 5}">
-                    {{ selectedClient.initials }}
+                    {{ selectedUser?.initials || (selectedClient.prenom?.[0] || '') + (selectedClient.nom?.[0] || '') }}
                 </div>
-                <div>
-                    <h2 class="text-xl font-semibold text-gray-900">{{ selectedClient.prenom }} {{ selectedClient.nom }}</h2>
+                <div>                    <h2 class="text-xl font-semibold text-gray-900">{{ selectedClient.prenom }} {{ selectedClient.nom }}</h2>
                     <div class="mt-1 flex items-center">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="selectedClient.statusClass">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" 
+                              [ngClass]="selectedUser?.statusClass || (selectedClient.estActif ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800')">
                             {{ selectedClient.estActif ? 'Active' : 'Inactive' }}
                         </span>
                         <span class="ml-2 text-sm text-gray-500">Client #{{ selectedClient.numeroClient }}</span>
@@ -616,14 +614,15 @@
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600">Created on</span>
                             <span class="text-sm font-medium">{{ selectedClient.dateCreation | date:'mediumDate' }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
+                        </div>                        <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600">Last login</span>
-                            <span class="text-sm font-medium">{{ selectedClient.lastLogin }}</span>
+                            <span class="text-sm font-medium">{{ selectedUser?.lastLogin || 'Not available' }}</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600">Status</span>
-                            <span class="text-sm font-medium">{{ selectedClient.estActif ? 'Active' : 'Inactive' }}</span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="selectedUser?.statusClass || (selectedClient.estActif ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800')">
+                                {{ selectedClient.estActif ? 'Active' : 'Inactive' }}
+                            </span>
                         </div>
                     </div>
                 </div>

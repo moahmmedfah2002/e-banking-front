@@ -20,6 +20,18 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { AgentService } from './services/agent.service';
 import { HttpClientModule } from '@angular/common/http';
+import { 
+  AgentCryptoService,
+  AgentTransactionService,
+  AgentClientService,
+  AgentAccountService,
+  AgentDashboardService
+} from './services/agent';
+import {
+  AdminDashboardService,
+  AdminUsersService,
+  AdminSubAdminService
+} from './services/admin';
 import { ChatBotComponent } from './chatbot/chatbot.component';
 import { Auth2faComponent } from './auth2fa/auth2fa.component';
 import { DatePipe } from '@angular/common';
@@ -34,10 +46,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { CryptoPageComponent } from './crypto-page/crypto-page.component';
 import { CryptoTransactionModalComponent } from './crypto-page/crypto-transaction-modal/crypto-transaction-modal.component';
-import { AdminTransactionComponent } from './admin/admin-banks/transaction-admin/adminTransaction.component';
-import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
-import { AdminBanksComponent } from './admin/admin-banks/admin-banks.component';
 import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
 import { AdminlayoutComponent } from './adminlayout/adminlayout.component';
 import { TransactionSummaryComponent } from './Account/component/transaction-summary/transaction-summary.component';
@@ -80,10 +89,7 @@ import { AgentManagementPageComponent } from './agent-management-page/agent-mana
     SidebarComponent,
     MainLayoutComponent,
     CryptoPageComponent,
-    AdminTransactionComponent,
-    AdminDashboardComponent,
     AdminUsersComponent,
-    AdminBanksComponent,
     SidebarAdminComponent,
     AdminlayoutComponent,
     AgentComponent,
@@ -110,7 +116,12 @@ import { AgentManagementPageComponent } from './agent-management-page/agent-mana
 ],  providers: [
     DatePipe,
     AuthService,
-    AgentService
+    AgentService,
+    AgentCryptoService,
+    AgentTransactionService,
+    AgentClientService,
+    AgentAccountService,
+    AgentDashboardService
   ],
   bootstrap: [AppComponent]
 })

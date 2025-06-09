@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Agent } from '../modele/Agent';
 import { Bank } from '../modele/Bank';
 import { Role } from '../modele/Role';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgentService {
+  private apiUrl = `${environment.apiUrl}/api/admins`;
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
+  // Keeping the mock data for fallback during development/testing
   private mockAgents: Agent[] = [
     {
       id: 1,
@@ -120,51 +129,133 @@ export class AgentService {
       clientIds: ['110', '111']
     }
   ];
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
+  /**
+   * Handle HTTP operation errors
+   */
+  private handleError(operation = 'operation') {
+    return (error: HttpErrorResponse): Observable<never> => {
+      console.error(`${operation} failed: ${error.message}`);
+      
+      // Let the app continue by returning an empty result
+      return throwError(() => error);
+    };
+  }
 
+  /**
+   * GET all agents from the API
+   */
   getAllAgents(): Observable<Agent[]> {
-    return of(this.mockAgents);
+    return this.http.get<Agent[]>(this.apiUrl)
+      .pipe(
+        tap(agents => console.log(`Fetched ${agents.length} agents`)),
+        catchError(this.handleError('getAllAgents'))
+      );
   }
 
+  /**
+   * GET total agents count
+   */
   getTotalAgentsCount(): Observable<number> {
-    return of(this.mockAgents.length);
+    return this.getAllAgents().pipe(
+      map(agents => agents.length),
+      catchError(() => of(this.mockAgents.length)) // Fallback to mock data on error
+    );
   }
 
+  /**
+   * GET active agents count
+   */
   getActiveAgentsCount(): Observable<number> {
-    return of(this.mockAgents.filter(agent => agent.estActif).length);
+    return this.getAllAgents().pipe(
+      map(agents => agents.filter(agent => agent.estActif).length),
+      catchError(() => of(this.mockAgents.filter(agent => agent.estActif).length))
+    );
   }
 
+  /**
+   * GET super agents count (agents with more than 2 clients)
+   */
   getSuperAgentsCount(): Observable<number> {
-    // For demonstration, let's consider agents with more than 2 clients as 'super agents'
-    return of(this.mockAgents.filter(agent => agent.clientIds.length > 2 && agent.estActif).length);
+    return this.getAllAgents().pipe(
+      map(agents => agents.filter(agent => agent.clientIds.length > 2 && agent.estActif).length),
+      catchError(() => of(this.mockAgents.filter(agent => agent.clientIds.length > 2 && agent.estActif).length))
+    );
   }
 
+  /**
+   * GET inactive agents count
+   */
   getInactiveAgentsCount(): Observable<number> {
-    return of(this.mockAgents.filter(agent => !agent.estActif).length);
+    return this.getAllAgents().pipe(
+      map(agents => agents.filter(agent => !agent.estActif).length),
+      catchError(() => of(this.mockAgents.filter(agent => !agent.estActif).length))
+    );
   }
 
+  /**
+   * GET agent by id. Return `undefined` when id not found
+   */
+  getAgentById(id: number): Observable<Agent | undefined> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<Agent>(url).pipe(
+      tap(agent => console.log(`Fetched agent id=${id}`)),
+      catchError(this.handleError(`getAgentById id=${id}`))
+    );
+  }
+
+  /**
+   * POST: add a new agent to the server
+   */
   addAgent(agent: Agent): Observable<Agent> {
-    const newAgent = { ...agent };
-    newAgent.id = this.mockAgents.length + 1;
-    newAgent.dateCreation = new Date();
-    this.mockAgents.push(newAgent);
-    return of(newAgent);
+    return this.http.post<Agent>(this.apiUrl, agent, this.httpOptions).pipe(
+      tap(newAgent => console.log(`Added agent w/ id=${newAgent.id}`)),
+      catchError(this.handleError('addAgent'))
+    );
   }
 
+  /**
+   * DELETE: delete the agent from the server
+   */
   deleteAgent(id: number): Observable<void> {
-    const index = this.mockAgents.findIndex(agent => agent.id === id);
-    if (index !== -1) {
-      this.mockAgents.splice(index, 1);
-    }
-    return of(void 0);
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url, this.httpOptions).pipe(
+      tap(_ => console.log(`Deleted agent id=${id}`)),
+      catchError(this.handleError('deleteAgent'))
+    );
   }
 
+  /**
+   * PUT: update the agent on the server
+   */
   updateAgent(agent: Agent): Observable<Agent> {
-    const index = this.mockAgents.findIndex(a => a.id === agent.id);
-    if (index !== -1) {
-      this.mockAgents[index] = { ...agent };
-    }
-    return of(agent);
+    const url = `${this.apiUrl}/${agent.id}`;
+    return this.http.put<Agent>(url, agent, this.httpOptions).pipe(
+      tap(_ => console.log(`Updated agent id=${agent.id}`)),
+      catchError(this.handleError('updateAgent'))
+    );
+  }
+
+  /**
+   * PATCH: activate agent account
+   */
+  activateAgent(id: number): Observable<Agent> {
+    const url = `${this.apiUrl}/${id}/activate`;
+    return this.http.patch<Agent>(url, {}, this.httpOptions).pipe(
+      tap(_ => console.log(`Activated agent id=${id}`)),
+      catchError(this.handleError('activateAgent'))
+    );
+  }
+
+  /**
+   * PATCH: deactivate agent account
+   */
+  deactivateAgent(id: number): Observable<Agent> {
+    const url = `${this.apiUrl}/${id}/deactivate`;
+    return this.http.patch<Agent>(url, {}, this.httpOptions).pipe(
+      tap(_ => console.log(`Deactivated agent id=${id}`)),
+      catchError(this.handleError('deactivateAgent'))
+    );
   }
 }

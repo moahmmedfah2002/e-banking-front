@@ -155,6 +155,19 @@
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                 </svg>
               </button>
+              <button *ngIf="agent.estActif" class="action-btn deactivate" (click)="deactivateAgent(agent)" title="Deactivate">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+              </button>
+              <button *ngIf="!agent.estActif" class="action-btn activate" (click)="activateAgent(agent)" title="Activate">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="16"></line>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+              </button>
               <button class="action-btn more" title="More">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="1"></circle>
@@ -167,8 +180,181 @@
         </tbody>
       </table>
     </div>
-    <div class="table-footer">
-      <p class="showing-text">Showing {{ filteredAgents.length }} agents</p>
+    <div class="table-footer">      <p class="showing-text">Showing {{ filteredAgents.length }} agents</p>
+    </div>
+  </div>
+  
+  <!-- Alert Message -->
+  <div *ngIf="alertMessage" 
+      [ngClass]="{'bg-green-100 border-green-400 text-green-700': alertType === 'success', 'bg-red-100 border-red-400 text-red-700': alertType === 'error'}" 
+      class="fixed top-5 right-5 border-t-4 rounded-b px-4 py-3 shadow-md z-50">
+    <div class="flex">
+      <div class="py-1">
+        <svg *ngIf="alertType === 'success'" class="fill-current h-6 w-6 text-green-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+        </svg>
+        <svg *ngIf="alertType === 'error'" class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+        </svg>
+      </div>
+      <div>
+        <p class="font-bold">{{ alertType === 'success' ? 'Success!' : 'Error!' }}</p>
+        <p class="text-sm">{{ alertMessage }}</p>
+      </div>
+      <div class="ml-auto">
+        <button (click)="closeAlert()" class="text-gray-500 hover:text-gray-800">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add/Edit Agent Modal -->
+  <div *ngIf="isAgentModalVisible" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 md:mx-auto">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center p-5 border-b border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-800">{{ isEditMode ? 'Edit Agent' : 'Add New Agent' }}</h3>
+        <button (click)="toggleAgentModal()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Form -->
+      <form [formGroup]="agentForm" (ngSubmit)="onAgentSubmit()">
+        <div class="p-6 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- First Name -->
+            <div>
+              <label for="prenom" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+              <input
+                type="text"
+                id="prenom"
+                formControlName="prenom"
+                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+              <div *ngIf="agentForm.get('prenom')?.invalid && (agentForm.get('prenom')?.dirty || agentForm.get('prenom')?.touched)" class="text-red-500 text-xs mt-1">
+                <span *ngIf="agentForm.get('prenom')?.errors?.['required']">First name is required</span>
+              </div>
+            </div>
+            
+            <!-- Last Name -->
+            <div>
+              <label for="nom" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+              <input
+                type="text"
+                id="nom"
+                formControlName="nom"
+                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+              <div *ngIf="agentForm.get('nom')?.invalid && (agentForm.get('nom')?.dirty || agentForm.get('nom')?.touched)" class="text-red-500 text-xs mt-1">
+                <span *ngIf="agentForm.get('nom')?.errors?.['required']">Last name is required</span>
+              </div>
+            </div>
+            
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+              <div *ngIf="agentForm.get('email')?.invalid && (agentForm.get('email')?.dirty || agentForm.get('email')?.touched)" class="text-red-500 text-xs mt-1">
+                <span *ngIf="agentForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="agentForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+              </div>
+            </div>
+            
+            <!-- Phone -->
+            <div>
+              <label for="telephone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+              <input
+                type="tel"
+                id="telephone"
+                formControlName="telephone"
+                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">              <div *ngIf="agentForm.get('telephone')?.invalid && (agentForm.get('telephone')?.dirty || agentForm.get('telephone')?.touched)" class="text-red-500 text-xs mt-1">
+                <span *ngIf="agentForm.get('telephone')?.errors?.['required']">Phone is required</span>
+                <span *ngIf="agentForm.get('telephone')?.errors?.['invalidPhone']">Please enter a valid phone number format</span>
+              </div>
+            </div>
+            
+            <!-- Username -->
+            <div>
+              <label for="identifiant" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+              <input
+                type="text"
+                id="identifiant"
+                formControlName="identifiant"
+                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+              <div *ngIf="agentForm.get('identifiant')?.invalid && (agentForm.get('identifiant')?.dirty || agentForm.get('identifiant')?.touched)" class="text-red-500 text-xs mt-1">
+                <span *ngIf="agentForm.get('identifiant')?.errors?.['required']">Username is required</span>
+              </div>
+            </div>
+            
+            <!-- Password -->
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input
+                type="password"
+                id="password"
+                formControlName="password"
+                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+              <div *ngIf="agentForm.get('password')?.invalid && (agentForm.get('password')?.dirty || agentForm.get('password')?.touched)" class="text-red-500 text-xs mt-1">
+                <span *ngIf="agentForm.get('password')?.errors?.['required']">Password is required</span>
+                <span *ngIf="agentForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+              </div>
+              <div *ngIf="isEditMode" class="text-gray-500 text-xs mt-1">
+                Leave blank to keep current password
+              </div>
+            </div>
+            
+            <!-- Bank ID -->
+            <div>
+              <label for="bankId" class="block text-sm font-medium text-gray-700 mb-1">Bank</label>              <select
+                id="bankId"
+                formControlName="bankId"
+                class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                <option value="">Select a bank</option>
+                <option *ngFor="let bank of banks" [value]="bank.id">{{ bank.name }}</option>
+              </select>
+              <div *ngIf="agentForm.get('bankId')?.invalid && (agentForm.get('bankId')?.dirty || agentForm.get('bankId')?.touched)" class="text-red-500 text-xs mt-1">
+                <span *ngIf="agentForm.get('bankId')?.errors?.['required']">Bank is required</span>
+              </div>
+            </div>
+            
+            <!-- Active Status -->
+            <div>
+              <label class="flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="estActif" class="sr-only">
+                <div class="relative w-10 h-5 bg-gray-200 rounded-full transition-colors dark:bg-gray-700">
+                  <div class="absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform"
+                      [ngClass]="{'translate-x-5': agentForm.controls['estActif'].value, 'translate-x-0.5': !agentForm.controls['estActif'].value}"></div>
+                </div>
+                <span class="ml-3 text-sm font-medium text-gray-700">
+                  {{ agentForm.controls['estActif'].value ? 'Active' : 'Inactive' }}
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form Actions -->
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">          <button type="button" (click)="toggleAgentModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
+          <button type="submit" [disabled]="agentForm.invalid || isFormSubmitting" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  [ngClass]="{'opacity-50 cursor-not-allowed': agentForm.invalid || isFormSubmitting}">
+            <span *ngIf="isFormSubmitting" class="inline-block mr-2">
+              <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </span>
+            {{ isEditMode ? 'Update Agent' : 'Create Agent' }}
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

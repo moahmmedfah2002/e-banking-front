@@ -9,9 +9,7 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {MainLayoutComponent} from './main-layout/main-layout.component';
 import {CryptoPageComponent} from './crypto-page/crypto-page.component';
 import {SidebarAdminComponent} from './sidebar-admin/sidebar-admin.component';
-import {AdminDashboardComponent} from './admin/admin-dashboard/admin-dashboard.component';
 import {AdminUsersComponent} from './admin/admin-users/admin-users.component';
-import {AdminBanksComponent} from './admin/admin-banks/admin-banks.component';
 import {AdminlayoutComponent} from './adminlayout/adminlayout.component';
   import { AgentLayoutComponent } from './agent/agent-layout/agent-layout.component';
 import { AgentClientComponent } from './agent/agent-client/agent-client.component';
@@ -43,7 +41,6 @@ const routes: Routes = [
     component: AdminlayoutComponent,
     children: [
       { path: 'users', component: AdminUsersComponent },
-      { path: 'banks', component: AdminBanksComponent },
       { path: 'admins', component: AdminSubAdminComponent},
       { path: 'agent-management', component: AgentManagementPageComponent },
       { path: '', redirectTo: 'users', pathMatch: 'full' }

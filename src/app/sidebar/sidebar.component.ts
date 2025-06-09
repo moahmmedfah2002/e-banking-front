@@ -14,6 +14,7 @@ import {UpperCasePipe} from '@angular/common';
 export class SidebarComponent {
 logout() {
     sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('user');
     this.router.navigate(['/login']);
 }
 sendHelp() {

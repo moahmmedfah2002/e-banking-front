@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as THREE from 'three';
 //import { AuthService } from '../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../services/auth.service';
 import {Auth} from '../modele/Auth';
+import { HomeService } from '../services/homeService';
 
 @Component({
   selector: 'auth-2fa',
@@ -18,7 +19,7 @@ export class Auth2faComponent implements OnInit, AfterViewInit {
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
-
+  private homeService= inject(HomeService); // Assuming HomeService is defined elsewhere
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
@@ -182,7 +183,7 @@ export class Auth2faComponent implements OnInit, AfterViewInit {
     if (this.loginForm.invalid) {
       return;
     }
-
+    
     this.isLoading = true;
     this.errorMessage = '';
 
@@ -191,7 +192,15 @@ export class Auth2faComponent implements OnInit, AfterViewInit {
     this.authService.auth2(otp).subscribe(e=>{
 
           if(e){
-            this.router.navigate(['/home']);
+            const user = JSON.parse(sessionStorage.getItem("user") || '{}');
+            if(user.role === "ADMIN") {
+
+              this.router.navigate(['/admin']);
+            }else if(user.role === "AGENT") {
+              this.router.navigate(['/agent']); 
+            }else{
+              this.router.navigate(['/home']);
+            }
 
 
         }else {

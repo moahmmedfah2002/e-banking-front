@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { CryptoRate } from '../modele/CryptoRate';
 
 // Define an interface for websocket message responses
 interface WebSocketMessage {
@@ -8,12 +9,6 @@ interface WebSocketMessage {
   q: string;  // quantity
   t: number;  // trade id
   E: number;  // event time
-}
-
-interface CryptoRate {
-  symbol: string;
-  price: number;
-  lastUpdate: Date;
 }
 
 @Injectable({

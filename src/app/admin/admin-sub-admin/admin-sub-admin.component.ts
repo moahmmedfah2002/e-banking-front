@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Role } from '../../modele/Role';
 import { User } from '../../modele/User';
+import { AdminSubAdminService } from '../../services/admin/admin-sub-admin.service';
 
+// Using local interface instead of imported one to avoid conflicts
 interface AdminStats {
   totalAdmins: number;
   totalIncrease: number;
@@ -95,20 +97,90 @@ export class AdminSubAdminComponent implements OnInit {
   
   // Active dropdown ID
   activeDropdownId: number | null = null;
-  
-  // Alert message properties
+    // Alert message properties
   alertMessage: string | null = null;
   alertType: 'success' | 'error' = 'success';
   alertTimeout: any;
   
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private adminSubAdminService: AdminSubAdminService) {
     this.initializeAdminForm();
   }
 
   ngOnInit(): void {
-    // Initialize mock data
-    this.initializeMockData();
-    this.allAdmins = [...this.admins];
+    // Load admin stats and data from service
+    this.loadAdmins();
+  }
+  
+ 
+    
+  // Load admins from service
+  loadAdmins(): void {
+    // Set up filters for the service call
+    const filters = {
+      role: this.getFilterRole(),
+      status: this.getFilterStatus(),
+      searchTerm: this.searchQuery || undefined
+    };
+    
+    this.adminSubAdminService.getAdmins(filters).subscribe({
+      next: (admins) => {
+        // Transform to display format
+        this.admins = admins.map(admin => this.transformToAdminDisplay(admin));
+        this.allAdmins = [...this.admins];
+        // Apply any additional local filters
+        this.applyFilters();
+      },
+      error: (err) => {
+        console.error('Error loading admins:', err);
+        // Fallback to mock data if needed
+        this.initializeMockData();
+      }
+    });
+  }
+  
+  // Helper to get role filter string for API
+  private getFilterRole(): string | undefined {
+    if (this.filters.roles.superAdmin && !this.filters.roles.admin) {
+      return 'superadmin';
+    } else if (!this.filters.roles.superAdmin && this.filters.roles.admin) {
+      return 'admin';
+    }
+    return undefined;
+  }
+  
+  // Helper to get status filter string for API
+  private getFilterStatus(): string | undefined {
+    if (this.filters.status.active && !this.filters.status.inactive) {
+      return 'active';
+    } else if (!this.filters.status.active && this.filters.status.inactive) {
+      return 'inactive';
+    }
+    return undefined;
+  }
+  
+  // Transform raw admin user to display format
+  private transformToAdminDisplay(admin: User): AdminDisplay {
+    // Create initials from name
+    const initials = `${admin.prenom?.[0] || ''}${admin.nom?.[0] || ''}`;
+    
+    // Determine status styling
+    const statusClass = admin.estActif 
+      ? 'bg-green-100 text-green-800' 
+      : 'bg-gray-100 text-gray-800';
+    
+    // Simple random last login for demonstration purposes
+    const lastLoginOptions = ['Today', 'Yesterday', '2 days ago', 'Last week', '2 weeks ago'];
+    const randomLastLogin = lastLoginOptions[Math.floor(Math.random() * lastLoginOptions.length)];
+    
+    return {
+      ...admin,
+      initials,
+      statusClass,
+      lastLogin: randomLastLogin,
+      roleLabel: 'Admin',
+      roleBadgeClass: 'role-badge-admin',
+      roleIcon: 'fas fa-user-shield'
+    };
   }
   
   private initializeAdminForm(): void {
@@ -377,8 +449,7 @@ export class AdminSubAdminComponent implements OnInit {
   resetAdminForm(): void {
     this.adminForm.reset();
   }
-  
-  // Handle admin form submission
+    // Handle admin form submission
   onAdminSubmit(): void {
     if (this.adminForm.invalid) {
       return;
@@ -391,27 +462,41 @@ export class AdminSubAdminComponent implements OnInit {
       const adminIndex = this.admins.findIndex(a => a.id === this.editAdminId);
       
       if (adminIndex !== -1) {
-        // Update the admin data
-        const updatedAdmin: AdminDisplay = {
-          ...this.admins[adminIndex],
+        // Create updated admin object
+        const existingAdmin = this.admins[adminIndex];
+        const updatedAdmin: User = {
+          ...existingAdmin,
           nom: formValues.nom,
           prenom: formValues.prenom,
           email: formValues.email,
           telephone: formValues.telephone,
-          roleLabel: formValues.isSuperAdmin ? 'Super Admin' : 'Admin',
-          roleIcon: formValues.isSuperAdmin ? 'fas fa-shield-alt' : 'fas fa-user-shield'
+          // Other properties from the form
         };
         
-        // Update local UI data
-        this.admins[adminIndex] = updatedAdmin;
+        // Update admin via service
+        this.adminSubAdminService.updateAdmin(updatedAdmin).subscribe((e)=>{
+          next: (result: AdminDisplay) => {
+            // Update display object with new data
+            const updatedDisplay: AdminDisplay = {
+              ...result,
+              initials: `${result.prenom?.[0] || ''}${result.nom?.[0] || ''}`,
+              lastLogin: existingAdmin.lastLogin,
+              statusClass: result.estActif ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800',
+              roleLabel: formValues.isSuperAdmin ? 'Super Admin' : 'Admin',
+              roleBadgeClass: 'role-badge-admin',
+              roleIcon: formValues.isSuperAdmin ? 'fas fa-shield-alt' : 'fas fa-user-shield'
+            };
+            
+            // Update local UI data
+            this.admins[adminIndex] = updatedDisplay;
         
         // Update the allAdmins array
         this.allAdmins = [...this.admins];
         
         console.log('Admin updated successfully:', this.admins[adminIndex]);
         this.showAlert('Admin updated successfully', 'success');
-      }
-    } else {
+      }});
+      } else {
       // Create new admin
       const newAdmin: AdminDisplay = {
         id: Math.max(...this.admins.map(a => a.id || 0)) + 1,
@@ -443,7 +528,7 @@ export class AdminSubAdminComponent implements OnInit {
     // Close modal and reset form
     this.toggleAdminModal();
   }
-  
+}
   // Edit admin
   editAdmin(admin: AdminDisplay): void {
     this.isEditMode = true;
@@ -500,7 +585,7 @@ export class AdminSubAdminComponent implements OnInit {
   
   // Delete admin
   deleteAdmin(adminId: number | undefined): void {
-    if (adminId === undefined) return;
+    if (adminId=== undefined) return;
     
     if (confirm('Are you sure you want to delete this admin?')) {
       this.admins = this.admins.filter(admin => admin.id !== adminId);

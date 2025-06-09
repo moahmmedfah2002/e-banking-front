@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Transaction } from '../../modele/Transaction';
 import { MOCK_TRANSACTIONS, USER_ACCOUNTS } from '../../modele/mock-transactions';
+import {User} from '../../modele/User';
 
 @Component({
   selector: 'app-recent-transaction',
@@ -9,6 +10,8 @@ import { MOCK_TRANSACTIONS, USER_ACCOUNTS } from '../../modele/mock-transactions
   styleUrl: './recent-transaction.component.css'
 })
 export class RecentTransactionComponent implements OnInit {
+  @Input()
+  public client?: User;
   transactions: Transaction[] = [];
   userAccounts: string[] = [];
 
@@ -36,7 +39,7 @@ export class RecentTransactionComponent implements OnInit {
   }
 
   isIncomingTransaction(transaction: Transaction): boolean {
-    return transaction.compteAcredit !== undefined && 
+    return transaction.compteAcredit !== undefined &&
            this.userAccounts.includes(transaction.compteAcredit);
   }
 
@@ -53,13 +56,13 @@ export class RecentTransactionComponent implements OnInit {
   getIconClass(transaction: Transaction): string {
     // For outgoing payments, show down arrow with blue background
     // For incoming payments, show up arrow with green background
-    return this.isUserAccount(transaction.compteAdebit) ? 
+    return this.isUserAccount(transaction.compteAdebit) ?
       'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600';
   }
 
   getIconPath(transaction: Transaction): string {
     // Down arrow for outgoing, up arrow for incoming
-    return this.isUserAccount(transaction.compteAdebit) ? 
+    return this.isUserAccount(transaction.compteAdebit) ?
       'M19 9l-7 7-7-7' : 'M5 15l7-7 7 7';
   }
 }

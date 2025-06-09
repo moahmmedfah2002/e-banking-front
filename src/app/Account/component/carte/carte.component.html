@@ -2,36 +2,27 @@
   <div class="flex justify-between items-start mb-4">
     <div>
       <p class="text-sm font-medium opacity-80">{{type}}</p>
-      <p class="text-xs opacity-60">**** {{carte_numbre}}</p>
+      <p class="text-xs opacity-60">{{accountData?.numericCompte}}</p>
     </div>
     <svg class="h-6 w-6 opacity-80" fill="currentColor" viewBox="0 0 24 24">
       <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"></path>
     </svg>
   </div>
   <div class="mb-2">
-    <p class="text-3xl font-bold">{{balance}}</p>
+    <p class="text-3xl font-bold">{{accountData?.solde}}</p>
   </div>
   <div class="text-xs opacity-80">
     <p>Available balance</p>
   </div>
   <div class="mt-6 flex justify-between">
     <div>
-      <p class="text-xs opacity-80">Account Number</p>
-      <p class="text-sm font-medium">{{account_number}}</p>
+      <p class="text-xs opacity-80">client</p>
+      <p class="text-sm font-medium">{{accountData?.client}}</p>
     </div>
-    <div>
-      <p class="text-xs opacity-80">Routing Number</p>
-      <p class="text-sm font-medium">{{routing_number}}</p>
-    </div>
+
   </div>
   <div class="mt-4 pt-4 border-t border-white border-opacity-20 flex items-center justify-between">
-    <button class="text-xs opacity-90 hover:opacity-100 transition-opacity flex items-center">
-      <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-      </svg>
-      View Details
-    </button>
+
     <p *ngIf="accountData?.dateCreation" class="text-xs opacity-70">
       Opened: {{accountData?.dateCreation | date:'MMM yyyy'}}
     </p>

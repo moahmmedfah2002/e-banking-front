@@ -2,6 +2,8 @@ import { Client } from './Client';
 import { Role } from './Role';
 
 // Create our mock clients
+// @ts-ignore
+// @ts-ignore
 export const MOCK_CLIENTS: Client[] = [
   {
     id: 1,
@@ -10,8 +12,7 @@ export const MOCK_CLIENTS: Client[] = [
     email: 'emily.williams@example.com',
     telephone: '+1 (555) 123-4567',
     identifiant: 'ewilliams',
-    password: '********',
-    role: Role.CLIENT,
+
     estActif: false,
     dateCreation: new Date('2024-03-18'),
     numeroClient: 1001,
@@ -30,8 +31,7 @@ export const MOCK_CLIENTS: Client[] = [
     email: 'michael.brown@example.com',
     telephone: '+1 (555) 234-5678',
     identifiant: 'mbrown',
-    password: '********',
-    role: Role.CLIENT,
+
     estActif: true,
     dateCreation: new Date('2024-04-05'),
     numeroClient: 1002,
@@ -50,8 +50,7 @@ export const MOCK_CLIENTS: Client[] = [
     email: 'sofia.garcia@example.com',
     telephone: '+1 (555) 345-6789',
     identifiant: 'sgarcia',
-    password: '********',
-    role: Role.CLIENT,
+
     estActif: true,
     dateCreation: new Date('2024-05-15'),
     numeroClient: 1003,
@@ -70,8 +69,7 @@ export const MOCK_CLIENTS: Client[] = [
     email: 'david.chen@example.com',
     telephone: '+1 (555) 456-7890',
     identifiant: 'dchen',
-    password: '********',
-    role: Role.CLIENT,
+
     estActif: true,
     dateCreation: new Date('2025-01-20'),
     numeroClient: 1004,
@@ -90,8 +88,8 @@ export const MOCK_CLIENTS: Client[] = [
     email: 'priya.patel@example.com',
     telephone: '+1 (555) 567-8901',
     identifiant: 'ppatel',
-    password: '********',
-    role: Role.CLIENT,
+
+
     estActif: false,
     dateCreation: new Date('2025-02-10'),
     numeroClient: 1005,
@@ -109,16 +107,16 @@ export const MOCK_CLIENTS: Client[] = [
 export function addClient(client: Client): Client {
   // Make a copy of the client to avoid reference issues
   const newClient: Client = { ...client };
-  
+
   // Generate a new ID (highest existing ID + 1)
   newClient.id = Math.max(...MOCK_CLIENTS.map(c => c.id || 0)) + 1;
-  
+
   // Generate a client number (id + 1000)
   newClient.numeroClient = newClient.id + 1000;
-  
+
   // Add the new client to the array
   MOCK_CLIENTS.unshift(newClient);
-  
+
   // Return the new client with its assigned ID and client number
   return newClient;
 }
@@ -152,8 +150,8 @@ export function getClientsWithAccounts(): Client[] {
 export function getNewClients(): Client[] {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
-  return MOCK_CLIENTS.filter(client => 
+
+  return MOCK_CLIENTS.filter(client =>
     client.dateCreation && client.dateCreation >= thirtyDaysAgo
   );
 }

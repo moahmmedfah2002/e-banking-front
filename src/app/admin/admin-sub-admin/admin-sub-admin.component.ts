@@ -112,7 +112,7 @@ export class AdminSubAdminComponent implements OnInit {
   }
   
  
-    
+  
   // Load admins from service
   loadAdmins(): void {
     // Set up filters for the service call

@@ -1108,39 +1108,13 @@ export class AdminUsersComponent implements OnInit {
     // Show the modal
     this.isClientModalVisible = true;
   }
-  // View client details
+    // View client details
   viewClientDetails(user: UserDisplay): void {
     const client = this.clients.find(c => c.id === user.id);
     if (client) {
       this.selectedClient = client;
       this.selectedUser = user;
       this.isViewMode = true;
-      
-      // Ensure we're getting the most up-to-date client data from the API
-      this.adminUsersService.getClientById(user.id || 0).subscribe({
-        next: (updatedClient) => {
-          if (updatedClient && updatedClient.id) {
-            this.selectedClient = updatedClient;
-            
-            // Update the users array with fresh data if needed
-            const userIndex = this.users.findIndex(u => u.id === updatedClient.id);
-            if (userIndex !== -1) {
-              // Keep UI-specific properties from the existing user but update the core data
-              this.users[userIndex] = {
-                ...this.users[userIndex],
-                ...updatedClient
-              };
-              
-              // Update selectedUser to reflect changes
-              this.selectedUser = this.users[userIndex];
-            }
-          }
-        },
-        error: (err) => {
-          console.error('Failed to fetch updated client details:', err);
-          // We'll continue with the data we have even if this fails
-        }
-      });
     }
   }
   

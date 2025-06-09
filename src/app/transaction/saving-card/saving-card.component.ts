@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {User} from '../../modele/User';
+import {Compte} from '../../modele/Compte';
 
 @Component({
   selector: 'app-saving-card',
@@ -7,5 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './saving-card.component.css'
 })
 export class SavingCardComponent {
+  @Input()
+  public compte?: Compte;
 
 }

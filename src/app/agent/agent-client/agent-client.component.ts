@@ -30,25 +30,25 @@ export class AgentClientComponent implements OnInit {
   // Client data
   users: UserDisplay[] = [];
   allUsers: UserDisplay[] = [];
-  
+
   // Filter dropdown visibility
   isFilterDropdownVisible: boolean = false;
-  
+
   // Client form properties
   isClientModalVisible: boolean = false;
   clientForm!: FormGroup;
-  
+
   // Client edit state
   isEditMode: boolean = false;
   editClientId: number | undefined;
-  
+
   // Client view state
   isViewMode: boolean = false;
   selectedClient: UserDisplay | null = null;
-  
+
   // Search functionality
   searchQuery: string = '';
-  
+
   // Filters
   filters: Filters = {
     roles: {
@@ -90,10 +90,12 @@ export class AgentClientComponent implements OnInit {
     this.loadClients();
     this.loadClientStats();
   }
+
   
   /**
    * Initialize the client form
    */
+
   private initializeClientForm(): void {
     this.clientForm = this.fb.group({
       prenom: ['', Validators.required],
@@ -108,6 +110,7 @@ export class AgentClientComponent implements OnInit {
       dateNaissance: ['', Validators.required],
       cin: ['', Validators.required]
     });
+
   }
   
   /**
@@ -226,19 +229,20 @@ export class AgentClientComponent implements OnInit {
   /**
    * Apply filters to the client list
    */
+
   applyFilters(): void {
     let filteredUsers = [...this.allUsers];
-    
+
     // Apply role filters if any are selected
-    const roleFilters = Object.values(this.filters.roles).some(val => val);
+    const roleFilters = Object.values(true).some(val => val);
     if (roleFilters) {
       filteredUsers = filteredUsers.filter(user => {
         // Only client role is relevant
-        if (this.filters.roles.user && user.role === Role.CLIENT) return true;
+        if (true) return true;
         return false;
       });
     }
-    
+
     // Apply status filters if any are selected
     const statusFilters = Object.values(this.filters.status).some(val => val);
     if (statusFilters) {
@@ -250,16 +254,20 @@ export class AgentClientComponent implements OnInit {
         return false;
       });
     }
-    
+
     // Apply sorting
     this.applySorting(filteredUsers);
-    
+
     this.users = filteredUsers;
   }
+
   
   /**
    * Clear all filters
    */
+
+
+
   clearFilters(): void {
     this.filters = {
       roles: {
@@ -278,14 +286,16 @@ export class AgentClientComponent implements OnInit {
         newClient: false
       }
     };
-    
+
     this.users = [...this.allUsers];
     this.applySorting(this.users);
   }
+
   
   /**
    * Apply sorting to a list of users
    */
+
   applySorting(userList: UserDisplay[]): void {
     switch(this.sortOption) {
       case 'name':
@@ -322,33 +332,36 @@ export class AgentClientComponent implements OnInit {
     this.sortOption = target.value;
     this.applySorting(this.users);
   }
+
   
   /**
    * Handle clicks outside of components (for dropdowns/modals)
    */
+
   onClickOutside(event: MouseEvent): void {
     // Close filter dropdown if clicked outside
     const filterDropdownBtn = document.querySelector('#filter-dropdown-btn') as HTMLElement;
     const filterDropdown = document.querySelector('.filter-dropdown') as HTMLElement;
-    
+
     // Check if the click was outside both the button and the dropdown
-    if (filterDropdownBtn && filterDropdown && 
-        !filterDropdownBtn.contains(event.target as Node) && 
+    if (filterDropdownBtn && filterDropdown &&
+        !filterDropdownBtn.contains(event.target as Node) &&
         !filterDropdown.contains(event.target as Node)) {
       this.isFilterDropdownVisible = false;
     }
-    
+
     // Close user action dropdown menus if clicked outside
     if (this.activeDropdownId !== null) {
       const actionDropdown = document.querySelector('.origin-top-right') as HTMLElement;
       const actionBtn = document.querySelector(`button[data-user-id="${this.activeDropdownId}"]`) as HTMLElement;
-      
+
       if (!actionDropdown || !actionDropdown.contains(event.target as Node)) {
         if (!actionBtn || !actionBtn.contains(event.target as Node)) {
           this.activeDropdownId = null;
         }
       }
     }
+
     
     // Close client modal if clicked outside
     const modalElement = document.querySelector('.modal-content') as HTMLElement;
@@ -360,6 +373,7 @@ export class AgentClientComponent implements OnInit {
         addButton && 
         !addButton.contains(event.target as Node)) {
       this.isClientModalVisible = false;
+
       this.resetClientForm();
     }
   }
@@ -412,10 +426,12 @@ export class AgentClientComponent implements OnInit {
   resetClientForm(): void {
     this.clientForm.reset();
   }
+
   
   /**
    * Handle client form submission
    */
+
   onClientSubmit(): void {
     if (this.isEditMode) {
       this.updateClient();
@@ -623,55 +639,56 @@ export class AgentClientComponent implements OnInit {
   /**
    * View client details
    */
+
   viewClientDetails(client: UserDisplay): void {
     this.selectedClient = client;
     this.isViewMode = true;
   }
-  
-  /**
-   * Close client details view
-   */
+
   closeClientDetails(): void {
     this.selectedClient = null;
     this.isViewMode = false;
   }
-  
-  /**
-   * Toggle user actions dropdown
-   */
-  toggleUserActions(userId: number | undefined): void {
-    if (userId === undefined) return;
-    this.activeDropdownId = this.activeDropdownId === userId ? null : userId;
-  }
-  
-  /**
-   * Format a date for the input[type="date"] field (YYYY-MM-DD)
-   */
+
+
   private formatDateForInput(date: Date): string {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
     let day = '' + d.getDate();
     const year = d.getFullYear();
-    
+
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-    
+
     return [year, month, day].join('-');
   }
+
+
+  // Active dropdown ID
+
+  // Toggle user actions dropdown
+  toggleUserActions(userId: number | undefined): void {
+    if (userId === undefined) return;
+    this.activeDropdownId = this.activeDropdownId === userId ? null : userId;
+  }
+
+  // Toggle user active status
   
-  /**
-   * Display an alert message to the user
-   */
-  showAlert(message: string, type: 'success' | 'error', duration: number = 5000): void {
+
+  // Modified deleteClient to handle undefined id
+  
+
+  // Alert message properties
+  
+  // Show alert message
+  showAlert(message: string, type: 'success' | 'error' = 'success', duration: number = 5000): void {
     this.alertMessage = message;
     this.alertType = type;
-    
+
     // Clear any existing timeout
     if (this.alertTimeout) {
       clearTimeout(this.alertTimeout);
     }
-    
-    // Auto-hide the alert after duration
     this.alertTimeout = setTimeout(() => {
       this.closeAlert();
     }, duration);
@@ -683,10 +700,8 @@ export class AgentClientComponent implements OnInit {
   closeAlert(): void {
     this.alertMessage = null;
   }
-  
-  /**
-   * Clear search and reset users list
-   */
+
+  // Clear search and reset users list
   clearSearch(): void {
     this.searchQuery = '';
     this.loadClients();

@@ -22,6 +22,7 @@ export class TransactionPageComponent implements OnInit {
       this.router.navigate(['/login']);
     } else {
       this.loadClientData(token);
+
     }
   }
 

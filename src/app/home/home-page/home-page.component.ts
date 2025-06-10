@@ -26,6 +26,7 @@ export class HomePageComponent implements OnInit {
       this.router.navigate(['/login']);
     } else {
       this.loadClientData(token);
+
     }
   }
 

@@ -32,6 +32,7 @@ export class AccountComponent implements OnInit {
       this.router.navigate(['/login']);
     } else {
       this.loadClientData(token);
+
     }
   }
 

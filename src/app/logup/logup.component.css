@@ -1,0 +1,91 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  overflow-x: hidden;
+  color: white;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #4F46E5, #EC4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.login-container {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y:visible;
+}
+
+.input-field {
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:focus {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.login-button {
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+.log{
+  width: 100%;
+  height: 100%;
+}
+#canvas-container {
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300%;
+  z-index: -1;
+  overflow: hidden; /* Prevent scrollbars */
+
+}
+:host {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #111827; /* bg-gray-900 */
+  z-index: 0;
+}
+
+.login-container {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}

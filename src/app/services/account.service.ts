@@ -3,10 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Compte } from '../modele/Compte';
-import { 
-  MOCK_ACCOUNTS, 
-  MOCK_CHECKING_ACCOUNTS, 
-  MOCK_SAVINGS_ACCOUNTS, 
+import {
+  MOCK_ACCOUNTS,
+  MOCK_CHECKING_ACCOUNTS,
+  MOCK_SAVINGS_ACCOUNTS,
   MOCK_INVESTMENT_ACCOUNTS,
   USER_ACCOUNTS,
   ACCOUNT_TYPES
@@ -31,7 +31,7 @@ export class AccountService {
     // return this.http.get<Compte[]>(this.apiUrl)...
 
     // For development, using mock data
-    return of(MOCK_ACCOUNTS.filter(account => 
+    return of(MOCK_ACCOUNTS.filter(account =>
       this.userAccounts.includes(account.numericCompte || '')
     )).pipe(
       tap(_ => console.log('Fetched accounts')),
@@ -50,7 +50,7 @@ export class AccountService {
 
     // For development, using mock data
     let accounts: Compte[] = [];
-    
+
     switch (type.toLowerCase()) {
       case 'checking':
         accounts = MOCK_CHECKING_ACCOUNTS;
@@ -65,7 +65,7 @@ export class AccountService {
         accounts = MOCK_ACCOUNTS;
     }
 
-    return of(accounts.filter(account => 
+    return of(accounts.filter(account =>
       this.userAccounts.includes(account.numericCompte || '')
     )).pipe(
       tap(accounts => console.log(`Fetched ${accounts.length} ${type} accounts`)),
@@ -84,7 +84,7 @@ export class AccountService {
 
     // For development, using mock data
     const account = MOCK_ACCOUNTS.find(a => a.numericCompte === accountNumber);
-    
+
     return of(account || null).pipe(
       tap(result => console.log(`Fetched account number=${accountNumber}, found=${!!result}`)),
       catchError(this.handleError<Compte | null>(`getAccount accountNumber=${accountNumber}`))
@@ -108,7 +108,7 @@ export class AccountService {
     account.dateCreation = account.dateCreation || new Date();
     account.statue = true; // Default to active account
     account.transactions = []; // Initialize empty transactions
-    
+
     return of(account).pipe(
       tap((newAccount: Compte) => console.log(`Created account w/ number=${newAccount.numericCompte}`)),
       catchError(this.handleError<Compte>('createAccount'))
@@ -177,11 +177,11 @@ export class AccountService {
         if (!account) {
           throw new Error('Account not found');
         }
-        
+
         if ((account.solde || 0) > 0) {
           throw new Error('Cannot close account with remaining balance');
         }
-        
+
         account.statue = false;
         return true;
       }),
@@ -246,7 +246,7 @@ export class AccountService {
   }
 
   /**
-   * Generate a new random account number 
+   * Generate a new random account number
    * @returns Generated account number
    */
   private generateAccountNumber(): string {
@@ -261,7 +261,7 @@ export class AccountService {
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(`${operation} failed: ${error.message}`);
-      
+
       // Let the app keep running by returning an empty result
       return of(result as T);
     };

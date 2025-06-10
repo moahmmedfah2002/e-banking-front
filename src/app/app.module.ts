@@ -52,12 +52,17 @@ import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.co
 import { TransactionDetailComponent } from "./agent/transaction-agent/transaction-detail/transaction-detail.component";
 import { TransactionAgentFormComponent } from './agent/transaction-agent/transaction-form/transaction-form.component';
 import { AgentManagementPageComponent } from './agent-management-page/agent-management-page.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {PopComponent} from './transaction/pop/pop.component';
+import {MatButton, MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
 @NgModule({
   declarations: [
     // Remove SideBarComponent from here since it's standalone
     AccountDetails,
     ButtonStatement,
     AccountComponent,
+    PopComponent,
     AppComponent,
     CarteComponent,
     HomePageComponent,
@@ -88,26 +93,31 @@ import { AgentManagementPageComponent } from './agent-management-page/agent-mana
     AdminlayoutComponent,
     AgentComponent,
     AgentLayoutComponent,
-    AgentSideBarComponent,    
+    AgentSideBarComponent,
     AgentClientComponent,
     AdminSubAdminComponent,
-    TransactionAgentComponent,    
+    TransactionAgentComponent,
     AccountAgentComponent,    CryptoHistoryComponent,    TransactionAgentFormComponent,
     CryptoTransactionModalComponent,
     ChatBotComponent,
     AgentManagementPageComponent
-  ],imports: [
+  ], imports: [
     // Add SideBarComponent to imports since it's standalone
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ReactiveFormsModule ,
+    ReactiveFormsModule,
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
     TransactionDetailComponent,
-],  providers: [
+    MatButton,
+  ],  providers: [
     DatePipe,
     AuthService,
     AgentService

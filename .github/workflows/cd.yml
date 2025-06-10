@@ -26,6 +26,7 @@ jobs:
         run: sudo docker pull mohammedfahlaoui/e-banking-front-github:latest
 
 
+
       - name: run Docker container
         run: sudo docker run -d -p 80:80 --name e-banking-front-github mohammedfahlaoui/e-banking-front-github:latest
 

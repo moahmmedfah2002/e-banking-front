@@ -126,7 +126,6 @@ export class AdminUsersComponent implements OnInit {
 
   ngOnInit(): void {
     // Load user stats
-    this.loadUserStats();
     // Load users data
     this.loadUsers();
     // Load clients data

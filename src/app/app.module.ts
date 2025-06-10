@@ -60,6 +60,7 @@ import {
   AgentTransactionService
 } from './services/agent';
 import {PopComponent} from './transaction/pop/pop.component';
+
 @NgModule({
   declarations: [
     // Remove SideBarComponent from here since it's standalone

@@ -214,7 +214,7 @@ export class AgentClientService {
       this.loadAgentId();
     }
 
-    return this.http.patch<Client>(`${this.agentUrl}/${this.agentId}/clients/${id}/activate`, {}, {
+    return this.http.patch<Client>(`${environment.apiUrl}/api/clients/${id}/actif`, {}, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -236,7 +236,7 @@ export class AgentClientService {
       this.loadAgentId();
     }
 
-    return this.http.patch<Client>(`${this.agentUrl}/${this.agentId}/clients/${id}/deactivate`, {}, {
+    return this.http.patch<Client>(`${environment.apiUrl}/api/clients/${id}/inactif`, {}, {
       headers: {
         Authorization: `Bearer ${token}`
       }

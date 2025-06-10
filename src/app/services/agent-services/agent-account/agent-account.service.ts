@@ -95,12 +95,9 @@ export class AgentAccountService {
    * @param accountData The account details
    * @returns Observable with the created account
    */
-  createAccountToClient(clientId: string, accountData: any): Observable<any> {
-    const data = {
-      ...accountData,
-      clientId
-    };
-    return this.http.post(this.apiUrl, data);
+  createAccountToClient(clientId: number, accountData: Compte): Observable<Compte> {
+    
+    return this.http.post(`${this.apiUrl}/comptes/assign/${clientId}/compte`, accountData);
   }
 
   /**
@@ -129,7 +126,7 @@ export class AgentAccountService {
    */
   changeAccountStatus(id: number, isActive: boolean): Observable<Compte> {
     const token = this.authService.getToken();
-    return this.http.patch<Compte>(`${this.apiUrl}/${id}/status`, { isActive }, {
+    return this.http.put<Compte>(`${this.apiUrl}/comptes/${id}/statut`, { isActive }, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
@@ -145,9 +142,9 @@ export class AgentAccountService {
    * @param accountNumber The account number to delete
    * @returns Observable of void
    */
-  deleteAccount(accountNumber: string): Observable<void> {
+    deleteAccount(accountNumber: number): Observable<void> {
     const token = this.authService.getToken();
-    return this.http.delete<void>(`${this.apiUrl}/${accountNumber}`, {
+    return this.http.delete<void>(`${this.apiUrl}/comptes/${accountNumber}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

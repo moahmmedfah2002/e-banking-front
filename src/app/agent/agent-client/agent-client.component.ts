@@ -121,13 +121,26 @@ export class AgentClientComponent implements OnInit {
   
   /**
    * Load clients from the service
-   */
-  loadClients(): void {
+   */  loadClients(): void {
     this.agentClientService.getClients().subscribe(
       (clients) => {
         // Map API clients to UserDisplay format
         this.users = clients.map(client => this.mapClientToUserDisplay(client));
         this.allUsers = [...this.users];
+        
+        // Apply sorting to the initial data
+        this.applySorting(this.users);
+        
+        // Apply any active filters to the loaded data
+        if (Object.values(this.filters.roles).some(v => v) ||
+            Object.values(this.filters.status).some(v => v) ||
+            Object.values(this.filters.clientInfo).some(v => v)) {
+          this.applyFilters();
+        }
+        
+        // Update user statistics
+        this.userStats.totalUsers = this.allUsers.length;
+        this.userStats.activeUsers = this.allUsers.filter(user => user.estActif).length;
       },
       (error) => {
         console.error('Error loading clients:', error);
@@ -182,57 +195,77 @@ export class AgentClientComponent implements OnInit {
   
   /**
    * Search clients using the service
-   */
-  searchClients(): void {
+   */  searchClients(): void {
     if (!this.searchQuery.trim()) {
       // If search is empty, load all clients
       this.loadClients();
       return;
     }
     
-    this.agentClientService.searchClients(this.searchQuery).subscribe(
-      (clients) => {
-        this.users = clients.map(client => this.mapClientToUserDisplay(client));
-        this.applySorting(this.users);
-        
-        // Show feedback if no results found
-        if (this.users.length === 0) {
-          this.showAlert(`No clients found matching "${this.searchQuery}"`, 'error', 3000);
-        }
-      },
-      (error) => {
-        console.error('Error searching clients:', error);
-        this.showAlert('Failed to search clients. Please try again.', 'error');
-      }
+    // Perform the search on the client-side since there's no backend
+    const query = this.searchQuery.toLowerCase().trim();
+    const searchResults = this.allUsers.filter(client => 
+      client.prenom?.toLowerCase().includes(query) ||
+      client.nom?.toLowerCase().includes(query) ||
+      client.email?.toLowerCase().includes(query) ||
+      client.telephone?.toLowerCase().includes(query) ||
+      client.cin?.toLowerCase().includes(query) ||
+      `${client.prenom} ${client.nom}`.toLowerCase().includes(query)
     );
+    
+    // Update the current users array with search results
+    this.users = searchResults;
+    
+    // Apply any active filters to the search results
+    if (this.hasActiveFilters()) {
+      this.applyFilters();
+    } else {
+      // Just apply sorting if no filters are active
+      this.applySorting(this.users);
+    }
+    
+    // Show feedback if no results found
+    if (this.users.length === 0) {
+      this.showAlert(`No clients found matching "${this.searchQuery}"`, 'error', 3000);
+    }
   }
   
   /**
    * Apply filters to the client list
    */
-
   applyFilters(): void {
-    let filteredUsers = [...this.allUsers];
-
-    // Apply role filters if any are selected
-    const roleFilters = Object.values(true).some(val => val);
+    let filteredUsers = [...this.allUsers];    // Apply role filters if any are selected
+    const roleFilters = Object.values(this.filters.roles).some(val => val);
     if (roleFilters) {
       filteredUsers = filteredUsers.filter(user => {
-        // Only client role is relevant
-        if (true) return true;
-        return false;
+        // Since this is client management, we only show users with the user role filter enabled
+        return this.filters.roles.user;
       });
-    }
-
-    // Apply status filters if any are selected
+    }    // Apply status filters if any are selected
     const statusFilters = Object.values(this.filters.status).some(val => val);
     if (statusFilters) {
       filteredUsers = filteredUsers.filter(user => {
         if (this.filters.status.active && user.estActif) return true;
         if (this.filters.status.inactive && !user.estActif) return true;
-        // For flagged users, could add a 'flagged' property or use another approach
+        // For flagged users, check if statusClass includes 'red'
         if (this.filters.status.flagged && user.statusClass?.includes('red')) return true;
-        return false;
+        return false; // If no status filter matches, exclude the user
+      });
+    }    // Apply client info filters
+    const clientInfoFilters = Object.values(this.filters.clientInfo).some(val => val);
+    if (clientInfoFilters) {
+      filteredUsers = filteredUsers.filter(user => {
+        if (this.filters.clientInfo.hasAccounts && user.comptes && user.comptes.length > 0) return true;
+        if (this.filters.clientInfo.newClient && user.dateCreation) {
+          // Consider clients created within the last 30 days as new
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+          const creationDate = user.dateCreation instanceof Date ? 
+                               user.dateCreation : 
+                               new Date(user.dateCreation);
+          return creationDate >= thirtyDaysAgo;
+        }
+        return false; // If no client info filter matches, exclude the user
       });
     }
 
@@ -240,6 +273,9 @@ export class AgentClientComponent implements OnInit {
     this.applySorting(filteredUsers);
 
     this.users = filteredUsers;
+    
+    // Close the filter dropdown after applying filters
+    this.isFilterDropdownVisible = false;
   }
 
   
@@ -248,8 +284,8 @@ export class AgentClientComponent implements OnInit {
    */
 
 
-
   clearFilters(): void {
+    // Reset all filters
     this.filters = {
       roles: {
         admin: false,
@@ -268,15 +304,23 @@ export class AgentClientComponent implements OnInit {
       }
     };
 
+    // Reset the user list to all users
     this.users = [...this.allUsers];
+    
+    // Apply the current sort option
     this.applySorting(this.users);
+    
+    // Close the filter dropdown
+    this.isFilterDropdownVisible = false;
+    
+    // Show a success message
+    this.showAlert('Filters cleared', 'success', 1500);
   }
 
   
   /**
    * Apply sorting to a list of users
    */
-
   applySorting(userList: UserDisplay[]): void {
     switch(this.sortOption) {
       case 'name':
@@ -296,8 +340,17 @@ export class AgentClientComponent implements OnInit {
         break;
       case 'dateCreated':
         userList.sort((a, b) => {
-          if (!a.dateCreation || !b.dateCreation) return 0;
-          return b.dateCreation.getTime() - a.dateCreation.getTime();
+          // Handle cases where dateCreation might be undefined or a string instead of a Date
+          if (!a.dateCreation && !b.dateCreation) return 0;
+          if (!a.dateCreation) return 1;  // a is undefined, b comes first
+          if (!b.dateCreation) return -1; // b is undefined, a comes first
+          
+          // Convert to Date objects if they're strings
+          const dateA = a.dateCreation instanceof Date ? a.dateCreation : new Date(a.dateCreation);
+          const dateB = b.dateCreation instanceof Date ? b.dateCreation : new Date(b.dateCreation);
+          
+          // Sort newest first
+          return dateB.getTime() - dateA.getTime();
         });
         break;
       default:
@@ -683,5 +736,37 @@ export class AgentClientComponent implements OnInit {
   clearSearch(): void {
     this.searchQuery = '';
     this.loadClients();
+  }
+
+  /**
+   * Check if any filters are currently active
+   */
+  hasActiveFilters(): boolean {
+    return Object.values(this.filters.roles).some(v => v) ||
+           Object.values(this.filters.status).some(v => v) ||
+           Object.values(this.filters.clientInfo).some(v => v);
+  }
+
+  /**
+   * Get count of active filters
+   */
+  getActiveFilterCount(): number {
+    let count = 0;
+    // Count role filters
+    if (this.filters.roles.admin) count++;
+    if (this.filters.roles.manager) count++;
+    if (this.filters.roles.agent) count++;
+    if (this.filters.roles.user) count++;
+    
+    // Count status filters
+    if (this.filters.status.active) count++;
+    if (this.filters.status.inactive) count++;
+    if (this.filters.status.flagged) count++;
+    
+    // Count client info filters
+    if (this.filters.clientInfo.hasAccounts) count++;
+    if (this.filters.clientInfo.newClient) count++;
+    
+    return count;
   }
 }

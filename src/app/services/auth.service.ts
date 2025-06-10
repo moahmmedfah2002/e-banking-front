@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {Auth} from '../modele/Auth';
+import {environment} from '../../environments/environment';
 
 @Injectable(
   {
@@ -25,14 +26,14 @@ export class AuthService {
 
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
 
-    return this.http.post<Auth>("http://127.0.0.1:8082/auth/login", {username: email, password: password}).pipe(
+    return this.http.post<Auth>(`${environment.apiUrl}/auth/login`, {username: email, password: password}).pipe(
 
       tap((response: Auth) => {
         if (response.token) {
           if (rememberMe) {
             localStorage.setItem('authToken', response.token);
             localStorage.setItem("user", JSON.stringify(response.user));
-            
+
           } else {
             sessionStorage.setItem('authToken', response.token);
             sessionStorage.setItem("user", JSON.stringify(response.user));
@@ -61,7 +62,7 @@ export class AuthService {
   }
 
   auth2(otp: string) {
-    return this.http.get<boolean>("http://127.0.0.1:8082/auth/validateOtp", {
+    return this.http.get<boolean>(`${environment.apiUrl}/auth/validateOtp`, {
       params: {
         otp: otp,
         token: String(sessionStorage.getItem("authToken"))

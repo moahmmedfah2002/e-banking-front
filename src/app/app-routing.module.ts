@@ -23,7 +23,8 @@ import { AgentManagementPageComponent } from './agent-management-page/agent-mana
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '2FA', component: Auth2faComponent },
-  
+
+
   // Authenticated routes (with layout)
   {
     path: '',
@@ -40,10 +41,9 @@ const routes: Routes = [
     path: 'admin',
     component: AdminlayoutComponent,
     children: [
-      { path: 'users', component: AdminUsersComponent },
       { path: 'admins', component: AdminSubAdminComponent},
       { path: 'agent-management', component: AgentManagementPageComponent },
-      { path: '', redirectTo: 'users', pathMatch: 'full' }
+      { path: '', redirectTo: 'admins', pathMatch: 'full' }
     ]
   },
   {

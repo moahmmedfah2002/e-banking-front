@@ -39,7 +39,7 @@ export class AccountAgentComponent implements OnInit {
   accounts: Compte[] = [];
   allAccounts: Compte[] = [];
   clients: Client[] = []; // Add clients array
-  
+
   // Account statistics
   accountStats: AccountStats = {
     totalAccounts: 0,
@@ -50,22 +50,22 @@ export class AccountAgentComponent implements OnInit {
 
   // Filter dropdown visibility
   isFilterDropdownVisible: boolean = false;
-  
+
   // Account form
   isAccountModalVisible: boolean = false;
   accountForm!: FormGroup;
-  
+
   // Account edit state
   isEditMode: boolean = false;
   editAccountId: string | undefined;
-  
+
   // Account view state
   isViewMode: boolean = false;
   selectedAccount: Compte = new Compte(); // Initialize with empty Compte object
-  
+
   // Search functionality
   searchQuery: string = '';
-  
+
   // Filters
   filters: AccountFilters = {
     types: {
@@ -81,7 +81,7 @@ export class AccountAgentComponent implements OnInit {
 
   // Sort option
   sortOption: string = 'date';
-  
+
   // Available account types
   accountTypes: string[] = [];
     constructor(
@@ -98,7 +98,7 @@ export class AccountAgentComponent implements OnInit {
     // Load all accounts
     this.loadAccounts();
     this.loadClients(); // Call loadClients
-    
+
     // Get available account types
     this.accountTypes = this.accountService.getAccountTypes();
   }
@@ -112,7 +112,7 @@ export class AccountAgentComponent implements OnInit {
       clientId: ['', Validators.required]
     });
   }
-  
+
   // Load all accounts
   loadAccounts(): void {
     this.agentAccountService.getAccounts(
@@ -183,7 +183,7 @@ export class AccountAgentComponent implements OnInit {
   formatBalance(balance: number | undefined): string {
     return this.accountService.formatBalance(balance);
   }
-  
+
   // Format date for display
   formatDate(date: Date | undefined): string {
     if (!date) return '';
@@ -207,21 +207,21 @@ export class AccountAgentComponent implements OnInit {
     if (this.accountForm.invalid) {
       return;
     }
-    
+
     const formValues = this.accountForm.value;
     console.log('Form values:', formValues);
-    
+
     if (this.isEditMode && this.editAccountId) {
-      const accountToUpdate: Compte = { 
+      const accountToUpdate: Compte = {
         numericCompte: this.editAccountId,
-        typeCompte: formValues.typeCompte,
+        typeCompte: formValues.typeCompte.value,
         solde: formValues.solde,
         statue: formValues.statue,
-        client: formValues.clientId 
+        client: formValues.clientId
       };
-      
+
       console.log('Updating account:', accountToUpdate);
-        
+
       this.agentAccountService.updateAccount(accountToUpdate).subscribe({
         next: (updatedAccount: Compte) => {
           const index = this.accounts.findIndex(a => a.numericCompte === this.editAccountId);
@@ -248,9 +248,9 @@ export class AccountAgentComponent implements OnInit {
         statue: formValues.statue,
         dateCreation: new Date(),
       };
-      
+
       console.log('Creating account:', newAccount);
-      
+
       this.agentAccountService.createAccountToClient(
         formValues.clientId, // Pass clientId directly
         newAccount
@@ -279,7 +279,7 @@ export class AccountAgentComponent implements OnInit {
   editAccount(account: Compte): void {
     this.isEditMode = true;
     this.editAccountId = account.numericCompte;
-    
+
     this.accountForm.setValue({
       typeCompte: account.typeCompte || '',
       solde: account.solde || 0,
@@ -312,12 +312,12 @@ export class AccountAgentComponent implements OnInit {
   // Toggle account status (active/inactive)
   toggleAccountStatus(account: Compte): void {
     if (!account.numericCompte) return;
-    
+
     const updatedAccount: Compte = {
       ...account,
       statue: !account.statue
     };
-    
+
     this.agentAccountService.changeAccountStatus(parseInt(updatedAccount.numericCompte || ""),!account.statue).subscribe(
       (result: Compte) => {
         this.loadAccounts();
@@ -332,7 +332,7 @@ export class AccountAgentComponent implements OnInit {
   // Apply filters
   applyFilters(): void {
     let filteredAccounts = [...this.allAccounts];
-    
+
     // Apply type filters if any are selected
     const typeFilters = Object.values(this.filters.types).some(val => val);
     if (typeFilters) {
@@ -343,7 +343,7 @@ export class AccountAgentComponent implements OnInit {
         return false;
       });
     }
-    
+
     // Apply status filters if any are selected
     const statusFilters = Object.values(this.filters.status).some(val => val);
     if (statusFilters) {
@@ -353,19 +353,19 @@ export class AccountAgentComponent implements OnInit {
         return false;
       });
     }
-    
+
     // Apply search query if present
     if (this.searchQuery) {
       const query = this.searchQuery.toLowerCase();
-      filteredAccounts = filteredAccounts.filter(account => 
+      filteredAccounts = filteredAccounts.filter(account =>
         account.numericCompte?.toLowerCase().includes(query) ||
         account.typeCompte?.toLowerCase().includes(query)
       );
     }
-    
+
     // Apply sorting
     this.applySorting(filteredAccounts);
-    
+
     this.accounts = filteredAccounts;
   }
 
@@ -382,7 +382,7 @@ export class AccountAgentComponent implements OnInit {
         inactive: false
       }
     };
-    
+
     this.accounts = [...this.allAccounts];
     this.applySorting(this.accounts);
   }
@@ -391,23 +391,23 @@ export class AccountAgentComponent implements OnInit {
   applySorting(accounts: Compte[]): void {
     switch (this.sortOption) {
       case 'number':
-        accounts.sort((a, b) => 
+        accounts.sort((a, b) =>
           (a.numericCompte || '').localeCompare(b.numericCompte || '')
         );
         break;
       case 'balance':
-        accounts.sort((a, b) => 
+        accounts.sort((a, b) =>
           (b.solde || 0) - (a.solde || 0)
         );
         break;
       case 'type':
-        accounts.sort((a, b) => 
+        accounts.sort((a, b) =>
           (a.typeCompte || '').localeCompare(b.typeCompte || '')
         );
         break;
       case 'date':
       default:
-        accounts.sort((a, b) => 
+        accounts.sort((a, b) =>
           (b.dateCreation?.getTime() || 0) - (a.dateCreation?.getTime() || 0)
         );
         break;
@@ -422,8 +422,8 @@ export class AccountAgentComponent implements OnInit {
   // Click outside handler for dropdowns
   onClickOutside(event: Event): void {
     const target = event.target as HTMLElement;
-    
-    if (!target.closest('#filter-dropdown-button') && 
+
+    if (!target.closest('#filter-dropdown-button') &&
         !target.closest('#filter-dropdown-content')) {
       this.isFilterDropdownVisible = false;
     }

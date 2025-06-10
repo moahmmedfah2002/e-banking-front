@@ -22,7 +22,7 @@ jobs:
         run: sudo docker rm -f e-banking-front-github || true
 
       - name: rm images
-        run:  sudo docker image rm -f e-banking-front-github || true
+        run:  sudo docker image rm -f mohammedfahlaoui/e-banking-front-github:latest || true
       - name: pull Docker image
         run: sudo docker pull mohammedfahlaoui/e-banking-front-github:latest
 

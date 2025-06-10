@@ -60,7 +60,6 @@ import {
   AgentTransactionService
 } from './services/agent';
 import {PopComponent} from './transaction/pop/pop.component';
-import {LogupComponent} from './logup/logup.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +76,7 @@ import {LogupComponent} from './logup/logup.component';
     TransactionHistoryComponent,
     AccountInfoComponent,
     LoginComponent,
-    LogupComponent,
+
     ButtonComponent,
     NavbarComponent,
     TransactionPageComponent,

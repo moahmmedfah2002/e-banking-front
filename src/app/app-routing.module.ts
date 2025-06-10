@@ -19,12 +19,11 @@ import { AccountAgentComponent } from './agent/account-agent/account-agent.compo
 import { TransactionAgentComponent } from './agent/transaction-agent/transaction-agent.component';
 import { ChatBotComponent } from './chatbot/chatbot.component';
 import { AgentManagementPageComponent } from './agent-management-page/agent-management-page.component';
-import {LogupComponent} from './logup/logup.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '2FA', component: Auth2faComponent },
-  {path: 'logup', component: LogupComponent },
+
 
   // Authenticated routes (with layout)
   {

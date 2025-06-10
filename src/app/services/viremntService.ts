@@ -1,17 +1,33 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Respense} from '../modele/Respense';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ViremntService {
   public http:HttpClient=inject(HttpClient);
-  viremnt(accountNumberSource:any,amount:any) {
-    return this.http.get<boolean>("http://127.0.0.1:8082/virement/send", {
+
+  viremntStrip(accountNumberSource:any,amount:any) {
+    let token = sessionStorage.getItem("authToken");
+    return this.http.get<boolean>("http://127.0.0.1:8082/virement/sendStip", {
       params: {
         accountNumberSource: accountNumberSource,
         amount: amount
-      },headers:{authorization:"Bearer "+localStorage.getItem("token") }
+      },headers:{authorization:`Bearer ${token}` }
+    }).subscribe();
+  }
+
+
+  viremntAccount(accountReciver:any,accountDebit:any,amount:any,motif:any) {
+    let token = sessionStorage.getItem("authToken");
+    return this.http.get<Respense>("http://127.0.0.1:8082/virement/sendAccount", {
+      params: {
+        accountReciver: accountReciver,
+        accountDebit: accountDebit,
+        amount: amount,
+        motif:motif
+      },headers:{authorization:`Bearer ${token}` }
     });
   }
 

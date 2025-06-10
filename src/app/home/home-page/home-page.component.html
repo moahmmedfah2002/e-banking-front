@@ -18,9 +18,7 @@
          (click)="selectCompte(compte)">
       <div class="card-header">
         <span class="account-type">{{ compte.typeCompte || 'Account' }}</span>
-        <span class="account-status" [class.active]="compte.statue">
-          {{ compte.statue ? 'Active' : 'Inactive' }}
-        </span>
+
       </div>
       <div class="card-body">
         <div class="account-number">#{{ compte.numericCompte }}</div>
@@ -36,7 +34,6 @@
     <div class="account-info">
       <p><strong>Type:</strong> {{ selectedCompte.typeCompte }}</p>
       <p><strong>Balance:</strong> {{ selectedCompte.solde | currency:'MAD ' }}</p>
-      <p><strong>Status:</strong> {{ selectedCompte.statue ? 'Active' : 'Inactive' }}</p>
       <p><strong>Account Number:</strong> {{ selectedCompte.numericCompte }}</p>
     </div>
   </div>

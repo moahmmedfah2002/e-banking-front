@@ -42,10 +42,9 @@ const routes: Routes = [
     path: 'admin',
     component: AdminlayoutComponent,
     children: [
-      { path: 'users', component: AdminUsersComponent },
       { path: 'admins', component: AdminSubAdminComponent},
       { path: 'agent-management', component: AgentManagementPageComponent },
-      { path: '', redirectTo: 'users', pathMatch: 'full' }
+      { path: '', redirectTo: 'admins', pathMatch: 'full' }
     ]
   },
   {

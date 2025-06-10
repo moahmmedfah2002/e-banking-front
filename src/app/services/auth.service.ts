@@ -31,8 +31,11 @@ export class AuthService {
         if (response.token) {
           if (rememberMe) {
             localStorage.setItem('authToken', response.token);
+            localStorage.setItem("user", JSON.stringify(response.user));
+            
           } else {
             sessionStorage.setItem('authToken', response.token);
+            sessionStorage.setItem("user", JSON.stringify(response.user));
           }
           this.isAuthenticatedSubject.next(true);
         }

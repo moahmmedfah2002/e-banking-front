@@ -140,7 +140,7 @@
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="flex space-x-8">
-                    <button [class]="'tab px-1 py-2 text-sm font-medium ' + (activeTab === 'buy-sell' ? 'tab-active' : 'text-gray-500')" (click)="setActiveTab('buy-sell')">Buy / Sell</button>
+                    <button [class]="'tab px-1 py-2 text-sm font-medium ' + (activeTab === 'buy-sell' ? 'tab-active' : 'text-gray-500')" (click)="setActiveTab('buy-sell')">Buy</button>
                     <button [class]="'tab px-1 py-2 text-sm font-medium ' + (activeTab === 'portfolio' ? 'tab-active' : 'text-gray-500')" (click)="setActiveTab('portfolio')">Portfolio</button>
                 </div>
             </div>
@@ -153,22 +153,7 @@
 
                         <form id="trade-form" (ngSubmit)="submitTradeForm()">
                             <div class="space-y-6">
-                                <!-- Trade Type -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">I want to</label>
-                                    <div class="flex space-x-4">
-                                        <div class="flex-1">
-                                            <button type="button" [class]="'w-full py-2 px-4 border rounded-md shadow-sm text-sm font-medium ' + (tradeType === 'buy' ? 'text-white bg-blue-600 hover:bg-blue-700 border-transparent' : 'text-gray-700 bg-white hover:bg-gray-50 border-gray-300')" (click)="setTradeType('buy')">
-                                                Buy
-                                            </button>
-                                        </div>
-                                        <div class="flex-1">
-                                            <button type="button" [class]="'w-full py-2 px-4 border rounded-md shadow-sm text-sm font-medium ' + (tradeType === 'sell' ? 'text-white bg-blue-600 hover:bg-blue-700 border-transparent' : 'text-gray-700 bg-white hover:bg-gray-50 border-gray-300')" (click)="setTradeType('sell')">
-                                                Sell
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                
 
                                 <!-- Cryptocurrency -->
                                 <div>

@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { Compte } from '../../modele/Compte';
-import { MOCK_ACCOUNTS, ACCOUNT_TYPES } from '../../modele/mock-accounts';
+import { Client } from '../../modele/Client'; // Import Client model
+import { ACCOUNT_TYPES } from '../../modele/mock-accounts';
+import { AgentAccountService } from '../../services/agent-services/agent-account/agent-account.service';
 import { AccountService } from '../../services/account.service';
+import { HomeService } from '../../services/homeService';
+import { AgentClientService } from '../../services/agent-services/agent-client/agent-client.service';
 
 interface AccountStats {
   totalAccounts: number;
@@ -33,6 +38,7 @@ export class AccountAgentComponent implements OnInit {
   // All accounts
   accounts: Compte[] = [];
   allAccounts: Compte[] = [];
+  clients: Client[] = []; // Add clients array
   
   // Account statistics
   accountStats: AccountStats = {
@@ -55,7 +61,7 @@ export class AccountAgentComponent implements OnInit {
   
   // Account view state
   isViewMode: boolean = false;
-  selectedAccount: Compte | null = null;
+  selectedAccount: Compte = new Compte(); // Initialize with empty Compte object
   
   // Search functionality
   searchQuery: string = '';
@@ -78,14 +84,20 @@ export class AccountAgentComponent implements OnInit {
   
   // Available account types
   accountTypes: string[] = [];
-  
-  constructor(private accountService: AccountService, private fb: FormBuilder) {
+    constructor(
+    private accountService: AccountService,
+    private agentAccountService: AgentAccountService,
+    private agentClientService: AgentClientService, // Inject AgentClientService
+    private fb: FormBuilder,
+    private datePipe: DatePipe
+  ) {
     this.initializeAccountForm();
   }
 
   ngOnInit(): void {
     // Load all accounts
     this.loadAccounts();
+    this.loadClients(); // Call loadClients
     
     // Get available account types
     this.accountTypes = this.accountService.getAccountTypes();
@@ -100,15 +112,36 @@ export class AccountAgentComponent implements OnInit {
       clientId: ['', Validators.required]
     });
   }
-
+  
   // Load all accounts
   loadAccounts(): void {
-    // In a real app, we would fetch accounts from the service
-    this.accounts = [...MOCK_ACCOUNTS];
-    this.allAccounts = [...this.accounts];
-    
-    // Calculate account statistics
-    this.calculateAccountStats();
+    this.agentAccountService.getAccounts(
+      sessionStorage.getItem('user') ? parseInt(JSON.parse(sessionStorage.getItem('user') || "{}").id) : parseInt(JSON.parse(localStorage.getItem('user') || "{}").id)
+    ).subscribe({
+      next: (accounts: Compte[]) => { // Add type for accounts
+        this.accounts = accounts;
+        this.allAccounts = [...accounts];
+        // Calculate account statistics
+        this.calculateAccountStats();
+      },
+      error: (error: any) => { // Add type for error
+        console.error('Error loading accounts:', error);
+        this.showAlert('Error loading accounts', 'error');
+      }
+    });
+  }
+
+  // Load all clients
+  loadClients(): void {
+    this.agentClientService.getClients().subscribe({ // Assuming getClients method exists in AgentClientService
+      next: (clients: Client[]) => { // Add type for clients
+        this.clients = clients;
+      },
+      error: (error: any) => { // Add type for error
+        console.error('Error loading clients:', error);
+        this.showAlert('Error loading clients', 'error');
+      }
+    });
   }
 
   // Calculate account statistics
@@ -132,9 +165,13 @@ export class AccountAgentComponent implements OnInit {
   // Reset form
   resetAccountForm(): void {
     this.accountForm.reset({
+      typeCompte: '',
+      solde: 0,
       statue: true,
-      solde: 0
+      clientId: ''
     });
+    this.accountForm.markAsPristine();
+    this.accountForm.markAsUntouched();
   }
 
   // Format account number for display
@@ -146,6 +183,12 @@ export class AccountAgentComponent implements OnInit {
   formatBalance(balance: number | undefined): string {
     return this.accountService.formatBalance(balance);
   }
+  
+  // Format date for display
+  formatDate(date: Date | undefined): string {
+    if (!date) return '';
+    return this.datePipe.transform(date, 'MMM d, y') || '';
+  }
 
   // Handle view account details
   viewAccount(account: Compte): void {
@@ -156,7 +199,7 @@ export class AccountAgentComponent implements OnInit {
   // Close view mode
   closeViewMode(): void {
     this.isViewMode = false;
-    this.selectedAccount = null;
+    this.selectedAccount = new Compte(); // Reset selected account
   }
 
   // Handle account form submission
@@ -166,52 +209,62 @@ export class AccountAgentComponent implements OnInit {
     }
     
     const formValues = this.accountForm.value;
+    console.log('Form values:', formValues);
     
     if (this.isEditMode && this.editAccountId) {
       // Update existing account
-      const accountIndex = this.accounts.findIndex(a => a.numericCompte === this.editAccountId);
-      
-      if (accountIndex !== -1) {
-        // Update the account data
-        const updatedAccount: Compte = {
-          ...this.accounts[accountIndex],
-          typeCompte: formValues.typeCompte,
-          solde: formValues.solde,
-          statue: formValues.statue
-        };
-        
-        // In a real app, we would call the service to update the account
-        this.accounts[accountIndex] = updatedAccount;
-        
-        // Update the allAccounts array
-        this.allAccounts = [...this.accounts];
-        
-        console.log('Account updated successfully:', updatedAccount);
-        this.showAlert('Account updated successfully', 'success');
-      }
-    } else {
-      // Create new account
-      const newAccount: Compte = {
-        numericCompte: this.generateAccountNumber(),
+      const accountToUpdate: Compte = {
+        numericCompte: this.editAccountId,
         typeCompte: formValues.typeCompte,
         solde: formValues.solde,
         statue: formValues.statue,
-        dateCreation: new Date()
+        client: formValues.clientId 
       };
       
-      // In a real app, we would call the service to create the account
-      this.accounts.unshift(newAccount);
-      this.allAccounts = [...this.accounts];
+      console.log('Updating account:', accountToUpdate);
+        
+      this.agentAccountService.updateAccount(accountToUpdate).subscribe({
+        next: (updatedAccount: Compte) => {
+          const index = this.accounts.findIndex(a => a.numericCompte === this.editAccountId);
+          if (index !== -1) {
+            this.accounts[index] = updatedAccount;
+            this.allAccounts = [...this.accounts];
+          }
+          this.showAlert('Account updated successfully', 'success');
+          this.calculateAccountStats();
+          this.toggleAccountModal();
+        },
+        error: (error: any) => {
+          console.error('Error updating account:', error);
+          this.showAlert('Error updating account', 'error');
+        }
+      });
+    } else {
+      // Create new account
+      const newAccount: Compte = {
+        typeCompte: formValues.typeCompte,
+        solde: formValues.solde,
+        statue: formValues.statue,
+        dateCreation: new Date(),
+        client: formValues.clientId 
+      };
       
-      console.log('Account created successfully:', newAccount);
-      this.showAlert('Account created successfully', 'success');
+      console.log('Creating account:', newAccount);
+      
+      this.agentAccountService.createAccount(newAccount).subscribe({
+        next: (createdAccount: Compte) => {
+          this.accounts.unshift(createdAccount);
+          this.allAccounts = [...this.accounts];
+          this.showAlert('Account created successfully', 'success');
+          this.calculateAccountStats();
+          this.toggleAccountModal();
+        },
+        error: (error: any) => {
+          console.error('Error creating account:', error);
+          this.showAlert('Error creating account', 'error');
+        }
+      });
     }
-    
-    // Recalculate statistics
-    this.calculateAccountStats();
-    
-    // Close modal and reset form
-    this.toggleAccountModal();
   }
 
   // Edit an account
@@ -223,7 +276,7 @@ export class AccountAgentComponent implements OnInit {
       typeCompte: account.typeCompte || '',
       solde: account.solde || 0,
       statue: account.statue !== undefined ? account.statue : true,
-      clientId: '' // In a real app, we would set this to the client ID
+      clientId: account.client || '' // Populate clientId from account.client
     });
     
     this.toggleAccountModal();
@@ -234,14 +287,18 @@ export class AccountAgentComponent implements OnInit {
     if (!accountNumber) return;
     
     if (confirm('Are you sure you want to delete this account?')) {
-      this.accounts = this.accounts.filter(account => account.numericCompte !== accountNumber);
-      this.allAccounts = [...this.accounts];
-      
-      // Recalculate statistics
-      this.calculateAccountStats();
-      
-      console.log('Account deleted successfully');
-      this.showAlert('Account deleted successfully', 'success');
+      this.agentAccountService.deleteAccount(accountNumber).subscribe({
+        next: () => {
+          this.accounts = this.accounts.filter(account => account.numericCompte !== accountNumber);
+          this.allAccounts = [...this.accounts];
+          this.calculateAccountStats();
+          this.showAlert('Account deleted successfully', 'success');
+        },
+        error: (error: Error) => {
+          console.error('Error deleting account:', error);
+          this.showAlert('Error deleting account', 'error');
+        }
+      });
     }
   }
 
@@ -249,19 +306,27 @@ export class AccountAgentComponent implements OnInit {
   toggleAccountStatus(account: Compte): void {
     if (!account.numericCompte) return;
     
-    const accountIndex = this.accounts.findIndex(a => a.numericCompte === account.numericCompte);
+    const updatedAccount: Compte = {
+      ...account,
+      statue: !account.statue
+    };
     
-    if (accountIndex !== -1) {
-      this.accounts[accountIndex].statue = !this.accounts[accountIndex].statue;
-      this.allAccounts = [...this.accounts];
-      
-      // Recalculate statistics
-      this.calculateAccountStats();
-      
-      const statusText = this.accounts[accountIndex].statue ? 'activated' : 'deactivated';
-      console.log(`Account ${statusText} successfully`);
-      this.showAlert(`Account ${statusText} successfully`, 'success');
-    }
+    this.agentAccountService.updateAccount(updatedAccount).subscribe({
+      next: (result: Compte) => {
+        const accountIndex = this.accounts.findIndex(a => a.numericCompte === account.numericCompte);
+        if (accountIndex !== -1) {
+          this.accounts[accountIndex] = result;
+          this.allAccounts = [...this.accounts];
+          this.calculateAccountStats();
+          const statusText = result.statue ? 'activated' : 'deactivated';
+          this.showAlert(`Account ${statusText} successfully`, 'success');
+        }
+      },
+      error: (error: any) => {
+        console.error('Error toggling account status:', error);
+        this.showAlert('Error updating account status', 'error');
+      }
+    });
   }
 
   // Apply filters

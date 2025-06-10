@@ -8,7 +8,6 @@ export class Compte {
   public dateCreation?:Date;
   public typeCompte?:string;
   public client?:string;
-
   public transactions?: Transaction[];
   public transactionsBill?: Transaction[];
   public transactionsMobile?: Transaction[];

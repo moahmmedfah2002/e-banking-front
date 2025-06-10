@@ -16,6 +16,7 @@ export class SidebarAdminComponent {
   }
   logout() {
     sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('user');
     this.router.navigate(['/login']);
 }
 }

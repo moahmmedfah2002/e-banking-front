@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+// filepath: d:\projects\Frontend-always-brake\e-banking-front\src\app\agent\agent-client\agent-client.component.ts
+import { Component, OnInit } from '@angular/core';
 import { Filters, UserDisplay, UserStats } from '../../admin/admin-users/admin-users.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Role } from '../../modele/Role';
 import { Client } from '../../modele/Client';
-import { addClient, MOCK_CLIENTS, updateClient } from '../../modele/mock-clients';
+import { AgentClientService } from '../../services/agent-services/agent-client/agent-client.service';
 
 @Component({
   selector: 'app-agent-client',
@@ -14,18 +15,19 @@ import { addClient, MOCK_CLIENTS, updateClient } from '../../modele/mock-clients
     '(document:click)': 'onClickOutside($event)',
   }
 })
-export class AgentClientComponent {
+export class AgentClientComponent implements OnInit {
   userStats: UserStats = {
-    totalUsers: 18249,
-    totalIncrease: 8,
-    activeUsers: 16420,
-    activeIncrease: 5,
+    totalUsers: 0,
+    totalIncrease: 0,
+    activeUsers: 0,
+    activeIncrease: 0,
     adminsAndManagers: 0,
     adminsChange: 'N/A',
-    flaggedAccounts: 23,
-    flaggedIncrease: 15
+    flaggedAccounts: 0,
+    flaggedIncrease: 0
   };
-  // Mock users data
+  
+  // Client data
   users: UserDisplay[] = [];
   allUsers: UserDisplay[] = [];
 
@@ -65,21 +67,33 @@ export class AgentClientComponent {
       newClient: false
     }
   };
-
-  getActiveUsersCount(): number {
-    return this.users.filter(user => user.estActif).length;
-  }
+  
   // Sort option
   sortOption: string = 'name';
-  constructor(private fb: FormBuilder) {
+  
+  // Alert handling
+  alertMessage: string | null = null;
+  alertType: 'success' | 'error' = 'success';
+  alertTimeout: any;
+  
+  // Active dropdown ID to track open action menus
+  activeDropdownId: number | null = null;
+  
+  constructor(
+    private fb: FormBuilder,
+    private agentClientService: AgentClientService
+  ) {
     this.initializeClientForm();
   }
 
   ngOnInit(): void {
-    // Initialize mock data
-    this.initializeMockData();
-    this.allUsers = [...this.users];
+    this.loadClients();
   }
+
+  
+  /**
+   * Initialize the client form
+   */
 
   private initializeClientForm(): void {
     this.clientForm = this.fb.group({
@@ -95,171 +109,107 @@ export class AgentClientComponent {
       dateNaissance: ['', Validators.required],
       cin: ['', Validators.required]
     });
-  }  private initializeMockData(): void {
-    this.users = [
-      {
-        id: 1,
-        nom: 'Williams',
-        prenom: 'Emily',
-        email: 'emily.williams@example.com',
-        telephone: '+1 (555) 123-4567',
 
-        estActif: true,
-        dateCreation: new Date('2023-05-18'),
-        initials: 'EW',
-        lastLogin: 'Today, 10:45 AM',
-        statusClass: 'bg-green-100 text-green-800',
-        roleBadgeClass: 'role-badge-user',
-        roleIcon: 'fas fa-user',
-        roleLabel: 'Client',
-        numeroClient: 1001,
-        adresse: '123 Main St',
-        ville: 'New York',
-        codePostal: '10001',
-        pays: 'USA',
-        dateNaissance: new Date('1990-05-15'),
-        cin: 'AB123456',        comptes: []
-      },
-      {
-        id: 2,
-        nom: 'Brown',
-        prenom: 'Michael',
-        email: 'michael.brown@example.com',
-        telephone: '+1 (555) 987-6543',
-
-        estActif: true,
-        dateCreation: new Date('2023-06-05'),
-        initials: 'MB',
-        lastLogin: 'Yesterday, 2:45 PM',
-        statusClass: 'bg-green-100 text-green-800',
-        roleBadgeClass: 'role-badge-user',
-        roleIcon: 'fas fa-user',
-        roleLabel: 'Client',
-        numeroClient: 1002,
-        adresse: '456 Oak Ave',
-        ville: 'Los Angeles',
-        codePostal: '90001',
-        pays: 'USA',
-        dateNaissance: new Date('1985-10-22'),
-        cin: 'CD789012',
-        comptes: []
-      },
-      {
-        id: 3,
-        nom: 'Smith',
-        prenom: 'Jessica',
-        email: 'jessica.smith@example.com',
-        telephone: '+1 (555) 456-7890',
-
-        estActif: true,
-        dateCreation: new Date('2023-07-12'),
-        initials: 'JS',
-        lastLogin: '3 days ago',
-        statusClass: 'bg-green-100 text-green-800',
-        roleBadgeClass: 'role-badge-user',
-        roleIcon: 'fas fa-user',
-        roleLabel: 'Client',
-        numeroClient: 1003,
-        adresse: '789 Maple St',
-        ville: 'Chicago',
-        codePostal: '60601',
-        pays: 'USA',
-        dateNaissance: new Date('1992-03-18'),
-        cin: 'EF345678',
-        comptes: []
-      },
-      {
-        id: 4,
-        nom: 'Johnson',
-        prenom: 'David',
-        email: 'david.johnson@example.com',
-        telephone: '+1 (555) 321-0987',
-
-        estActif: false,
-        dateCreation: new Date('2023-08-20'),
-        initials: 'DJ',
-        lastLogin: '2 weeks ago',
-        statusClass: 'bg-gray-100 text-gray-800',
-        roleBadgeClass: 'role-badge-user',
-        roleIcon: 'fas fa-user',
-        roleLabel: 'Client',
-        numeroClient: 1004,
-        adresse: '101 Pine Blvd',
-        ville: 'Miami',
-        codePostal: '33101',
-        pays: 'USA',
-        dateNaissance: new Date('1988-07-30'),
-        cin: 'GH901234',
-        comptes: []
-      },
-      {
-        id: 4,
-        nom: 'Williams',
-        prenom: 'Emily',
-        email: 'emily.williams@example.com',
-
-        estActif: false,
-        dateCreation: new Date('2023-05-18'),
-        initials: 'EW',
-        lastLogin: '2 weeks ago',
-        statusClass: 'bg-gray-100 text-gray-800',
-        roleBadgeClass: 'role-badge-user',
-        roleIcon: 'fas fa-user',
-        roleLabel: 'User'
-      },
-      {
-        id: 5,
-        nom: 'Brown',
-        prenom: 'Michael',
-        email: 'michael.brown@example.com',
-
-        estActif: true,
-        dateCreation: new Date('2023-06-05'),
-        initials: 'MB',
-        lastLogin: 'Yesterday, 2:45 PM',
-        statusClass: 'bg-green-100 text-green-800',
-        roleBadgeClass: 'role-badge-user',
-        roleIcon: 'fas fa-user',
-        roleLabel: 'User'
-      }
-    ];
   }
-    toggleFilterDropdown(): void {
+  
+  /**
+   * Get active users count
+   */
+  getActiveUsersCount(): number {
+    return this.users.filter(user => user.estActif).length;
+  }
+  
+  /**
+   * Load clients from the service
+   */
+  loadClients(): void {
+    this.agentClientService.getClients().subscribe(
+      (clients) => {
+        // Map API clients to UserDisplay format
+        this.users = clients.map(client => this.mapClientToUserDisplay(client));
+        this.allUsers = [...this.users];
+      },
+      (error) => {
+        console.error('Error loading clients:', error);
+        this.showAlert('Failed to load clients. Please try again.', 'error');
+      }
+    );
+  }
+
+  /**
+   * Load client statistics from the service
+   */
+  
+
+  /**
+   * Map a Client object to UserDisplay format
+   */
+  mapClientToUserDisplay(client: Client): UserDisplay {
+    const initials = `${client.prenom?.charAt(0) || ''}${client.nom?.charAt(0) || ''}`;
+    
+    // Determine last login text - this would ideally come from your backend
+    let lastLogin = 'Never';
+    
+    // Determine status styling
+    const statusClass = client.estActif 
+      ? 'bg-green-100 text-green-800' 
+      : 'bg-gray-100 text-gray-800';
+    
+    return {
+      ...client,
+      initials,
+      lastLogin,
+      statusClass,
+      roleBadgeClass: 'role-badge-user',
+      roleIcon: 'fas fa-user',
+      roleLabel: 'Client'
+    };
+  }
+  
+  /**
+   * Toggle filter dropdown
+   */
+  toggleFilterDropdown(): void {
     this.isFilterDropdownVisible = !this.isFilterDropdownVisible;
   }
-    // Enhanced search input handler
+  
+  /**
+   * Handle search input changes
+   */
   onSearchChange(): void {
-    if (!this.searchQuery.trim()) {
-      // If search is empty, reset to all users
-      this.users = [...this.allUsers];
-    } else {
-      // Filter users by name, email, phone, or CIN with improved search
-      const query = this.searchQuery.toLowerCase().trim();
-      this.users = this.allUsers.filter(user =>
-        // Search by full name
-        `${user.prenom} ${user.nom}`.toLowerCase().includes(query) ||
-        // Search by first name only
-        user.prenom?.toLowerCase().includes(query) ||
-        // Search by last name only
-        user.nom?.toLowerCase().includes(query) ||
-        // Search by email
-        user.email?.toLowerCase().includes(query) ||
-        // Search by phone number
-        user.telephone?.toLowerCase().includes(query) ||
-        // Search by CIN (ID number)
-        (user.cin && user.cin.toLowerCase().includes(query)) ||
-        // Search by client number if available
-        (user.numeroClient && user.numeroClient.toString().includes(query))
-      );
-    }
-    // Apply any existing sort after filtering
-    this.applySorting(this.users);
-
-    // Show feedback if no results found
-    if (this.searchQuery.trim() && this.users.length === 0) {
-      this.showAlert(`No users found matching "${this.searchQuery}"`, 'error', 3000);
-    }
+    this.searchClients();
   }
+  
+  /**
+   * Search clients using the service
+   */
+  searchClients(): void {
+    if (!this.searchQuery.trim()) {
+      // If search is empty, load all clients
+      this.loadClients();
+      return;
+    }
+    
+    this.agentClientService.searchClients(this.searchQuery).subscribe(
+      (clients) => {
+        this.users = clients.map(client => this.mapClientToUserDisplay(client));
+        this.applySorting(this.users);
+        
+        // Show feedback if no results found
+        if (this.users.length === 0) {
+          this.showAlert(`No clients found matching "${this.searchQuery}"`, 'error', 3000);
+        }
+      },
+      (error) => {
+        console.error('Error searching clients:', error);
+        this.showAlert('Failed to search clients. Please try again.', 'error');
+      }
+    );
+  }
+  
+  /**
+   * Apply filters to the client list
+   */
 
   applyFilters(): void {
     let filteredUsers = [...this.allUsers];
@@ -281,7 +231,6 @@ export class AgentClientComponent {
         if (this.filters.status.active && user.estActif) return true;
         if (this.filters.status.inactive && !user.estActif) return true;
         // For flagged users, could add a 'flagged' property or use another approach
-        // This is a simplified implementation
         if (this.filters.status.flagged && user.statusClass?.includes('red')) return true;
         return false;
       });
@@ -292,6 +241,13 @@ export class AgentClientComponent {
 
     this.users = filteredUsers;
   }
+
+  
+  /**
+   * Clear all filters
+   */
+
+
 
   clearFilters(): void {
     this.filters = {
@@ -316,6 +272,11 @@ export class AgentClientComponent {
     this.applySorting(this.users);
   }
 
+  
+  /**
+   * Apply sorting to a list of users
+   */
+
   applySorting(userList: UserDisplay[]): void {
     switch(this.sortOption) {
       case 'name':
@@ -331,7 +292,6 @@ export class AgentClientComponent {
         });
         break;
       case 'lastLogin':
-        // This is a simplified implementation since lastLogin is just a string
         userList.sort((a, b) => (a.lastLogin || '').localeCompare(b.lastLogin || ''));
         break;
       case 'dateCreated':
@@ -344,11 +304,20 @@ export class AgentClientComponent {
         break;
     }
   }
-    onSortChange(event: Event): void {
+  
+  /**
+   * Handle sort option change
+   */
+  onSortChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.sortOption = target.value;
     this.applySorting(this.users);
   }
+
+  
+  /**
+   * Handle clicks outside of components (for dropdowns/modals)
+   */
 
   onClickOutside(event: MouseEvent): void {
     // Close filter dropdown if clicked outside
@@ -373,167 +342,293 @@ export class AgentClientComponent {
         }
       }
     }
-  }
 
-  // Toggle client modal visibility
-  toggleClientModal(): void {
-    this.isClientModalVisible = !this.isClientModalVisible;
-    if (!this.isClientModalVisible) {
-      this.resetClientForm();
-      this.isEditMode = false;
-      this.editClientId = undefined;
-    } else if (!this.isEditMode) {
-      // Reset validators for password - required in create mode
-      this.clientForm.controls['password'].setValidators([Validators.required, Validators.minLength(6)]);
-      this.clientForm.controls['password'].updateValueAndValidity();
-      // Reset form if not in edit mode
+    
+    // Close client modal if clicked outside
+    const modalElement = document.querySelector('.modal-content') as HTMLElement;
+    const addButton = document.getElementById('btn-add-user');
+    
+    if (this.isClientModalVisible && 
+        modalElement && 
+        !modalElement.contains(event.target as Node) && 
+        addButton && 
+        !addButton.contains(event.target as Node)) {
+      this.isClientModalVisible = false;
+
       this.resetClientForm();
     }
   }
-    // Reset form when closing modal
+  
+  /**
+   * Toggle client modal visibility
+   */
+  toggleClientModal(client?: UserDisplay): void {
+    this.isClientModalVisible = !this.isClientModalVisible;
+    
+    if (this.isClientModalVisible && client) {
+      // Edit mode
+      this.isEditMode = true;
+      this.editClientId = client.id;
+      this.clientForm.patchValue({
+        prenom: client.prenom,
+        nom: client.nom,
+        email: client.email,
+        telephone: client.telephone,
+        adresse: client.adresse,
+        ville: client.ville,
+        codePostal: client.codePostal,
+        pays: client.pays,
+        dateNaissance: client.dateNaissance instanceof Date ? 
+          this.formatDateForInput(client.dateNaissance) : '',
+        cin: client.cin
+      });
+      // Don't require password in edit mode
+      this.clientForm.get('password')?.clearValidators();
+      this.clientForm.get('password')?.updateValueAndValidity();
+    } else if (this.isClientModalVisible) {
+      // Add mode
+      this.isEditMode = false;
+      this.editClientId = undefined;
+      this.resetClientForm();
+      // Require password in add mode
+      this.clientForm.get('password')?.setValidators([Validators.required, Validators.minLength(6)]);
+      this.clientForm.get('password')?.updateValueAndValidity();
+    } else {
+      // Modal is closing
+      this.resetClientForm();
+      this.isEditMode = false;
+      this.editClientId = undefined;
+    }
+  }
+  
+  /**
+   * Reset client form
+   */
   resetClientForm(): void {
     this.clientForm.reset();
   }
 
-  // Handle client form submission
+  
+  /**
+   * Handle client form submission
+   */
+
   onClientSubmit(): void {
+    if (this.isEditMode) {
+      this.updateClient();
+    } else {
+      this.createClient();
+    }
+  }
+  
+  /**
+   * Create a new client
+   */
+  createClient(): void {
     if (this.clientForm.invalid) {
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.clientForm.controls).forEach(key => {
+        this.clientForm.get(key)?.markAsTouched();
+      });
       return;
     }
 
     const formValues = this.clientForm.value;
+    
+    // Create client object from form values
+    const client: Client = {
+      id: 0, // This will be set by the backend
+      nom: formValues.nom,
+      prenom: formValues.prenom,
+      email: formValues.email,
+      telephone: formValues.telephone,
+      identifiant: `${formValues.prenom.toLowerCase()[0]}${formValues.nom.toLowerCase()}`, // Generate a default username
+      password: formValues.password,
+      role: Role.CLIENT,
+      estActif: true,
+      dateCreation: new Date(),
+      numeroClient: 0, // This will be set by the backend
+      adresse: formValues.adresse,
+      ville: formValues.ville,
+      codePostal: formValues.codePostal,
+      pays: formValues.pays,
+      dateNaissance: new Date(formValues.dateNaissance),
+      cin: formValues.cin,
+      comptes: []
+    };
 
-    if (this.isEditMode && this.editClientId) {
-      // Update existing client
-      const clientIndex = this.users.findIndex(u => u.id === this.editClientId);
-
-      if (clientIndex !== -1) {
-        // Update the client data
-        const updatedClient: Client = {
-          ...this.users[clientIndex],
-          nom: formValues.nom,
-          prenom: formValues.prenom,
-          email: formValues.email,
-          telephone: formValues.telephone,
-          adresse: formValues.adresse,
-          ville: formValues.ville,
-          codePostal: formValues.codePostal,
-          pays: formValues.pays,
-          dateNaissance: new Date(formValues.dateNaissance),
-          cin: formValues.cin,
-          numeroClient: this.users[clientIndex].numeroClient ?? 0, // Ensure numeroClient is a number
-          comptes: this.users[clientIndex].comptes || [] // Ensure comptes is an array
-        };
-
-        // Update the mock data
-        const persistedClient = updateClient(updatedClient);
-
-        if (persistedClient) {
-          // Update local UI data
-          this.users[clientIndex] = {
-            ...updatedClient,
-            initials: `${formValues.prenom[0]}${formValues.nom[0]}`,
-            roleLabel: 'Client'
-          };
-
-          // Update the allUsers array
-          this.allUsers = [...this.users];
-
-          console.log('Client updated successfully:', this.users[clientIndex]);
-          this.showAlert('Client updated successfully', 'success');
-        } else {
-          console.error('Failed to update client in mock data');
-          this.showAlert('Failed to update client', 'error');
-        }
+    this.agentClientService.addClient(client).subscribe(
+      (newClient) => {
+        // Add to local data for UI
+        const displayClient = this.mapClientToUserDisplay(newClient);
+        this.users.unshift(displayClient);
+        this.allUsers = [...this.users];
+        
+        this.showAlert('Client created successfully', 'success');
+        this.isClientModalVisible = false;
+      },
+      (error) => {
+        console.error('Error creating client:', error);
+        this.showAlert('Failed to create client. Please try again.', 'error');
       }
-    } else {
-      // Create new client base object
-      const newClientBase: Client = {
-        id: 0, // This will be set by addClient function
-        nom: formValues.nom,
-        prenom: formValues.prenom,
-        email: formValues.email,
-        telephone: formValues.telephone,
-        identifiant: `${formValues.prenom.toLowerCase()[0]}${formValues.nom.toLowerCase()}`,
-        estActif: true,
-        dateCreation: new Date(),
-        numeroClient: 0, // This will be set by addClient function
-        adresse: formValues.adresse,
-        ville: formValues.ville,
-        codePostal: formValues.codePostal,
-        pays: formValues.pays,
-        dateNaissance: new Date(formValues.dateNaissance),
-        cin: formValues.cin,
-        comptes: []
-      };
+    );
+  }
 
-      // Add client to mock data
-      const savedClient = addClient(newClientBase);
-
-      // Add new client to the users array for UI
-      const newClient: UserDisplay = {
-        ...savedClient,
-        initials: `${formValues.prenom[0]}${formValues.nom[0]}`,
-        lastLogin: 'Just now',
-        statusClass: 'bg-green-100 text-green-800',
-        roleBadgeClass: 'role-badge-user',
-        roleIcon: 'fas fa-user',
-        roleLabel: 'Client'
-      };
-
-      // Add to local data for UI
-      this.users.unshift(newClient);
-      this.allUsers = [...this.users];
-
-      console.log('Client created successfully:', newClient);
-      console.log('MOCK_CLIENTS now has', MOCK_CLIENTS.length, 'entries');
-      this.showAlert('Client created successfully', 'success');
+  /**
+   * Update an existing client
+   */
+  updateClient(): void {
+    if (this.clientForm.invalid || !this.editClientId) {
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.clientForm.controls).forEach(key => {
+        this.clientForm.get(key)?.markAsTouched();
+      });
+      return;
     }
 
-    // Close modal and reset form
-    this.toggleClientModal();
+    // Find the current client to preserve any fields not in the form
+    const existingClient = this.users.find(u => u.id === this.editClientId);
+    if (!existingClient) {
+      this.showAlert('Client not found', 'error');
+      return;
+    }
+
+    const formValues = this.clientForm.value;
+    
+    // Create updated client object
+    const updatedClient: Client = {
+      ...existingClient as Client,
+      nom: formValues.nom,
+      prenom: formValues.prenom,
+      email: formValues.email,
+      telephone: formValues.telephone,
+      adresse: formValues.adresse,
+      ville: formValues.ville,
+      codePostal: formValues.codePostal,
+      pays: formValues.pays,
+      dateNaissance: new Date(formValues.dateNaissance),
+      cin: formValues.cin
+    };
+
+    // Only update password if it was provided
+    if (formValues.password) {
+      updatedClient.password = formValues.password;
+    }
+
+    this.agentClientService.updateClient(updatedClient).subscribe(
+      (client) => {
+        // Update in local arrays
+        const index = this.users.findIndex(u => u.id === client.id);
+        if (index !== -1) {
+          const displayClient = this.mapClientToUserDisplay(client);
+          this.users[index] = displayClient;
+          
+          // Update in all users array too
+          const allIndex = this.allUsers.findIndex(u => u.id === client.id);
+          if (allIndex !== -1) {
+            this.allUsers[allIndex] = displayClient;
+          }
+        }
+        
+        this.showAlert('Client updated successfully', 'success');
+        this.isClientModalVisible = false;
+      },
+      (error) => {
+        console.error('Error updating client:', error);
+        this.showAlert('Failed to update client. Please try again.', 'error');
+      }
+    );
   }
 
-  // Edit client
+  /**
+   * Delete a client
+   */
+  deleteClient(clientId: number | undefined): void {
+    if (clientId === undefined) return;
+    
+    if (confirm('Are you sure you want to delete this client?')) {
+      this.agentClientService.deleteClient(clientId).subscribe(
+        () => {
+          // Remove from local arrays
+          this.users = this.users.filter(user => user.id !== clientId);
+          this.allUsers = this.allUsers.filter(user => user.id !== clientId);
+          
+          this.showAlert('Client deleted successfully', 'success');
+        },
+        (error) => {
+          console.error('Error deleting client:', error);
+          this.showAlert('Failed to delete client. Please try again.', 'error');
+        }
+      );
+    }
+  }
+  /**
+   * Toggle client active status
+   */
+  toggleUserStatus(user: UserDisplay): void {
+    if (!user || user.id === undefined) return;
+    
+    // Determine if we need to activate or deactivate the client
+    const activate = !user.estActif;
+    const method = activate ? 
+      this.agentClientService.activateClient(user.id) : 
+      this.agentClientService.deactivateClient(user.id);
+    
+    method.subscribe(
+      (client) => {
+        // Update in local arrays
+        const index = this.users.findIndex(u => u.id === client.id);
+        if (index !== -1) {
+          // Update the user's status
+          this.users[index].estActif = client.estActif;
+          this.users[index].statusClass = client.estActif 
+            ? 'bg-green-100 text-green-800' 
+            : 'bg-gray-100 text-gray-800';
+          
+          // Update in all users array too
+          const allIndex = this.allUsers.findIndex(u => u.id === client.id);
+          if (allIndex !== -1) {
+            this.allUsers[allIndex].estActif = client.estActif;
+            this.allUsers[allIndex].statusClass = client.estActif 
+              ? 'bg-green-100 text-green-800' 
+              : 'bg-gray-100 text-gray-800';
+          }
+        }
+        
+        // Close dropdown menu
+        this.activeDropdownId = null;
+        
+        this.showAlert(`Client ${client.estActif ? 'activated' : 'deactivated'} successfully`, 'success');
+      },
+      (error) => {
+        console.error('Error updating client status:', error);
+        this.showAlert('Failed to update client status. Please try again.', 'error');
+      }
+    );
+  }
+  
+  /**
+   * Edit a client - opens the edit modal
+   */
   editClient(client: UserDisplay): void {
-    this.isEditMode = true;
-    this.editClientId = client.id;
-
-    // Update form validation for password - not required in edit mode
-    this.clientForm.controls['password'].clearValidators();
-    this.clientForm.controls['password'].updateValueAndValidity();
-
-    // Populate the form with the client's data
-    this.clientForm.patchValue({
-      prenom: client.prenom,
-      nom: client.nom,
-      email: client.email,
-      telephone: client.telephone,
-      adresse: client.adresse,
-      ville: client.ville,
-      codePostal: client.codePostal,
-      pays: client.pays,
-      dateNaissance: client.dateNaissance ? this.formatDateForInput(client.dateNaissance) : '',
-      cin: client.cin
-    });
-
-    // Show the modal
-    this.isClientModalVisible = true;
+    this.toggleClientModal(client);
   }
+  
+  /**
+   * View client details
+   */
 
-  // View client details
   viewClientDetails(client: UserDisplay): void {
     this.selectedClient = client;
     this.isViewMode = true;
   }
 
-  // Close client details view
   closeClientDetails(): void {
     this.selectedClient = null;
     this.isViewMode = false;
   }
 
-  // Format a date for the input[type="date"] field (YYYY-MM-DD)
+
   private formatDateForInput(date: Date): string {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -546,8 +641,8 @@ export class AgentClientComponent {
     return [year, month, day].join('-');
   }
 
+
   // Active dropdown ID
-  activeDropdownId: number | null = null;
 
   // Toggle user actions dropdown
   toggleUserActions(userId: number | undefined): void {
@@ -556,36 +651,13 @@ export class AgentClientComponent {
   }
 
   // Toggle user active status
-  toggleUserStatus(user: UserDisplay): void {
-    if (user) {
-      user.estActif = !user.estActif;
-      user.statusClass = user.estActif ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800';
-
-      // Close dropdown menu
-      this.activeDropdownId = null;
-
-      console.log(`User ${user.prenom} ${user.nom} is now ${user.estActif ? 'active' : 'inactive'}`);
-      this.showAlert(`User ${user.prenom} ${user.nom} is now ${user.estActif ? 'active' : 'inactive'}`, 'success');
-    }
-  }
+  
 
   // Modified deleteClient to handle undefined id
-  deleteClient(clientId: number | undefined): void {
-    if (clientId === undefined) return;
-
-    if (confirm('Are you sure you want to delete this client?')) {
-      this.users = this.users.filter(user => user.id !== clientId);
-      this.allUsers = [...this.users];
-      console.log('Client deleted successfully');
-      this.showAlert('Client deleted successfully', 'success');
-    }
-  }
+  
 
   // Alert message properties
-  alertMessage: string | null = null;
-  alertType: 'success' | 'error' = 'success';
-  alertTimeout: any;
-
+  
   // Show alert message
   showAlert(message: string, type: 'success' | 'error' = 'success', duration: number = 5000): void {
     this.alertMessage = message;
@@ -595,25 +667,21 @@ export class AgentClientComponent {
     if (this.alertTimeout) {
       clearTimeout(this.alertTimeout);
     }
-
-    // Auto-hide the alert after the specified duration
     this.alertTimeout = setTimeout(() => {
       this.closeAlert();
     }, duration);
   }
-  // Close alert message
+  
+  /**
+   * Close the alert message
+   */
   closeAlert(): void {
     this.alertMessage = null;
-    if (this.alertTimeout) {
-      clearTimeout(this.alertTimeout);
-      this.alertTimeout = undefined;
-    }
   }
 
   // Clear search and reset users list
   clearSearch(): void {
     this.searchQuery = '';
-    this.users = [...this.allUsers];
-    this.applySorting(this.users);
+    this.loadClients();
   }
 }

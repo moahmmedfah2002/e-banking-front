@@ -48,12 +48,13 @@ export class ChatService {
   }
    private getBotResponse(userMessage: string): Observable<any> {
     const message = userMessage.toLowerCase();
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     return this.http.post(
       `http://localhost:8082/api/gemini/chat?request=${message}`,
       {},
       {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+          Authorization: `Bearer ${token}`,
         }
       }
     );}

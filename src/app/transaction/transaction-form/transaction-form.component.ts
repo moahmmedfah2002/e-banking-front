@@ -1,6 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {User} from '../../modele/User';
+import {ViremntService} from '../../services/viremntService';
+import {MatDialog} from '@angular/material/dialog';
+import {PopComponent} from '../pop/pop.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-transaction-form',
@@ -9,11 +13,13 @@ import {User} from '../../modele/User';
   styleUrl: './transaction-form.component.css'
 })
 export class TransactionFormComponent implements OnInit {
-
+  public virement:ViremntService=inject(ViremntService);
   @Input()
   public client?: User;
+  public status?:boolean;
+  public msg?:string;
   activeTab: string = 'transfer';
-
+  private dialog: MatDialog=inject(MatDialog)
   // Form groups for different transaction types
   transferForm!: FormGroup;
   payBillForm!: FormGroup;
@@ -45,6 +51,7 @@ export class TransactionFormComponent implements OnInit {
       scheduleDate: [''],
       note: ['']
     });
+
 
     // Initialize Pay Bills form
     this.payBillForm = this.fb.group({
@@ -148,9 +155,9 @@ export class TransactionFormComponent implements OnInit {
 
   onTransferSubmit(): void {
     if (this.transferForm.valid) {
-      console.log('Transfer form submitted:', this.transferForm.value);
+
       // Here you would call a service to process the transfer
-      alert('Transfer initiated successfully!');
+
       this.transferForm.reset({
         recipientType: 'my-account',
         transferTime: 'now'
@@ -197,6 +204,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   // File input handlers for mobile deposit
+  public data={message:""};
   onFrontImageSelected(event: any): void {
     const file = event?.target?.files?.[0];
     if (file) {
@@ -205,7 +213,40 @@ export class TransactionFormComponent implements OnInit {
       });
     }
   }
+public router: Router=inject(Router);
+  strip(){
+    this.virement.viremntStrip(this.transferForm.get("fromAccount")?.value,this.transferForm.get("amount")?.value)
+  }
+  virementAccount(){
+    console.log(this.transferForm.get("fromAccount")?.value);
+    this.virement.viremntAccount(this.transferForm.get("fromAccount")?.value,this.transferForm.get("toMyAccount")?.value,this.transferForm.get("amount")?.value,this.transferForm.get("note")?.value)
+      .subscribe(
+        {
 
+          next: (msg) => {
+            console.log(msg.msg)
+            setTimeout(()=>{window.location.reload()},3000)
+            // Show popup with message
+            this.dialog.open(PopComponent , {
+              data: { message: msg.msg }
+            });
+
+
+
+          },
+          error: (error) => {
+            console.log(error);
+            this.dialog.open(PopComponent , {
+              data: { message: error.error?.message || error.message || 'Unknown error' }
+
+            });
+
+
+
+        }}
+      )
+
+  }
   onBackImageSelected(event: any): void {
     const file = event?.target?.files?.[0];
     if (file) {

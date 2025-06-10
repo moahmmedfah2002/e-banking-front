@@ -20,18 +20,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { AgentService } from './services/agent.service';
 import { HttpClientModule } from '@angular/common/http';
-import { 
-  AgentCryptoService,
-  AgentTransactionService,
-  AgentClientService,
-  AgentAccountService,
-  AgentDashboardService
-} from './services/agent';
-import {
-  AdminDashboardService,
-  AdminUsersService,
-  AdminSubAdminService
-} from './services/admin';
 import { ChatBotComponent } from './chatbot/chatbot.component';
 import { Auth2faComponent } from './auth2fa/auth2fa.component';
 import { DatePipe } from '@angular/common';
@@ -61,7 +49,16 @@ import { CryptoHistoryComponent } from './agent/crypto-history/crypto-history.co
 import { TransactionDetailComponent } from "./agent/transaction-agent/transaction-detail/transaction-detail.component";
 import { TransactionAgentFormComponent } from './agent/transaction-agent/transaction-form/transaction-form.component';
 import { AgentManagementPageComponent } from './agent-management-page/agent-management-page.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {
+  AgentAccountService,
+  AgentClientService,
+  AgentCryptoService,
+  AgentDashboardService,
+  AgentTransactionService
+} from './services/agent';
 @NgModule({
   declarations: [
     // Remove SideBarComponent from here since it's standalone
@@ -95,10 +92,10 @@ import { AgentManagementPageComponent } from './agent-management-page/agent-mana
     AdminlayoutComponent,
     AgentComponent,
     AgentLayoutComponent,
-    AgentSideBarComponent,    
+    AgentSideBarComponent,
     AgentClientComponent,
     AdminSubAdminComponent,
-    TransactionAgentComponent,    
+    TransactionAgentComponent,
     AccountAgentComponent,    CryptoHistoryComponent,    TransactionAgentFormComponent,
     CryptoTransactionModalComponent,
     ChatBotComponent,
@@ -113,6 +110,10 @@ import { AgentManagementPageComponent } from './agent-management-page/agent-mana
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
     TransactionDetailComponent,
 ],  providers: [
     DatePipe,

@@ -9,7 +9,7 @@ export const MOCK_CHECKING_ACCOUNTS: Compte[] = [
     statue: true,
     dateCreation: new Date('2021-03-15'),
     typeCompte: 'Checking',
-    transactions: MOCK_TRANSACTIONS.filter(t => 
+    transactions: MOCK_TRANSACTIONS.filter(t =>
       t.compteAdebit === '1234567890' || t.compteAcredit === '1234567890'
     )
   },
@@ -19,7 +19,7 @@ export const MOCK_CHECKING_ACCOUNTS: Compte[] = [
     statue: true,
     dateCreation: new Date('2022-01-10'),
     typeCompte: 'Checking',
-    transactions: MOCK_TRANSACTIONS.filter(t => 
+    transactions: MOCK_TRANSACTIONS.filter(t =>
       t.compteAdebit === '2345678901' || t.compteAcredit === '2345678901'
     )
   }
@@ -33,7 +33,7 @@ export const MOCK_SAVINGS_ACCOUNTS: Compte[] = [
     statue: true,
     dateCreation: new Date('2021-05-20'),
     typeCompte: 'Savings',
-    transactions: MOCK_TRANSACTIONS.filter(t => 
+    transactions: MOCK_TRANSACTIONS.filter(t =>
       t.compteAdebit === '3456789012' || t.compteAcredit === '3456789012'
     )
   },
@@ -43,7 +43,7 @@ export const MOCK_SAVINGS_ACCOUNTS: Compte[] = [
     statue: true,
     dateCreation: new Date('2022-02-18'),
     typeCompte: 'Savings',
-    transactions: MOCK_TRANSACTIONS.filter(t => 
+    transactions: MOCK_TRANSACTIONS.filter(t =>
       t.compteAdebit === '4567890123' || t.compteAcredit === '4567890123'
     )
   }
@@ -57,7 +57,7 @@ export const MOCK_INVESTMENT_ACCOUNTS: Compte[] = [
     statue: true,
     dateCreation: new Date('2021-07-12'),
     typeCompte: 'Investment',
-    transactions: MOCK_TRANSACTIONS.filter(t => 
+    transactions: MOCK_TRANSACTIONS.filter(t =>
       t.compteAdebit === '5678901234' || t.compteAcredit === '5678901234'
     )
   }
@@ -75,7 +75,7 @@ export const ACCOUNT_TYPES = ['Checking', 'Savings', 'Investment'];
 
 // Current user accounts (both checking accounts and first savings account)
 export const USER_ACCOUNTS = [
-  '1234567890', 
+  '1234567890',
   '2345678901',
   '3456789012'
 ];

@@ -53,8 +53,8 @@ export class ChatService {
       `http://localhost:8082/api/gemini/chat?request=${message}`,
       {},
       {
-        headers: { 
-          Authorization: `Bearer ${token}`
+        headers: {
+          Authorization: `Bearer ${token}`,
         }
       }
     );}

@@ -51,7 +51,7 @@ export class ChatService {
     const message = userMessage.toLowerCase();
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     return this.http.post(
-      `/${environment.apiUrl}api/gemini/chat?request=${message}`,
+      `/${environment.apiUrl}/api/gemini/chat?request=${message}`,
       {},
       {
         headers: {

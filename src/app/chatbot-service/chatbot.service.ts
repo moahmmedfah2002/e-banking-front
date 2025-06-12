@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ChatMessage } from '../modele/chat-message.model'; // Adjust the import path as necessary
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { __param } from 'tslib';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class ChatService {
     const message = userMessage.toLowerCase();
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     return this.http.post(
-      `http://localhost:8082/api/gemini/chat?request=${message}`,
+      `/${environment.apiUrl}api/gemini/chat?request=${message}`,
       {},
       {
         headers: {

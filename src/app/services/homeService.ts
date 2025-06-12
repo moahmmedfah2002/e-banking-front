@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../modele/User';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ export class HomeService {
 
   }
   getUser(token: string) {
-    return this.http.post<User>("http://localhost:8082/auth/isAuth",{},{headers:{Authorization:`Bearer ${token}`}, params:{token: String(token)}});
+    return this.http.post<User>(`${environment.apiUrl}/auth/isAuth`,{},{headers:{Authorization:`Bearer ${token}`}, params:{token: String(token)}});
   }
 
 }

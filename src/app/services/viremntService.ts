@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Respense} from '../modele/Respense';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class ViremntService {
 
   viremntStrip(accountNumberSource:any,amount:any) {
     let token = sessionStorage.getItem("authToken");
-    return this.http.get<boolean>("http://127.0.0.1:8082/virement/sendStip", {
+    return this.http.get<boolean>(`${environment.apiUrl}/virement/sendStip`, {
       params: {
         accountNumberSource: accountNumberSource,
         amount: amount
@@ -21,7 +22,7 @@ export class ViremntService {
 
   viremntAccount(accountReciver:any,accountDebit:any,amount:any,motif:any) {
     let token = sessionStorage.getItem("authToken");
-    return this.http.get<Respense>("http://127.0.0.1:8082/virement/sendAccount", {
+    return this.http.get<Respense>(`${environment.apiUrl}/virement/sendAccount`, {
       params: {
         accountReciver: accountReciver,
         accountDebit: accountDebit,
